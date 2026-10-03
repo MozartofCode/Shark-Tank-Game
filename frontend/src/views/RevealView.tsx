@@ -3,6 +3,7 @@ import { Term } from '../components/Term'
 import { Avatar, Button, Card, Pill } from '../components/ui'
 import { money, profitTone, signedMoney } from '../lib/format'
 import { totals } from '../lib/portfolio'
+import { share, shareText } from '../lib/share'
 import { STATUS, UNKNOWN_STATUS } from '../lib/status'
 import { useGame } from '../store/gameStore'
 import type { RevealRound, RevealView as Reveal, SharkPersona } from '../types'
@@ -137,6 +138,7 @@ function Summary({ reveal, sharks }: { reveal: Reveal; sharks: SharkPersona[] })
   const life = totals(portfolio)
   const rank = reveal.standings.findIndex((s) => s.investor === 'player') + 1
   const sat = reveal.invested === 0
+  const [shared, setShared] = useState<string | null>(null)
 
   return (
     <div className="space-y-5">
@@ -195,7 +197,18 @@ function Summary({ reveal, sharks }: { reveal: Reveal; sharks: SharkPersona[] })
       )}
       {reveal.saved && <p className="text-center text-[15px] text-win">✓ Saved</p>}
 
-      <div className="flex justify-center pt-2">
+      <div className="flex flex-wrap justify-center gap-3 pt-2">
+        <Button
+          size="lg"
+          variant="secondary"
+          onClick={async () => {
+            const result = await share(shareText(reveal))
+            setShared(result === 'copied' ? 'Copied!' : result === 'failed' ? 'Couldn’t share' : null)
+            setTimeout(() => setShared(null), 2000)
+          }}
+        >
+          {shared ?? 'Share'}
+        </Button>
         <Button size="lg" onClick={() => start('random')} disabled={busy} className="min-w-48">
           Play again
         </Button>
