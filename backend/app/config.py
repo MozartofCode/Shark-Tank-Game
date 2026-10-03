@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     trust_proxy_headers: bool = False  # set true behind Fly/Render/Vercel proxies
     ai_daily_call_cap: int = 2000  # live AI founder answers per day, then offline answers
 
+    # Monitoring (optional)
+    sentry_dsn: str | None = None
+    environment: str = "development"
+
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
     # Supabase (v2): auth, saved runs, leaderboards, optional pitch storage.
