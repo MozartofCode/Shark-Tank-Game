@@ -1,0 +1,63 @@
+{
+  "id": "rolodoc",
+  "source": {
+    "show": "shark_tank",
+    "season": 5,
+    "episode": 1,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=WT9FcPGPjtQ"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "WT9FcPGPjtQ",
+    "start": 0,
+    "end": 200
+  },
+  "company": {
+    "name": "Rolodoc",
+    "category": "tech",
+    "one_liner": "A social network where doctors and patients connect and share information.",
+    "founders": [
+      "Richard Amini",
+      "Albert Amini"
+    ]
+  },
+  "ask": {
+    "amount": 50000,
+    "equity": 0.2
+  },
+  "facts": {
+    "summary": "Two physician brothers built a website that helps doctors find and message each other and lets patients look up doctors.",
+    "highlights": [
+      "Both founders are practicing doctors.",
+      "Doctors can message each other and share information securely.",
+      "It isn't making money yet.",
+      "Big medical networks and websites already exist."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 200000
+  },
+  "real_deal": {
+    "result": "no_deal",
+    "summary": "No deal. Every shark was out, and Mark Cuban called it one of the worst pitches he'd seen."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 2,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "The founders went back to medicine, and the site went offline.",
+    "story": "After the show the founders stepped away from the project. The website and app went offline around 2014, and the company is defunct.",
+    "as_of": "2024",
+    "sources": [
+      "https://www.sharktankcompanies.com/products/rolo-doc",
+      "https://sharktanktales.com/rolodoc-shark-tank-update/"
+    ]
+  },
+  "lessons": [
+    "execution_risk",
+    "survivorship_bias"
+  ]
+}

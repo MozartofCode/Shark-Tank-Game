@@ -1,0 +1,47 @@
+{
+  "pitch_id": "oatmeals",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Can this work in grocery stores?"
+      ],
+      "comment": "I see packaged oatmeal everywhere. I'm in.",
+      "decision": "in",
+      "offer": {
+        "amount": 500000,
+        "equity": 0.333
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How many locations could you open?"
+      ],
+      "comment": "Restaurants don't scale. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What's your profit per bowl?"
+      ],
+      "comment": "New York rent will eat you. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "What do customers order most?"
+      ],
+      "comment": "I love it, but I'd want a big stake.",
+      "decision": "in",
+      "offer": {
+        "amount": 500000,
+        "equity": 0.5
+      }
+    }
+  ]
+}

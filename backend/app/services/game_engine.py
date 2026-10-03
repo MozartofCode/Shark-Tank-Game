@@ -91,13 +91,13 @@ class GameEngine:
     def _pick_pitches(self, rng: random.Random, ids: list[str]) -> list[str]:
         """Mix flops and successes so every day has real risk.
 
-        Each day gets 1-3 companies that failed (the player never knows how many),
+        Each day gets 2-3 companies that failed (the player never knows how many),
         the rest are drawn from the survivors, and the order is shuffled.
         """
         n = min(self.settings.rounds_per_game, len(ids))
         flops = [i for i in ids if self.pitches.get(i).outcome.status == "failed"]
         others = [i for i in ids if i not in flops]
-        k = min(rng.choice([1, 2, 2, 3]), len(flops), n)
+        k = min(rng.choice([2, 2, 3]), len(flops), n)
         k = max(k, n - len(others))  # not enough survivors: use more flops
         chosen = rng.sample(flops, k) + rng.sample(others, n - k)
         rng.shuffle(chosen)

@@ -70,15 +70,15 @@ def test_question_limit(engine):
 
 
 def test_every_day_mixes_flops_and_survivors(engine, pitches):
-    """1-3 failed companies per day, never all winners, never all losers."""
+    """2-3 failed companies per day, never all winners, never all losers."""
     counts = set()
     for seed in range(200):
         game = engine.new_game(seed=seed)
         statuses = [pitches.get(r.pitch_id).outcome.status for r in game.rounds]
         flops = statuses.count("failed")
-        assert 1 <= flops <= 3 and len({r.pitch_id for r in game.rounds}) == 5
+        assert 2 <= flops <= 3 and len({r.pitch_id for r in game.rounds}) == 5
         counts.add(flops)
-    assert counts == {1, 2, 3}
+    assert counts == {2, 3}
 
 
 def test_shark_standings_rank_by_profit(engine):

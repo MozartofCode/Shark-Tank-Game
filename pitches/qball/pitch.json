@@ -1,0 +1,62 @@
+{
+  "id": "qball",
+  "source": {
+    "show": "shark_tank",
+    "season": 9,
+    "episode": 2,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=6pdglqg-2c4"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "6pdglqg-2c4",
+    "start": 0,
+    "end": 180
+  },
+  "company": {
+    "name": "QBall",
+    "category": "consumer",
+    "one_liner": "A soft throwable ball with a microphone inside, so anyone in the room can talk.",
+    "founders": [
+      "Shane Cox"
+    ]
+  },
+  "ask": {
+    "amount": 200000,
+    "equity": 0.15
+  },
+  "facts": {
+    "summary": "A foam ball with a wireless microphone inside. Teachers and presenters toss it to whoever wants to speak.",
+    "highlights": [
+      "It's sold to schools, companies and event venues.",
+      "The microphone turns off automatically while it's flying.",
+      "Sales are already growing.",
+      "It's a niche product, so the market may be limited."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 900000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Mark Cuban, Lori Greiner and guest shark Rohan Oza invested $300,000 for 30% (a $1M value)."
+  },
+  "outcome": {
+    "status": "thriving",
+    "years_later": 5,
+    "exit_value": 2000000,
+    "value_basis": "estimate",
+    "retention_factor": 1.0,
+    "headline": "A steady small business with about $1M in sales a year.",
+    "story": "QBall sold about $3.9M in its first two years after the show and still did about $1M a year by 2022. It's private and small; the value here (~$2M) is an estimate. A solid little win, not a jackpot.",
+    "as_of": "2022",
+    "sources": [
+      "https://www.slashgear.com/1393922/what-happened-qball-wireless-mic-shark-tank-season-9/",
+      "https://www.looper.com/905635/what-happened-to-qball-after-shark-tank/"
+    ]
+  },
+  "lessons": [
+    "valuation",
+    "patience"
+  ]
+}

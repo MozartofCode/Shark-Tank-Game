@@ -1,0 +1,44 @@
+{
+  "pitch_id": "cycloramic",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Can I sell this on TV?"
+      ],
+      "comment": "It's an app, not a product. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What else can your team build?"
+      ],
+      "comment": "I'm betting on you, not just this app.",
+      "decision": "in",
+      "offer": {
+        "amount": 500000,
+        "equity": 0.15
+      }
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "Where's the revenue?"
+      ],
+      "comment": "Downloads aren't dollars. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "What happens when the iPhone changes?"
+      ],
+      "comment": "Too risky for me. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

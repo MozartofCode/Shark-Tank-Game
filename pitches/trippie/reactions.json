@@ -1,0 +1,41 @@
+{
+  "pitch_id": "trippie",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Who pays you?"
+      ],
+      "comment": "Not for my shoppers. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "Can't Google Maps do this?"
+      ],
+      "comment": "Big tech will crush this. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "How much revenue?"
+      ],
+      "comment": "No money coming in. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "How many people use it?"
+      ],
+      "comment": "Too early for me. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

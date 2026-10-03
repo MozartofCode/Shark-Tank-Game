@@ -49,6 +49,10 @@ LESSONS: dict[str, dict[str, str]] = {
         "title": "A handshake isn't a deal",
         "body": "Many TV deals fell apart once investors checked the details.",
     },
+    "pivot": {
+        "title": "Bet on the team",
+        "body": "The first idea failed, but the founder pivoted to a new one that sold.",
+    },
     "patience": {
         "title": "Patience",
         "body": "Some companies grow slowly for years before taking off.",

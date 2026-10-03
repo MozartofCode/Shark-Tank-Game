@@ -1,0 +1,61 @@
+{
+  "id": "oatmeals",
+  "source": {
+    "show": "shark_tank",
+    "season": 10,
+    "episode": 7,
+    "channel": "Sony Pictures Television (official)",
+    "url": "https://www.youtube.com/watch?v=wH0yBPKIqkM"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "wH0yBPKIqkM",
+    "start": 0,
+    "end": 260
+  },
+  "company": {
+    "name": "OatMeals",
+    "category": "food",
+    "one_liner": "A New York café serving sweet and savory oatmeal bowls.",
+    "founders": [
+      "Sam Stephens"
+    ]
+  },
+  "ask": {
+    "amount": 500000,
+    "equity": 0.2
+  },
+  "facts": {
+    "summary": "A small New York shop where every dish is oatmeal, from fruit bowls to savory toppings like cheese and eggs.",
+    "highlights": [
+      "There's one café location in New York City.",
+      "Customers love the creative recipes.",
+      "The plan is to sell packaged oatmeal in grocery stores.",
+      "Restaurants have thin margins and high rent."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 1500000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Lori Greiner offered $500,000 for 33.3%, but the deal never closed."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 3,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "The investor deal fell through, and the café closed in 2021.",
+    "story": "The TV deal never closed, and the packaged-food plan didn't take off. The café struggled through the pandemic and closed in 2021.",
+    "as_of": "2021",
+    "sources": [
+      "https://www.sharktankblog.com/business/oatmeals/"
+    ]
+  },
+  "lessons": [
+    "deal_closing",
+    "unit_economics"
+  ]
+}

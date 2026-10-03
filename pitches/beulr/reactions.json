@@ -1,0 +1,41 @@
+{
+  "pitch_id": "beulr",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Isn't this just for skipping class?"
+      ],
+      "comment": "I can't sell cheating. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What stops Zoom from blocking you?"
+      ],
+      "comment": "Too easy to shut down. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "How do you make money?"
+      ],
+      "comment": "Popular, but no business model. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Would you want your kids using this?"
+      ],
+      "comment": "Not a brand I'd build. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "id": "beulr",
+  "source": {
+    "show": "shark_tank",
+    "season": 13,
+    "episode": 6,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=ngY0npFrw-Y"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "ngY0npFrw-Y",
+    "start": 0,
+    "end": 210
+  },
+  "company": {
+    "name": "Beulr",
+    "category": "tech",
+    "one_liner": "An app that attends your online meetings and classes for you.",
+    "founders": [
+      "Peter Solimine"
+    ]
+  },
+  "ask": {
+    "amount": 150000,
+    "equity": 0.2
+  },
+  "facts": {
+    "summary": "Beulr loops a video of you in Zoom meetings and alerts you if your name is called, so you can step away.",
+    "highlights": [
+      "About 92,000 people have signed up.",
+      "Many users are students skipping online classes.",
+      "Some people think it encourages cheating.",
+      "Video-meeting companies could block it or build their own version."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 500000
+  },
+  "real_deal": {
+    "result": "no_deal",
+    "summary": "No deal. The sharks worried about ethics and whether the business would last."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 2,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "Raised money after the show, rebranded, then shut down in 2023.",
+    "story": "Beulr got a burst of users and raised $675,000 from other investors after the episode. It tried to rebrand as an AI meeting-notes tool but closed in November 2023.",
+    "as_of": "2023-11",
+    "sources": [
+      "https://www.slashgear.com/1748948/what-happened-beulr-online-meeting-attender-bot-app-shark-tank-season-13/",
+      "https://www.bgr.com/2144157/what-happened-beulr-app-from-shark-tank-season-13/"
+    ]
+  },
+  "lessons": [
+    "survivorship_bias",
+    "execution_risk"
+  ]
+}

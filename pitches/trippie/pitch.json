@@ -1,0 +1,62 @@
+{
+  "id": "trippie",
+  "source": {
+    "show": "shark_tank",
+    "season": 9,
+    "episode": 2,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=j6gzngCo1H0"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "j6gzngCo1H0",
+    "start": 0,
+    "end": 280
+  },
+  "company": {
+    "name": "Trippie",
+    "category": "tech",
+    "one_liner": "An app with maps and directions inside airports.",
+    "founders": [
+      "Ryan Diew"
+    ]
+  },
+  "ask": {
+    "amount": 100000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "Trippie shows travelers maps of airport terminals, plus where to find gates, food and bathrooms.",
+    "highlights": [
+      "The app is free for travelers.",
+      "It works in a growing number of US airports.",
+      "Revenue would come from ads and partnerships.",
+      "Airlines and big map apps could add the same features."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 700000
+  },
+  "real_deal": {
+    "result": "no_deal",
+    "summary": "No deal. Every shark passed."
+  },
+  "outcome": {
+    "status": "thriving",
+    "years_later": 6,
+    "exit_value": 1000000,
+    "value_basis": "estimate",
+    "retention_factor": 0.8,
+    "headline": "Still around, but small: about $3M in sales over its whole life.",
+    "story": "Trippie grew to cover most US airports and kept running, but it stayed a small business with about $3M in lifetime revenue by 2023. The value here (~$1M) is an estimate, so an early investor at a $1M price would roughly break even or lose a little.",
+    "as_of": "2023",
+    "sources": [
+      "https://www.looper.com/1372437/whatever-happened-trippie-app-shark-tank/",
+      "https://www.slashgear.com/1696703/what-happened-trippie-airport-navigation-app-shark-tank-season-9/"
+    ]
+  },
+  "lessons": [
+    "valuation",
+    "patience"
+  ]
+}

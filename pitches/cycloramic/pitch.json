@@ -1,0 +1,62 @@
+{
+  "id": "cycloramic",
+  "source": {
+    "show": "shark_tank",
+    "season": 5,
+    "episode": 16,
+    "channel": "Sony Pictures Television (official)",
+    "url": "https://www.youtube.com/watch?v=iV8UkuD4gig"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "iV8UkuD4gig",
+    "start": 0,
+    "end": 280
+  },
+  "company": {
+    "name": "Cycloramic",
+    "category": "tech",
+    "one_liner": "An app that makes your iPhone spin on its own to take 360° photos.",
+    "founders": [
+      "Bruno François"
+    ]
+  },
+  "ask": {
+    "amount": 90000,
+    "equity": 0.05
+  },
+  "facts": {
+    "summary": "Cycloramic uses the phone's vibration to make an iPhone rotate by itself on a table and capture a full panorama.",
+    "highlights": [
+      "The app has been downloaded millions of times.",
+      "It only works with the shape of certain iPhones.",
+      "It earns very little money so far.",
+      "The founder is a strong engineer with more app ideas."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 1500000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Mark Cuban and Lori Greiner invested $500,000 for 15%."
+  },
+  "outcome": {
+    "status": "acquired",
+    "years_later": 4,
+    "exit_value": 22000000,
+    "value_basis": "acquisition",
+    "retention_factor": 0.8,
+    "headline": "The original app faded, but the team pivoted and sold to Carvana for about $22M.",
+    "story": "New iPhone designs stopped the spinning trick from working. The founder pivoted to 360° photos for car dealers (Car360), and Carvana bought the company for about $22 million.",
+    "as_of": "2018",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Cycloramic",
+      "https://www.slashgear.com/1749162/what-happened-cycloramic-panoramic-image-app-shark-tank-season-5/"
+    ]
+  },
+  "lessons": [
+    "pivot",
+    "exit"
+  ]
+}

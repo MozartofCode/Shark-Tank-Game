@@ -1,0 +1,47 @@
+{
+  "pitch_id": "qball",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Which schools buy it?"
+      ],
+      "comment": "Every classroom needs one. I'm in!",
+      "decision": "in",
+      "offer": {
+        "amount": 300000,
+        "equity": 0.3
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "Is the technology patented?"
+      ],
+      "comment": "Nice gadget, small market. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What's your margin?"
+      ],
+      "comment": "I'll do it for a bigger slice.",
+      "decision": "in",
+      "offer": {
+        "amount": 200000,
+        "equity": 0.3
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Who's your biggest customer?"
+      ],
+      "comment": "Not my world. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

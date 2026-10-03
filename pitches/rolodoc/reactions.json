@@ -1,0 +1,41 @@
+{
+  "pitch_id": "rolodoc",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "How does this make money?"
+      ],
+      "comment": "I don't get it. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "Why would doctors switch to this?"
+      ],
+      "comment": "There's no business here yet. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What are your sales?"
+      ],
+      "comment": "Zero revenue? I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Will you quit medicine for this?"
+      ],
+      "comment": "Keep being great doctors. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}
