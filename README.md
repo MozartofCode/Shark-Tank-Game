@@ -38,15 +38,20 @@ Supabase's built-in email sender is rate-limited. Configure custom SMTP before a
 
 ## How a day works
 
-Each day picks 5 of the 17 pitches. Every day includes **1–3 companies that really went out of business**, mixed with survivors and shuffled, so you can't just "buy everything" and win.
+Each day starts with **$1M** and picks 5 of the 23 pitches. Every day includes **2–3 companies that really went out of business**, mixed with survivors and shuffled. (Simulated over 2,000 days, "buy everything at the asking price" loses money on about 16% of days.)
 
-1. **Meet**: who's asking, how much, and what that says the company is worth.
-2. **Watch**: the real clip, cut before the deal so there are no spoilers.
-3. **Ask**: up to 3 questions to an AI founder who only knows pitch-day facts.
-4. **Invest**: the four sharks go in or out. You offer money for a slice, or skip. The founder takes the offer that values the company highest (sharks get a small bonus when they can help), counters once if it's close, or walks.
-5. **Find out**: what really happened, what your slice is worth now, a lesson, how you did against the sharks, and an index-fund comparison.
+1. **Pitch**: the real clip, cut before the deal so there are no spoilers.
+2. **Ask**: up to 3 questions to an AI founder who only knows pitch-day facts.
+3. **Invest**: the four sharks go in or out. Offer money for a slice (optionally with a **royalty**), say *why* (team / product / price / gut), or pass. The founder takes the offer that values the company highest (sharks get a bonus when they can help; royalties count 25% less), counters once if it's close, or walks.
+4. **Find out**: what really happened, what your slice is worth now, a lesson, how you did against the sharks, an index-fund comparison, and a **Share** button (🟩🟥⬜…).
 
-**Portfolio.** Every finished day is added to your portfolio: total invested, what it's worth now, profit, and every company you own. Guests' portfolios live in the browser; signed-in players' portfolios are saved in Supabase (`GET /api/me/portfolio`).
+After each deal you win there's a quick **valuation check**.
+
+**Portfolio.** Every finished day adds to your portfolio: profit, every company you own, which reasons paid off, **achievements** and your daily-challenge **streak**. Guests' portfolios live in the browser; signed-in players' are saved in Supabase.
+
+**Learn.** A searchable glossary of ~25 money words; key terms in the game are tappable.
+
+**Classroom.** A teacher creates a class and gets a 6-letter code. Students join with the code and their first name, and everyone plays the same five companies. The teacher's dashboard shows live results, how the class invested in each company, and discussion prompts generated from the class's choices.
 
 ## Architecture (MVC)
 
@@ -85,8 +90,13 @@ supabase/migrations/  Database schema + RLS policies
 | GET | `/api/leaderboard?scope=daily\|all` | Daily challenge / all-time leaderboard |
 | GET | `/api/me/runs` | Signed-in player's run history |
 | GET | `/api/me/portfolio` | Every finished day and the companies the player owns |
+| POST | `/api/classes` | Create a class → `{code, teacher_token}` |
+| GET | `/api/classes/{code}` | Class name (for students joining) |
+| GET | `/api/classes/{code}/dashboard` | Teacher dashboard (`X-Teacher-Token` header) |
 
-`POST /api/games` takes `{"mode": "daily"}` for the daily challenge: everyone gets the same 5 pitches each UTC day, and only your first daily run is ranked. Requests may carry `Authorization: Bearer <supabase access token>`. The backend verifies it against the project's JWKS (ES256).
+`POST /api/games` takes `{"mode": "class", "class_code", "student"}` to join a class, or `{"mode": "daily"}` for the daily challenge: everyone gets the same 5 pitches each UTC day, and only your first daily run is ranked. Requests may carry `Authorization: Bearer <supabase access token>`. The backend verifies it against the project's JWKS (ES256).
+
+**Storage.** Game sessions and classrooms live in SQL via `DATABASE_URL` (SQLite locally, Supabase Postgres in production), so games survive restarts and scale across instances. Per-IP rate limits and a daily cap on paid AI calls (`AI_DAILY_CALL_CAP`) protect costs.
 
 **Security model.** Scores are written only by the backend with the secret key; the tables have no insert policies, so players can't post fake scores. `pitches` (hidden outcomes) has RLS with no policies, so it's service-role only. Games owned by an account can only be used by that account.
 
@@ -101,8 +111,12 @@ make validate
 
 Read [docs/CONTENT_AND_COPYRIGHT.md](docs/CONTENT_AND_COPYRIGHT.md) before adding clips.
 
+## Deploying
+
+See [docs/DEPLOY.md](docs/DEPLOY.md): Supabase dashboard steps, environment variables, Fly.io/Render for the API (root `Dockerfile`), Vercel for the web app. CI (GitHub Actions) runs lint, tests, content validation, the frontend build and a Docker smoke test on every push; a weekly job checks every YouTube clip is still embeddable (`make embeds`).
+
 ## Roadmap
 
-See [docs/PLAN.md](docs/PLAN.md). Done: MVP + v2 (Supabase Auth, saved runs, leaderboards, daily challenge). Next: a persistent `GameStore` so in-progress games survive server restarts, royalty/loan deals, more pitches (especially flops), TTS shark voices, and deployment.
+See [docs/PLAN.md](docs/PLAN.md). Ideas: more pitches, TTS shark voices, loan deals, an admin page for adding pitches.
 
 *Educational game, not financial advice. Not affiliated with Shark Tank, ABC or Sony Pictures Television.*
