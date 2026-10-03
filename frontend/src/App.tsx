@@ -20,8 +20,14 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <a
+        href="#content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-surface focus:px-4 focus:py-2 focus:shadow-[var(--shadow-float)]"
+      >
+        Skip to content
+      </a>
       <Nav />
-      <div key={screen} className="animate-fade-in flex-1">
+      <div key={screen} id="content" tabIndex={-1} className="animate-fade-in flex-1 outline-none">
         {screen === 'home' && <HomeView />}
         {screen === 'game' && <GameView />}
         {screen === 'reveal' && <RevealView />}

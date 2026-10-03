@@ -11,6 +11,8 @@ export function Term({ id, children }: { id: string; children?: ReactNode }) {
     <button
       type="button"
       onClick={() => openTerm(id)}
+      aria-haspopup="dialog"
+      aria-label={`${typeof children === 'string' ? children : term.term}: what does this mean?`}
       className="cursor-help underline decoration-faint decoration-dotted underline-offset-4 transition hover:decoration-accent"
     >
       {children ?? term.term}

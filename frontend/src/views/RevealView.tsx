@@ -25,6 +25,9 @@ export function RevealView() {
     <main className="mx-auto max-w-2xl px-5 pt-10 pb-6">
       <div className="text-center">
         <p className="text-[13px] font-medium text-muted">{onSummary ? 'Your day' : 'Years later…'}</p>
+        <p className="sr-only" aria-live="polite">
+          {onSummary ? 'Summary of your day' : `Company ${index + 1} of ${total}`}
+        </p>
         <div className="mt-3 flex justify-center gap-1.5" aria-hidden>
           {[...reveal.rounds.map((r) => r.index), total].map((i) => (
             <span

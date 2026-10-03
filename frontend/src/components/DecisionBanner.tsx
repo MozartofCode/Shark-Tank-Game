@@ -32,6 +32,9 @@ export function DecisionBanner({ game, round, sharks }: { game: GameView; round:
 
   return (
     <Card className="animate-scale-in mx-auto max-w-2xl p-8 text-center">
+      <div role="status" aria-live="polite" className="sr-only">
+        {typeof title === 'string' ? title : 'Counteroffer'}. {detail}
+      </div>
       <p className="text-5xl" aria-hidden>
         {icon}
       </p>

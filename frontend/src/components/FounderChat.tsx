@@ -46,7 +46,13 @@ export function FounderChat({ round, sharks }: { round: RoundView; sharks: Shark
         </p>
       </div>
 
-      <div ref={scroller} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
+      <div
+        ref={scroller}
+        className="flex-1 space-y-2 overflow-y-auto px-4 py-4"
+        role="log"
+        aria-live="polite"
+        aria-label={`Conversation with ${founder}`}
+      >
         {round.chat.map((m, i) => (
           <Bubble key={i} mine={m.role === 'user'} text={m.content} />
         ))}

@@ -1,4 +1,4 @@
-import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { useEffect, useId, useRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 
 type Variant = 'primary' | 'secondary' | 'plain'
 type Size = 'md' | 'lg'
@@ -62,25 +62,66 @@ export function Avatar({ emoji, color, size = 40 }: { emoji: string; color: stri
   )
 }
 
-/** Centered modal sheet with a dimmed backdrop. Closes on Escape or backdrop click. */
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+/**
+ * Centered modal sheet with a dimmed backdrop. Closes on Escape or backdrop click,
+ * keeps keyboard focus inside while open, and returns focus where it was.
+ */
 export function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+  const panel = useRef<HTMLDivElement>(null)
+  const titleId = useId()
+  const close = useRef(onClose)
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    close.current = onClose
+  }, [onClose])
+
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null
+    const focusables = () => [...(panel.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])]
+    ;(focusables().find((el) => el.tagName === 'INPUT') ?? focusables()[0])?.focus()
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close.current()
+      if (e.key !== 'Tab') return
+      const items = focusables()
+      if (!items.length) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
     document.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
+      opener?.focus?.()
     }
-  }, [onClose])
+  }, [])
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-modal aria-label={title}>
-      <div className="animate-fade-in absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
-      <div className="animate-sheet-up relative max-h-[88vh] w-full overflow-y-auto rounded-t-3xl bg-surface p-6 shadow-[var(--shadow-float)] sm:max-w-md sm:rounded-3xl sm:p-8">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+    >
+      <div className="animate-fade-in absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} aria-hidden />
+      <div
+        ref={panel}
+        className="animate-sheet-up relative max-h-[88vh] w-full overflow-y-auto rounded-t-3xl bg-surface p-6 shadow-[var(--shadow-float)] sm:max-w-md sm:rounded-3xl sm:p-8"
+      >
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">{title}</h2>
+          <h2 id={titleId} className="text-xl font-semibold">
+            {title}
+          </h2>
           <button
             onClick={onClose}
             aria-label="Close"
