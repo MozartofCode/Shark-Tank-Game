@@ -1,5 +1,7 @@
 // Mirrors the backend response models in backend/app/models/*.py
 
+import type { Reason } from './lib/reasons'
+
 export type Video =
   | { type: 'file'; path: string }
   | { type: 'youtube'; id: string; start: number; end: number | null }
@@ -58,6 +60,7 @@ export interface RoundView {
   shark_reactions: SharkReaction[]
   player_offer: Offer | null
   player_passed: boolean
+  reason: Reason | null
   counter: Offer | null
   winner: Offer | null
   founder_line: string
@@ -104,6 +107,7 @@ export interface RevealRound {
   outcome: Outcome
   real_deal: { result: 'deal' | 'no_deal'; summary: string }
   deal: DealResult | null
+  reason: Reason | null
   lessons: { title: string; body: string }[]
 }
 
@@ -124,6 +128,7 @@ export interface Holding {
   amount: number
   equity: number
   stake_value: number
+  reason?: Reason | null
 }
 
 export interface PortfolioDay {

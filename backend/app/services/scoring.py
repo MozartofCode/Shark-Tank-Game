@@ -44,6 +44,7 @@ def build_reveal(
                 outcome=pitch.outcome,
                 real_deal=pitch.real_deal,
                 deal=deal,
+                reason=r.reason,
                 lessons=lessons_for(pitch.lessons),
             )
         )

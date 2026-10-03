@@ -91,6 +91,7 @@ class SupabaseRunRepository:
                 "amount": r.deal.amount,
                 "equity": r.deal.equity,
                 "stake_value": r.deal.stake_value,
+                "reason": r.reason if r.deal.investor == "player" else None,
             }
             for r in reveal.rounds
             if r.deal
@@ -132,7 +133,7 @@ class SupabaseRunRepository:
             "game_runs",
             {
                 "select": "game_id,daily_date,bankroll,created_at,"
-                "game_deals(pitch_id,investor,amount,equity,stake_value)",
+                "game_deals(pitch_id,investor,amount,equity,stake_value,reason)",
                 "user_id": f"eq.{user_id}",
                 "order": "created_at.asc",
                 "limit": "500",
@@ -148,6 +149,7 @@ class SupabaseRunRepository:
                     amount=d["amount"],
                     equity=float(d["equity"]),
                     stake_value=d["stake_value"],
+                    reason=d.get("reason"),
                 )
                 for d in row["game_deals"]
                 if d["investor"] == "player"

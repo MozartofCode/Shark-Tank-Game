@@ -28,6 +28,7 @@ class ChatMessage(BaseModel):
 
 
 Decision = Literal["pending", "accepted", "countered", "walked"]
+Reason = Literal["team", "product", "price", "gut"]
 
 
 class RoundState(BaseModel):
@@ -37,6 +38,7 @@ class RoundState(BaseModel):
     chat: list[ChatMessage] = []
     player_offer: Offer | None = None
     player_passed: bool = False
+    reason: Reason | None = None
     counter: Offer | None = None
     winner: Offer | None = None
     founder_line: str = ""
@@ -74,6 +76,7 @@ class OfferRequest(BaseModel):
     pass_: bool = Field(default=False, alias="pass")
     amount: int | None = None
     equity: float | None = None
+    reason: Reason | None = None
 
 
 class CounterRequest(BaseModel):
@@ -93,6 +96,7 @@ class RoundView(BaseModel):
     shark_reactions: list[SharkReaction]
     player_offer: Offer | None
     player_passed: bool
+    reason: Reason | None = None
     counter: Offer | None
     winner: Offer | None
     founder_line: str
@@ -127,6 +131,7 @@ class RevealRound(BaseModel):
     outcome: Outcome
     real_deal: RealDeal
     deal: DealResult | None
+    reason: Reason | None = None
     lessons: list[dict[str, str]]
 
 
@@ -166,6 +171,7 @@ class Holding(BaseModel):
     amount: int
     equity: float
     stake_value: int
+    reason: Reason | None = None
 
 
 class PortfolioDay(BaseModel):

@@ -127,7 +127,14 @@ def make_offer(
 ):
     try:
         game = engine.get_game(game_id, _uid(user))
-        engine.submit_offer(game, index, passed=body.pass_, amount=body.amount, equity=body.equity)
+        engine.submit_offer(
+            game,
+            index,
+            passed=body.pass_,
+            amount=body.amount,
+            equity=body.equity,
+            reason=body.reason,
+        )
         return engine.view(game)
     except (GameError, InvalidOffer) as e:
         raise _http(e)

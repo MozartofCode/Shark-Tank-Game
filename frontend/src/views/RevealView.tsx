@@ -3,6 +3,7 @@ import { Term } from '../components/Term'
 import { Avatar, Button, Card, Pill } from '../components/ui'
 import { money, profitTone, signedMoney } from '../lib/format'
 import { totals } from '../lib/portfolio'
+import { REASON_LABEL } from '../lib/reasons'
 import { share, shareText } from '../lib/share'
 import { STATUS, UNKNOWN_STATUS } from '../lib/status'
 import { useGame } from '../store/gameStore'
@@ -74,7 +75,10 @@ function RevealCard({ r, sharks }: { r: RevealRound; sharks: SharkPersona[] }) {
       <div className={`mt-6 rounded-2xl px-5 py-5 ${r.deal ? (profit >= 0 ? 'bg-win/10' : 'bg-loss/10') : 'bg-fill'}`}>
         {r.deal ? (
           <>
-            <p className="text-[13px] font-medium text-muted">{who}</p>
+            <p className="text-[13px] font-medium text-muted">
+              {who}
+              {mine && r.reason && <span className="text-faint"> · invested for: {REASON_LABEL[r.reason]}</span>}
+            </p>
             <p className="mt-1 flex flex-wrap items-baseline gap-x-3 text-[34px] font-bold tabular-nums">
               <span className="text-faint">{money(r.deal.amount, { compact: true })}</span>
               <span className="text-[22px] text-faint" aria-hidden>

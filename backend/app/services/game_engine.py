@@ -167,6 +167,7 @@ class GameEngine:
         passed: bool,
         amount: int | None,
         equity: float | None,
+        reason: str | None = None,
     ) -> GameState:
         r = self._round(game, index)
         if r.status != "open":
@@ -181,6 +182,7 @@ class GameEngine:
                 raise GameError("An offer needs an amount and an equity percentage.")
             validate_player_offer(amount, equity, pitch.ask, game.cash)
             r.player_offer = Offer(investor=PLAYER, amount=amount, equity=equity)
+            r.reason = reason
             offers.append(r.player_offer)
 
         sharks = {s.id: s for s in self.sharks.all()}
@@ -268,6 +270,7 @@ class GameEngine:
                     shark_reactions=self.pitches.get_reactions(r.pitch_id).reactions,
                     player_offer=r.player_offer,
                     player_passed=r.player_passed,
+                    reason=r.reason,
                     counter=r.counter,
                     winner=r.winner,
                     founder_line=r.founder_line,

@@ -108,3 +108,12 @@ def test_sql_store_round_trip_and_ttl():
     store.save(old)
     assert store.get("g2") is None
     assert store.get("missing") is None
+
+
+def test_offer_reason_is_kept_through_reveal(engine):
+    game = game_with(engine, DAY)
+    engine.submit_offer(game, 0, passed=False, amount=100_000, equity=0.08, reason="team")
+    for i in range(1, 5):
+        engine.submit_offer(game, i, passed=True, amount=None, equity=None)
+    assert engine.view(game).rounds[0].reason == "team"
+    assert engine.reveal(game).rounds[0].reason == "team"

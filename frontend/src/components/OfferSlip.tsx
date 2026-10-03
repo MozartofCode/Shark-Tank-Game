@@ -1,5 +1,6 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { money, pct, valuation } from '../lib/format'
+import { REASONS, type Reason } from '../lib/reasons'
 import { useGame } from '../store/gameStore'
 import type { RoundView } from '../types'
 import { Term } from './Term'
@@ -15,6 +16,7 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
   const canInvest = maxAmount >= MIN_AMOUNT
   const [amount, setAmount] = useState(Math.max(MIN_AMOUNT, Math.min(ask.amount, maxAmount)))
   const [equityPct, setEquityPct] = useState(Math.round(ask.equity * 1000) / 10)
+  const [reason, setReason] = useState<Reason | null>(null)
 
   const equity = equityPct / 100
   const yourValue = valuation(amount, equity)
@@ -81,13 +83,33 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
         )}
       </div>
 
+      <div className="mt-6">
+        <p className="text-[13px] text-muted">Why this company?</p>
+        <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Why this company?">
+          {REASONS.map((r) => (
+            <button
+              key={r.id}
+              type="button"
+              role="radio"
+              aria-checked={reason === r.id}
+              onClick={() => setReason(reason === r.id ? null : r.id)}
+              className={`h-9 rounded-full px-4 text-[14px] transition ${
+                reason === r.id ? 'bg-fg text-bg' : 'bg-fill text-fg hover:bg-fill-strong'
+              }`}
+            >
+              <span aria-hidden>{r.emoji}</span> {r.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {problem && <p className="mt-4 text-[15px] text-loss">{problem}</p>}
 
       <div className="mt-7 grid grid-cols-2 gap-3">
         <Button size="lg" variant="secondary" onClick={pass} disabled={busy}>
           Pass
         </Button>
-        <Button size="lg" onClick={() => offer(amount, equity)} disabled={busy || !!problem}>
+        <Button size="lg" onClick={() => offer(amount, equity, reason)} disabled={busy || !!problem}>
           <span className="sm:hidden">Offer</span>
           <span className="hidden sm:inline">
             Offer {money(amount, { compact: true })} for {pct(equity)}

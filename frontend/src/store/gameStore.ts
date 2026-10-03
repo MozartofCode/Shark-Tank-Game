@@ -50,7 +50,7 @@ interface State {
   claimCurrent: () => Promise<void>
   setStep: (step: Step) => void
   ask: (question: string) => Promise<void>
-  offer: (amount: number, equity: number) => Promise<void>
+  offer: (amount: number, equity: number, reason: string | null) => Promise<void>
   pass: () => Promise<void>
   respondCounter: (accept: boolean) => Promise<void>
   next: () => void
@@ -160,10 +160,10 @@ export const useGame = create<State>((set, get) => {
       }
     },
 
-    async offer(amount, equity) {
+    async offer(amount, equity, reason) {
       const { game, viewIndex } = get()
       if (!game) return
-      const updated = await run(() => api.offer(game.id, viewIndex, amount, equity))
+      const updated = await run(() => api.offer(game.id, viewIndex, amount, equity, reason))
       if (updated) set({ game: updated })
     },
 

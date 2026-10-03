@@ -2,6 +2,7 @@ import { Term } from '../components/Term'
 import { Button, Card, Pill } from '../components/ui'
 import { growth, money, pct, profitTone, signedMoney } from '../lib/format'
 import { totals } from '../lib/portfolio'
+import { REASON_LABEL, type Reason } from '../lib/reasons'
 import { useAuth } from '../store/authStore'
 import { useGame } from '../store/gameStore'
 
@@ -12,6 +13,13 @@ export function PortfolioView() {
   const holdings = portfolio
     .flatMap((day, i) => day.holdings.map((h) => ({ ...h, day: i + 1 })))
     .sort((a, b) => b.stake_value - b.amount - (a.stake_value - a.amount))
+
+  const byReason = new Map<Reason, { profit: number; count: number }>()
+  for (const h of holdings) {
+    if (!h.reason) continue
+    const cur = byReason.get(h.reason) ?? { profit: 0, count: 0 }
+    byReason.set(h.reason, { profit: cur.profit + h.stake_value - h.amount, count: cur.count + 1 })
+  }
 
   if (t.days === 0) {
     return (
@@ -48,6 +56,26 @@ export function PortfolioView() {
           <span className="font-medium text-loss">{t.losers} down</span>. That’s why investors{' '}
           <Term id="diversify">diversify</Term>.
         </p>
+      )}
+
+      {byReason.size > 0 && (
+        <Card className="mt-6">
+          <p className="text-[15px] font-semibold">What works for you</p>
+          <ul className="mt-3 space-y-2">
+            {[...byReason.entries()]
+              .sort((a, b) => b[1].profit - a[1].profit)
+              .map(([reason, v]) => (
+                <li key={reason} className="flex items-center justify-between text-[15px]">
+                  <span>
+                    {REASON_LABEL[reason]} <span className="text-faint">· {v.count}</span>
+                  </span>
+                  <span className={`font-semibold tabular-nums ${profitTone(v.profit)}`}>
+                    {signedMoney(v.profit, true)}
+                  </span>
+                </li>
+              ))}
+          </ul>
+        </Card>
       )}
 
       <Card className="mt-6 px-0 py-2">

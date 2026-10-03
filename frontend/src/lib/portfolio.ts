@@ -29,6 +29,7 @@ export function saveDayLocally(reveal: RevealView): PortfolioDay[] {
         amount: r.deal!.amount,
         equity: r.deal!.equity,
         stake_value: r.deal!.stake_value,
+        reason: r.reason,
       })),
   }
   const next = [...days, day]
