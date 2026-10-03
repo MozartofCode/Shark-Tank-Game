@@ -1,7 +1,8 @@
 """Pitch storage.
 
-The MVP reads pitches from `pitches/<slug>/pitch.json` (+ `reactions.json`).
-A Supabase-backed implementation can satisfy the same protocol later.
+`LocalPitchRepository` reads `pitches/<slug>/pitch.json` (+ `reactions.json`).
+`SupabasePitchRepository` reads the `pitches` table (service role only, since it
+holds hidden outcomes). Push local content there with scripts/sync_pitches.py.
 """
 
 import json
@@ -10,6 +11,7 @@ from typing import Protocol
 
 from app.models.pitch import Pitch
 from app.models.shark import PitchReactions
+from app.repositories.supabase_rest import SupabaseRest
 
 
 class PitchRepository(Protocol):
@@ -44,6 +46,34 @@ class LocalPitchRepository:
                 )
             else:
                 self._reactions[pitch.id] = PitchReactions(pitch_id=pitch.id, reactions=[])
+
+    def list_ids(self) -> list[str]:
+        return list(self._pitches)
+
+    def get(self, pitch_id: str) -> Pitch:
+        try:
+            return self._pitches[pitch_id]
+        except KeyError as e:
+            raise PitchNotFound(pitch_id) from e
+
+    def get_reactions(self, pitch_id: str) -> PitchReactions:
+        self.get(pitch_id)
+        return self._reactions[pitch_id]
+
+
+class SupabasePitchRepository:
+    def __init__(self, url: str, secret_key: str):
+        self.db = SupabaseRest(url, secret_key)
+        self._pitches: dict[str, Pitch] = {}
+        self._reactions: dict[str, PitchReactions] = {}
+        self.reload()
+
+    def reload(self) -> None:
+        rows = self.db.select(
+            "pitches", {"select": "id,data,reactions", "published": "eq.true", "order": "id"}
+        )
+        self._pitches = {r["id"]: Pitch.model_validate(r["data"]) for r in rows}
+        self._reactions = {r["id"]: PitchReactions.model_validate(r["reactions"]) for r in rows}
 
     def list_ids(self) -> list[str]:
         return list(self._pitches)

@@ -5,8 +5,10 @@ lets hidden pitch data (outcome, walk-away valuation) reach a view before the
 reveal.
 """
 
+import logging
 import random
 import uuid
+from datetime import UTC, date, datetime
 
 from app.config import Settings
 from app.models.game import (
@@ -21,10 +23,17 @@ from app.models.game import (
 )
 from app.repositories.game_store import GameStore
 from app.repositories.pitch_repository import PitchRepository
+from app.repositories.run_repository import RunRepository
 from app.repositories.shark_repository import SharkRepository
 from app.services import founder
 from app.services.deal_math import validate_player_offer
 from app.services.scoring import build_reveal
+
+log = logging.getLogger(__name__)
+
+
+def utc_today() -> date:
+    return datetime.now(UTC).date()
 
 
 class GameError(Exception):
@@ -42,18 +51,31 @@ class GameEngine:
         pitches: PitchRepository,
         sharks: SharkRepository,
         store: GameStore,
+        runs: RunRepository,
     ):
         self.settings = settings
         self.pitches = pitches
         self.sharks = sharks
         self.store = store
+        self.runs = runs
 
     # ---------- lifecycle ----------
 
-    def new_game(self, seed: int | None = None) -> GameState:
-        ids = self.pitches.list_ids()
+    def new_game(
+        self,
+        seed: int | None = None,
+        *,
+        daily: bool = False,
+        user_id: str | None = None,
+        today: date | None = None,
+    ) -> GameState:
+        """Start a day. The daily challenge gives everyone the same pitches each UTC day."""
+        ids = sorted(self.pitches.list_ids())
         if not ids:
             raise GameError("No pitches available. Add some to the pitches/ folder.", 503)
+        daily_date = (today or utc_today()) if daily else None
+        if daily_date:
+            seed = int(daily_date.strftime("%Y%m%d"))
         rng = random.Random(seed)
         chosen = rng.sample(ids, k=min(self.settings.rounds_per_game, len(ids)))
         game = GameState(
@@ -61,14 +83,29 @@ class GameEngine:
             bankroll_start=self.settings.starting_bankroll,
             cash=self.settings.starting_bankroll,
             rounds=[RoundState(pitch_id=pid) for pid in chosen],
+            user_id=user_id,
+            daily_date=daily_date,
         )
         self.store.save(game)
         return game
 
-    def get_game(self, game_id: str) -> GameState:
+    def get_game(self, game_id: str, user_id: str | None = None) -> GameState:
+        """Load a game. Games owned by an account can only be used by that account."""
         game = self.store.get(game_id)
         if game is None:
             raise GameError("Game not found or expired.", 404)
+        if game.user_id and game.user_id != user_id:
+            raise GameError("This game belongs to another player.", 403)
+        return game
+
+    def claim(self, game: GameState, user_id: str) -> GameState:
+        """Attach a guest game to the account that just signed in (and save it if finished)."""
+        if game.user_id and game.user_id != user_id:
+            raise GameError("This game belongs to another player.", 403)
+        game.user_id = user_id
+        self.store.save(game)
+        if game.revealed:
+            self.reveal(game)
         return game
 
     def _round(self, game: GameState, index: int) -> RoundState:
@@ -186,10 +223,19 @@ class GameEngine:
         if not game.finished:
             raise GameError("Finish all pitches before the reveal.", 409)
         game.revealed = True
-        self.store.save(game)
         pitches = {r.pitch_id: self.pitches.get(r.pitch_id) for r in game.rounds}
         sharks = {s.id: s for s in self.sharks.all()}
-        return build_reveal(game, pitches, sharks)
+        result = build_reveal(game, pitches, sharks)
+        if game.user_id and not game.saved and self.runs.enabled:
+            try:
+                self.runs.save(result, game.user_id, [r.pitch_id for r in game.rounds], game.daily_date)
+                game.saved = True
+            except Exception:
+                log.exception("Could not save run %s", game.id)
+        self.store.save(game)
+        result.daily_date = game.daily_date
+        result.saved = game.saved
+        return result
 
     # ---------- views ----------
 
@@ -221,5 +267,8 @@ class GameEngine:
             total_rounds=len(game.rounds),
             finished=game.finished,
             revealed=game.revealed,
+            daily_date=game.daily_date,
+            signed_in=game.user_id is not None,
+            saved=game.saved,
             rounds=rounds,
         )

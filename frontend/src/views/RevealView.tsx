@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { AccountPanel } from '../components/AccountPanel'
 import { Button, Card, Eyebrow } from '../components/ui'
 import { money, pct, signedPct } from '../lib/format'
 import { useGame } from '../store/gameStore'
@@ -11,7 +12,7 @@ const STATUS_STYLE = {
 } as const
 
 export function RevealView() {
-  const { reveal, sharks, start, busy } = useGame()
+  const { reveal, sharks, start, busy, health } = useGame()
   const [shown, setShown] = useState(0)
   if (!reveal) return null
   const done = shown >= reveal.rounds.length
@@ -37,7 +38,7 @@ export function RevealView() {
           </Button>
         </div>
       ) : (
-        <Summary reveal={reveal} onReplay={start} busy={busy} />
+        <Summary reveal={reveal} onReplay={() => start('random')} busy={busy} accounts={!!health?.accounts} />
       )}
     </main>
   )
@@ -110,7 +111,17 @@ function RevealCard({ r, sharks }: { r: RevealRound; sharks: SharkPersona[] }) {
   )
 }
 
-function Summary({ reveal, onReplay, busy }: { reveal: Reveal; onReplay: () => void; busy: boolean }) {
+function Summary({
+  reveal,
+  onReplay,
+  busy,
+  accounts,
+}: {
+  reveal: Reveal
+  onReplay: () => void
+  busy: boolean
+  accounts: boolean
+}) {
   const up = reveal.net_worth >= reveal.bankroll_start
   const beatIndex = reveal.net_worth >= reveal.benchmark_value
   const rank = reveal.standings.findIndex((s) => s.investor === 'player') + 1
@@ -172,6 +183,21 @@ function Summary({ reveal, onReplay, busy }: { reveal: Reveal; onReplay: () => v
           </table>
         </div>
       </Card>
+
+      {accounts && (
+        <Card className="mt-6 text-center">
+          {reveal.saved ? (
+            <p className="text-sm text-win">
+              ✓ Run saved to your profile{reveal.daily_date ? ` and entered in the ${reveal.daily_date} daily leaderboard` : ''}.
+            </p>
+          ) : (
+            <>
+              <p className="mb-3 text-sm text-[#c3cde0]">Sign in to save this run and get on the leaderboard.</p>
+              <AccountPanel />
+            </>
+          )}
+        </Card>
+      )}
 
       <div className="mt-8 text-center">
         <Button onClick={onReplay} disabled={busy} className="px-8 py-3 text-base">

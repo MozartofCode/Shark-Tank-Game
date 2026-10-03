@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { api, ApiError } from '../api/client'
 import type { GameView, Health, RevealView, SharkPersona } from '../types'
+import { useAuth } from './authStore'
 
 /** Client-side steps within one pitch. The server only tracks offers/decisions. */
 export type Step = 'intro' | 'video' | 'qa' | 'offers'
@@ -39,7 +40,8 @@ interface State {
   pendingQuestion: string | null
 
   boot: () => Promise<void>
-  start: () => Promise<void>
+  start: (mode?: 'random' | 'daily') => Promise<void>
+  claimCurrent: () => Promise<void>
   setStep: (step: Step) => void
   ask: (question: string) => Promise<void>
   offer: (amount: number, equity: number) => Promise<void>
@@ -79,8 +81,12 @@ export const useGame = create<State>((set, get) => {
 
     async boot() {
       await run(async () => {
-        const [health, sharks] = await Promise.all([api.health(), api.sharks()])
+        const [health, sharks, config] = await Promise.all([api.health(), api.sharks(), api.config()])
         set({ health, sharks })
+        // Restore the session first so owned games load with the right token.
+        await useAuth
+          .getState()
+          .init(config.supabase_url, config.supabase_publishable_key, () => void get().claimCurrent())
       })
       const id = recall()
       if (!id) return
@@ -88,15 +94,28 @@ export const useGame = create<State>((set, get) => {
         const game = await api.getGame(id)
         set({ game, viewIndex: Math.min(game.current_round, game.total_rounds - 1) })
       } catch (e) {
-        if (e instanceof ApiError && e.status === 404) remember(null)
+        if (e instanceof ApiError && (e.status === 404 || e.status === 403)) remember(null)
       }
     },
 
-    async start() {
-      const game = await run(api.newGame)
+    async start(mode = 'random') {
+      const game = await run(() => api.newGame(mode))
       if (!game) return
       remember(game.id)
       set({ game, reveal: null, viewIndex: 0, step: 'intro', screen: 'game' })
+    },
+
+    /** After signing in, attach the current guest game to the account (saves it if finished). */
+    async claimCurrent() {
+      const { game, reveal } = get()
+      if (!game || game.signed_in) return
+      try {
+        const claimed = await api.claim(game.id)
+        set({ game: claimed })
+        if (reveal) set({ reveal: await api.reveal(game.id) })
+      } catch {
+        /* someone else's game or expired: leave as is */
+      }
     },
 
     setStep: (step) => set({ step }),

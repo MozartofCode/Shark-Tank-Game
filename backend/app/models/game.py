@@ -1,6 +1,7 @@
 """Game session state (server-side) and the API request/response schemas."""
 
 import time
+from datetime import date
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -49,6 +50,9 @@ class GameState(BaseModel):
     rounds: list[RoundState]
     current_round: int = 0
     revealed: bool = False
+    user_id: str | None = None
+    daily_date: date | None = None
+    saved: bool = False
 
     @property
     def finished(self) -> bool:
@@ -56,6 +60,10 @@ class GameState(BaseModel):
 
 
 # ---------- requests ----------
+
+
+class NewGameRequest(BaseModel):
+    mode: Literal["random", "daily"] = "random"
 
 
 class QuestionRequest(BaseModel):
@@ -98,6 +106,9 @@ class GameView(BaseModel):
     total_rounds: int
     finished: bool
     revealed: bool
+    daily_date: date | None
+    signed_in: bool
+    saved: bool
     rounds: list[RoundView]
 
 
@@ -143,3 +154,5 @@ class RevealView(BaseModel):
     worst_deal: str | None
     rounds: list[RevealRound]
     standings: list[Standing]
+    daily_date: date | None = None
+    saved: bool = False

@@ -14,6 +14,9 @@ export function TopBar() {
         <button onClick={quit} className="font-display text-lg tracking-wide text-gold" title="Back to lobby">
           TANK DAY
         </button>
+        {game.daily_date && (
+          <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-semibold text-gold">Daily</span>
+        )}
         <ol className="flex items-center gap-1.5" aria-label="Pitch progress">
           {game.rounds.map((r, i) => (
             <li

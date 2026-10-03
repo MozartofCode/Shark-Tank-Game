@@ -16,6 +16,18 @@ make dev                # API on :8000, web app on http://localhost:5173
 
 The game works without an API key. A built-in offline founder answers questions from the pitch facts.
 
+### Accounts & leaderboards (Supabase)
+
+The Supabase project **tank-day** (`uulpajrparfidqyntdop`) already has the schema from `supabase/migrations/`. To turn on saved runs and leaderboards:
+
+1. Supabase Dashboard → **Project Settings → API Keys** → copy a **secret key** into `.env` as `SUPABASE_SECRET_KEY`. It's server-only, so never commit it or put it in the frontend.
+2. Dashboard → **Authentication → URL Configuration**: set **Site URL** to your app URL and add `http://localhost:5173` to **Redirect URLs** so magic links land back in the game.
+3. Restart the backend. `/api/health` should report `"accounts": true, "leaderboards": true`.
+
+Optional: run `cd backend && uv run python ../scripts/sync_pitches.py`, then set `PITCH_SOURCE=supabase` to serve pitches from the database instead of the `pitches/` folder.
+
+Supabase's built-in email sender is rate-limited. Configure custom SMTP before a public launch.
+
 | Command | What it does |
 |---|---|
 | `make dev` | Run backend and frontend together |
@@ -37,7 +49,7 @@ The game works without an API key. A built-in offline founder answers questions 
 ```
 backend/ (FastAPI)
   app/models/         Pydantic domain + API schemas (Pitch, PublicPitch, GameState, views)
-  app/repositories/   Data access: LocalPitchRepository (JSON), SharkRepository (YAML), InMemoryGameStore
+  app/repositories/   Data access: Local/SupabasePitchRepository, SharkRepository (YAML), InMemoryGameStore, SupabaseRunRepository
   app/services/       Business logic: game_engine, founder (accept/counter/walk), scoring, deal_math, founder_chat (Claude)
   app/controllers/    Thin HTTP layer: /api/games…, /api/health, /api/sharks, /media
   app/content/        sharks.yaml (fictional personas), lessons.py
@@ -47,7 +59,8 @@ frontend/ (React + Vite + TS + Tailwind)
   src/views/          Home, Game, Reveal screens (views)
   src/components/     SharkPanel, FounderChat, OfferSlip, DecisionBanner, VideoPlayer…
 pitches/<slug>/       pitch.json (+ hidden outcome) and reactions.json
-scripts/              new_pitch, validate_pitches, generate_shark_reactions, trim_clip
+scripts/              new_pitch, validate_pitches, generate_shark_reactions, sync_pitches, trim_clip
+supabase/migrations/  Database schema + RLS policies
 ```
 
 **Server-authoritative.** The browser never receives `outcome`, `real_deal` or `founder_prefs` until the reveal (`PublicPitch` omits them). `/media` only serves whitelisted media files. Both rules are enforced by tests.
@@ -63,7 +76,14 @@ scripts/              new_pitch, validate_pitches, generate_shark_reactions, tri
 | POST | `/api/games/{id}/rounds/{i}/questions` | Ask the founder (SSE: `delta`…, `done`) |
 | POST | `/api/games/{id}/rounds/{i}/offer` | `{amount, equity}` or `{pass: true}` |
 | POST | `/api/games/{id}/rounds/{i}/counter` | `{accept: bool}` |
-| POST | `/api/games/{id}/reveal` | Results (only once every round is closed) |
+| POST | `/api/games/{id}/reveal` | Results (only once every round is closed); saves the run for signed-in players |
+| POST | `/api/games/{id}/claim` | Attach a guest game to the signed-in account |
+| GET | `/api/leaderboard?scope=daily\|all` | Daily challenge / all-time leaderboard |
+| GET | `/api/me/runs` | Signed-in player's run history |
+
+`POST /api/games` takes `{"mode": "daily"}` for the daily challenge: everyone gets the same 5 pitches each UTC day, and only your first daily run is ranked. Requests may carry `Authorization: Bearer <supabase access token>`. The backend verifies it against the project's JWKS (ES256).
+
+**Security model.** Scores are written only by the backend with the secret key; the tables have no insert policies, so players can't post fake scores. `pitches` (hidden outcomes) has RLS with no policies, so it's service-role only. Games owned by an account can only be used by that account.
 
 ## Adding a pitch
 
@@ -78,6 +98,6 @@ Read [docs/CONTENT_AND_COPYRIGHT.md](docs/CONTENT_AND_COPYRIGHT.md) before addin
 
 ## Roadmap
 
-See [docs/PLAN.md](docs/PLAN.md). Next up (v2): Supabase Auth, saved runs, leaderboards and a daily challenge. The `PitchRepository` and `GameStore` protocols are the swap points.
+See [docs/PLAN.md](docs/PLAN.md). Done: MVP + v2 (Supabase Auth, saved runs, leaderboards, daily challenge). Next: a persistent `GameStore` so in-progress games survive server restarts, royalty/loan deals, more pitches (especially flops), TTS shark voices, and deployment.
 
 *Educational game, not financial advice. Not affiliated with Shark Tank, ABC or Sony Pictures Television.*

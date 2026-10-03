@@ -71,6 +71,9 @@ export interface GameView {
   total_rounds: number
   finished: boolean
   revealed: boolean
+  daily_date: string | null
+  signed_in: boolean
+  saved: boolean
   rounds: RoundView[]
 }
 
@@ -128,6 +131,8 @@ export interface RevealView {
   worst_deal: string | null
   rounds: RevealRound[]
   standings: Standing[]
+  daily_date: string | null
+  saved: boolean
 }
 
 export interface Health {
@@ -135,4 +140,28 @@ export interface Health {
   pitches: number
   ai_founder: boolean
   bankroll: number
+  accounts: boolean
+  leaderboards: boolean
+}
+
+export interface PublicConfig {
+  supabase_url: string | null
+  supabase_publishable_key: string | null
+}
+
+export interface LeaderboardEntry {
+  rank: number
+  username: string
+  net_worth: number
+  return_pct: number
+  deals: number
+}
+
+export interface RunSummary {
+  game_id: string
+  daily_date: string | null
+  net_worth: number
+  return_pct: number
+  deals: number
+  created_at: string
 }

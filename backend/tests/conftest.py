@@ -3,6 +3,7 @@ import pytest
 from app.config import get_settings
 from app.dependencies import get_pitch_repository, get_shark_repository
 from app.repositories.game_store import InMemoryGameStore
+from app.repositories.run_repository import NullRunRepository
 from app.services.game_engine import GameEngine
 
 
@@ -16,9 +17,28 @@ def sharks():
     return {s.id: s for s in get_shark_repository().all()}
 
 
+class FakeRunRepository(NullRunRepository):
+    """Records saves instead of writing to Supabase."""
+
+    enabled = True
+
+    def __init__(self):
+        self.saved = []
+
+    def save(self, reveal, user_id, pitch_ids, daily):
+        self.saved.append((reveal, user_id, pitch_ids, daily))
+
+
 @pytest.fixture
-def engine(pitches):
-    return GameEngine(get_settings(), pitches, get_shark_repository(), InMemoryGameStore(3600))
+def runs():
+    return FakeRunRepository()
+
+
+@pytest.fixture
+def engine(pitches, runs):
+    return GameEngine(
+        get_settings(), pitches, get_shark_repository(), InMemoryGameStore(3600), runs
+    )
 
 
 def game_with(engine, pitch_ids):

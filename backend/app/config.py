@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -26,9 +27,23 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
+    # Supabase (v2): auth, saved runs, leaderboards, optional pitch storage.
+    supabase_url: str | None = None
+    supabase_publishable_key: str | None = None
+    supabase_secret_key: str | None = None  # server-only; never expose to the browser
+    pitch_source: Literal["local", "supabase"] = "local"
+
     @property
     def llm_enabled(self) -> bool:
         return bool(self.anthropic_api_key)
+
+    @property
+    def auth_enabled(self) -> bool:
+        return bool(self.supabase_url)
+
+    @property
+    def persistence_enabled(self) -> bool:
+        return bool(self.supabase_url and self.supabase_secret_key)
 
 
 @lru_cache

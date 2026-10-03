@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.controllers import games, media, meta
+from app.controllers import account, games, media, meta
 
 
 def create_app() -> FastAPI:
@@ -22,6 +22,7 @@ def create_app() -> FastAPI:
     )
     app.include_router(meta.router)
     app.include_router(games.router)
+    app.include_router(account.router)
     app.include_router(media.router)
     return app
 

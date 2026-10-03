@@ -1,6 +1,17 @@
-import type { GameView, Health, RevealView, SharkPersona } from '../types'
+import type { GameView, Health, LeaderboardEntry, PublicConfig, RevealView, RunSummary, SharkPersona } from '../types'
 
 const BASE = import.meta.env.VITE_API_URL ?? ''
+
+let accessToken: string | null = null
+
+/** Set by the auth layer; sent as a Bearer token on every API call. */
+export function setAccessToken(token: string | null) {
+  accessToken = token
+}
+
+function authHeaders(): Record<string, string> {
+  return accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
+}
 
 export class ApiError extends Error {
   status: number
@@ -13,7 +24,7 @@ export class ApiError extends Error {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
-    headers: { 'Content-Type': 'application/json', ...init?.headers },
+    headers: { 'Content-Type': 'application/json', ...authHeaders(), ...init?.headers },
   })
   if (!res.ok) {
     let detail = res.statusText
@@ -33,7 +44,11 @@ const post = <T>(path: string, body?: unknown) =>
 export const api = {
   health: () => request<Health>('/api/health'),
   sharks: () => request<SharkPersona[]>('/api/sharks'),
-  newGame: () => post<GameView>('/api/games'),
+  config: () => request<PublicConfig>('/api/config'),
+  newGame: (mode: 'random' | 'daily' = 'random') => post<GameView>('/api/games', { mode }),
+  claim: (id: string) => post<GameView>(`/api/games/${id}/claim`),
+  leaderboard: (scope: 'daily' | 'all') => request<LeaderboardEntry[]>(`/api/leaderboard?scope=${scope}`),
+  myRuns: () => request<RunSummary[]>('/api/me/runs'),
   getGame: (id: string) => request<GameView>(`/api/games/${id}`),
   offer: (id: string, round: number, amount: number, equity: number) =>
     post<GameView>(`/api/games/${id}/rounds/${round}/offer`, { amount, equity }),
@@ -48,7 +63,7 @@ export const api = {
   async ask(id: string, round: number, question: string, onDelta: (text: string) => void) {
     const res = await fetch(`${BASE}/api/games/${id}/rounds/${round}/questions`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+      headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream', ...authHeaders() },
       body: JSON.stringify({ question }),
     })
     if (!res.ok || !res.body) {

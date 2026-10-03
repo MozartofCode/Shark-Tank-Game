@@ -1,3 +1,5 @@
+import { AccountPanel } from '../components/AccountPanel'
+import { Leaderboard } from '../components/Leaderboard'
 import { Button, Card, Eyebrow } from '../components/ui'
 import { money } from '../lib/format'
 import { resumeGame, useGame } from '../store/gameStore'
@@ -26,8 +28,11 @@ export function HomeView() {
           winners, dodge the flops, and find out years later who was right.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button onClick={start} disabled={busy} className="px-8 py-3 text-base">
+          <Button onClick={() => start('random')} disabled={busy} className="px-8 py-3 text-base">
             {busy ? 'Setting the stage…' : 'Start a new day'}
+          </Button>
+          <Button variant="ghost" onClick={() => start('daily')} disabled={busy} className="px-6 py-3 text-base">
+            ☀️ Daily challenge
           </Button>
           {canResume && (
             <Button variant="ghost" onClick={resumeGame} className="px-6 py-3 text-base">
@@ -37,6 +42,12 @@ export function HomeView() {
             </Button>
           )}
         </div>
+        {health?.accounts && (
+          <div className="mt-6">
+            <AccountPanel />
+            <p className="mt-2 text-xs text-muted">Sign in to save your runs and join the leaderboard. No password needed.</p>
+          </div>
+        )}
         {health && !health.ai_founder && (
           <p className="mt-4 text-xs text-muted">Offline founder mode. Add an Anthropic API key for live AI answers.</p>
         )}
@@ -53,6 +64,12 @@ export function HomeView() {
           </Card>
         ))}
       </section>
+
+      {health?.leaderboards && (
+        <section className="mx-auto mt-16 max-w-2xl">
+          <Leaderboard />
+        </section>
+      )}
 
       {sharks.length > 0 && (
         <section className="mt-16">
