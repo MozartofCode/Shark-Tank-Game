@@ -5,11 +5,12 @@ import { useGame } from './store/gameStore'
 import { GameView } from './views/GameView'
 import { HomeView } from './views/HomeView'
 import { LearnView } from './views/LearnView'
+import { PrivacyView, TermsView } from './views/LegalView'
 import { PortfolioView } from './views/PortfolioView'
 import { RevealView } from './views/RevealView'
 
 export default function App() {
-  const { screen, boot, error, clearError } = useGame()
+  const { screen, boot, error, clearError, openPage } = useGame()
 
   useEffect(() => {
     void boot()
@@ -24,6 +25,8 @@ export default function App() {
         {screen === 'reveal' && <RevealView />}
         {screen === 'portfolio' && <PortfolioView />}
         {screen === 'learn' && <LearnView />}
+        {screen === 'privacy' && <PrivacyView />}
+        {screen === 'terms' && <TermsView />}
       </div>
 
       <Sheets />
@@ -44,6 +47,14 @@ export default function App() {
         <div className="border-t border-line pt-6">
           A learning game, not financial advice. Videos belong to their owners. Not affiliated with Shark Tank; the
           sharks are fictional.
+          <span className="mt-3 flex gap-4">
+            <button onClick={() => openPage('privacy')} className="hover:text-muted">
+              Privacy
+            </button>
+            <button onClick={() => openPage('terms')} className="hover:text-muted">
+              Terms
+            </button>
+          </span>
         </div>
       </footer>
     </div>

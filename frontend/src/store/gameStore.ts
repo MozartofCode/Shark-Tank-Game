@@ -6,7 +6,7 @@ import { useAuth } from './authStore'
 
 /** Client-side steps within one pitch. The server only tracks offers/decisions. */
 export type Step = 'pitch' | 'ask' | 'invest'
-export type Screen = 'home' | 'game' | 'reveal' | 'portfolio' | 'learn'
+export type Screen = 'home' | 'game' | 'reveal' | 'portfolio' | 'learn' | 'privacy' | 'terms'
 export type SheetName = 'account' | null
 
 const GAME_KEY = 'tankday.gameId'
@@ -62,6 +62,7 @@ interface State {
   openSheet: (sheet: SheetName) => void
   openTerm: (id: string | null) => void
   openLearn: () => void
+  openPage: (screen: Screen) => void
   back: () => void
 }
 
@@ -234,6 +235,11 @@ export const useGame = create<State>((set, get) => {
     openLearn() {
       const { screen } = get()
       set({ screen: 'learn', term: null, returnTo: screen === 'learn' ? 'home' : screen })
+      window.scrollTo({ top: 0 })
+    },
+
+    openPage(screen) {
+      set({ screen })
       window.scrollTo({ top: 0 })
     },
 
