@@ -78,6 +78,7 @@ export interface GameView {
   daily_date: string | null
   signed_in: boolean
   saved: boolean
+  class_name: string | null
   rounds: RoundView[]
 }
 
@@ -189,4 +190,29 @@ export interface RunSummary {
   return_pct: number
   deals: number
   created_at: string
+}
+
+export interface ClassStudent {
+  game_id: string
+  student: string
+  profit: number
+  invested: number
+  deals: { pitch_id: string; company: string; status: string; amount: number; equity: number; stake_value: number; reason: string | null }[]
+  created_at: number
+}
+
+export interface ClassDashboard {
+  code: string
+  name: string
+  companies: string[]
+  students: ClassStudent[]
+  company_stats: {
+    pitch_id: string
+    company: string
+    status: string
+    investors: number
+    total_invested: number
+    total_value: number
+  }[]
+  prompts: string[]
 }

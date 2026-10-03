@@ -56,6 +56,8 @@ class GameState(BaseModel):
     user_id: str | None = None
     daily_date: date | None = None
     saved: bool = False
+    class_code: str | None = None
+    student: str | None = None
 
     @property
     def finished(self) -> bool:
@@ -66,7 +68,9 @@ class GameState(BaseModel):
 
 
 class NewGameRequest(BaseModel):
-    mode: Literal["random", "daily"] = "random"
+    mode: Literal["random", "daily", "class"] = "random"
+    class_code: str | None = Field(default=None, max_length=12)
+    student: str | None = Field(default=None, min_length=1, max_length=40)
 
 
 class QuestionRequest(BaseModel):
@@ -115,6 +119,7 @@ class GameView(BaseModel):
     daily_date: date | None
     signed_in: bool
     saved: bool
+    class_name: str | None = None
     rounds: list[RoundView]
 
 

@@ -1,4 +1,5 @@
 import type {
+  ClassDashboard,
   GameView,
   Health,
   LeaderboardEntry,
@@ -55,6 +56,11 @@ export const api = {
   sharks: () => request<SharkPersona[]>('/api/sharks'),
   config: () => request<PublicConfig>('/api/config'),
   newGame: (mode: 'random' | 'daily' = 'random') => post<GameView>('/api/games', { mode }),
+  joinClass: (class_code: string, student: string) =>
+    post<GameView>('/api/games', { mode: 'class', class_code, student }),
+  createClass: (name: string) => post<{ code: string; name: string; teacher_token: string }>('/api/classes', { name }),
+  classDashboard: (code: string, token: string) =>
+    request<ClassDashboard>(`/api/classes/${code}/dashboard`, { headers: { 'X-Teacher-Token': token } }),
   claim: (id: string) => post<GameView>(`/api/games/${id}/claim`),
   leaderboard: (scope: 'daily' | 'all') => request<LeaderboardEntry[]>(`/api/leaderboard?scope=${scope}`),
   myRuns: () => request<RunSummary[]>('/api/me/runs'),

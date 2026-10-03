@@ -21,6 +21,7 @@ from app.models.game import (
     RoundState,
     RoundView,
 )
+from app.repositories.classroom_repository import ClassResult, ClassroomRepository
 from app.repositories.game_store import GameStore
 from app.repositories.pitch_repository import PitchRepository
 from app.repositories.run_repository import RunRepository
@@ -52,12 +53,14 @@ class GameEngine:
         sharks: SharkRepository,
         store: GameStore,
         runs: RunRepository,
+        classrooms: ClassroomRepository | None = None,
     ):
         self.settings = settings
         self.pitches = pitches
         self.sharks = sharks
         self.store = store
         self.runs = runs
+        self.classrooms = classrooms
 
     # ---------- lifecycle ----------
 
@@ -68,15 +71,26 @@ class GameEngine:
         daily: bool = False,
         user_id: str | None = None,
         today: date | None = None,
+        class_code: str | None = None,
+        student: str | None = None,
     ) -> GameState:
         """Start a day. The daily challenge gives everyone the same pitches each UTC day."""
         ids = sorted(self.pitches.list_ids())
         if not ids:
             raise GameError("No pitches available. Add some to the pitches/ folder.", 503)
+        class_pitches: list[str] = []
         daily_date = (today or utc_today()) if daily else None
         if daily_date:
             seed = int(daily_date.strftime("%Y%m%d"))
-        chosen = self._pick_pitches(random.Random(seed), ids)
+        if class_code:
+            room = self.classrooms.get(class_code) if self.classrooms else None
+            if room is None:
+                raise GameError("That class code doesn't exist. Check it with your teacher.", 404)
+            if not student or not student.strip():
+                raise GameError("Enter your name to join the class.")
+            seed, class_code, student = room.seed, room.code, student.strip()
+            class_pitches = [p for p in room.pitch_ids if p in ids]
+        chosen = class_pitches or self._pick_pitches(random.Random(seed), ids)
         game = GameState(
             id=uuid.uuid4().hex,
             bankroll_start=self.settings.starting_bankroll,
@@ -84,9 +98,16 @@ class GameEngine:
             rounds=[RoundState(pitch_id=pid) for pid in chosen],
             user_id=user_id,
             daily_date=daily_date,
+            class_code=class_code,
+            student=student,
         )
         self.store.save(game)
         return game
+
+    def new_game_preview(self, seed: int) -> list[RoundState]:
+        """The rounds a seed produces, without saving a game (used by class dashboards)."""
+        ids = sorted(self.pitches.list_ids())
+        return [RoundState(pitch_id=p) for p in self._pick_pitches(random.Random(seed), ids)]
 
     def _pick_pitches(self, rng: random.Random, ids: list[str]) -> list[str]:
         """Mix flops and successes so every day has real risk.
@@ -256,10 +277,35 @@ class GameEngine:
                 game.saved = True
             except Exception:
                 log.exception("Could not save run %s", game.id)
+        if game.class_code and self.classrooms:
+            self.classrooms.add_result(game.class_code, self._class_result(game, result))
         self.store.save(game)
         result.daily_date = game.daily_date
         result.saved = game.saved
         return result
+
+    def _class_result(self, game: GameState, reveal: RevealView) -> ClassResult:
+        deals = [
+            {
+                "pitch_id": rr.pitch.id,
+                "company": rr.pitch.company.name,
+                "status": rr.outcome.status,
+                "amount": rr.deal.amount,
+                "equity": rr.deal.equity,
+                "stake_value": rr.deal.stake_value,
+                "reason": rr.reason,
+            }
+            for rr in reveal.rounds
+            if rr.deal and rr.deal.investor == PLAYER
+        ]
+        return ClassResult(
+            game_id=game.id,
+            student=game.student or "Student",
+            profit=reveal.profit,
+            invested=reveal.invested,
+            deals=deals,
+            created_at=game.created_at,
+        )
 
     # ---------- views ----------
 
@@ -295,5 +341,12 @@ class GameEngine:
             daily_date=game.daily_date,
             signed_in=game.user_id is not None,
             saved=game.saved,
+            class_name=(
+                room.name
+                if game.class_code
+                and self.classrooms
+                and (room := self.classrooms.get(game.class_code))
+                else None
+            ),
             rounds=rounds,
         )

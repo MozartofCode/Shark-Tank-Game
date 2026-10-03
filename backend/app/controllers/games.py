@@ -41,8 +41,14 @@ def create_game(
 ):
     """Start a day. `mode: "daily"` gives everyone the same five pitches today."""
     try:
-        daily = bool(body and body.mode == "daily")
-        return engine.view(engine.new_game(daily=daily, user_id=_uid(user)))
+        mode = body.mode if body else "random"
+        game = engine.new_game(
+            daily=mode == "daily",
+            user_id=_uid(user),
+            class_code=body.class_code if mode == "class" else None,
+            student=body.student if mode == "class" else None,
+        )
+        return engine.view(game)
     except GameError as e:
         raise _http(e)
 

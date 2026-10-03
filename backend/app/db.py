@@ -42,6 +42,7 @@ classrooms = Table(
     Column("name", String(80), nullable=False),
     Column("teacher_token", String(64), nullable=False),
     Column("seed", Integer, nullable=False),
+    Column("pitch_ids", JSON),  # fixed at creation so later content changes don't move a class
     Column("created_at", Float, nullable=False),
 )
 

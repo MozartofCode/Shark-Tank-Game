@@ -6,7 +6,16 @@ import { useAuth } from './authStore'
 
 /** Client-side steps within one pitch. The server only tracks offers/decisions. */
 export type Step = 'pitch' | 'ask' | 'invest'
-export type Screen = 'home' | 'game' | 'reveal' | 'portfolio' | 'learn' | 'privacy' | 'terms'
+export type Screen =
+  | 'home'
+  | 'game'
+  | 'reveal'
+  | 'portfolio'
+  | 'learn'
+  | 'privacy'
+  | 'terms'
+  | 'classroom'
+  | 'teacher'
 export type SheetName = 'account' | null
 
 const GAME_KEY = 'tankday.gameId'
@@ -47,6 +56,9 @@ interface State {
 
   boot: () => Promise<void>
   start: (mode?: 'random' | 'daily') => Promise<void>
+  joinClass: (code: string, student: string) => Promise<void>
+  teacherClass: string | null
+  openTeacher: (code: string) => void
   claimCurrent: () => Promise<void>
   setStep: (step: Step) => void
   ask: (question: string) => Promise<void>
@@ -93,6 +105,7 @@ export const useGame = create<State>((set, get) => {
     pendingQuestion: null,
     portfolio: loadLocalPortfolio(),
     sheet: null,
+    teacherClass: null,
     term: null,
     returnTo: 'home',
 
@@ -121,6 +134,19 @@ export const useGame = create<State>((set, get) => {
       if (!game) return
       remember(game.id)
       set({ game, reveal: null, viewIndex: 0, step: 'pitch', screen: 'game' })
+      window.scrollTo({ top: 0 })
+    },
+
+    async joinClass(code, student) {
+      const game = await run(() => api.joinClass(code.trim().toUpperCase(), student.trim()))
+      if (!game) return
+      remember(game.id)
+      set({ game, reveal: null, viewIndex: 0, step: 'pitch', screen: 'game' })
+      window.scrollTo({ top: 0 })
+    },
+
+    openTeacher(code) {
+      set({ teacherClass: code, screen: 'teacher' })
       window.scrollTo({ top: 0 })
     },
 

@@ -13,7 +13,7 @@ const STEPS = [
 ]
 
 export function HomeView() {
-  const { start, busy, health, game, portfolio, openPortfolio } = useGame()
+  const { start, busy, health, game, portfolio, openPortfolio, openPage } = useGame()
   const bankroll = health?.bankroll ?? 1_000_000
   const inProgress = game && !game.revealed
   const t = totals(portfolio)
@@ -56,6 +56,12 @@ export function HomeView() {
             </>
           )}
         </div>
+
+        {!inProgress && (
+          <Button variant="plain" onClick={() => openPage('classroom')} className="mt-5">
+            Join a class
+          </Button>
+        )}
 
         {t.days > 0 && (
           <button

@@ -3,7 +3,9 @@ import { Nav } from './components/Nav'
 import { Sheets } from './components/Sheets'
 import { useGame } from './store/gameStore'
 import { GameView } from './views/GameView'
+import { ClassroomView } from './views/ClassroomView'
 import { HomeView } from './views/HomeView'
+import { TeacherView } from './views/TeacherView'
 import { LearnView } from './views/LearnView'
 import { PrivacyView, TermsView } from './views/LegalView'
 import { PortfolioView } from './views/PortfolioView'
@@ -27,6 +29,8 @@ export default function App() {
         {screen === 'learn' && <LearnView />}
         {screen === 'privacy' && <PrivacyView />}
         {screen === 'terms' && <TermsView />}
+        {screen === 'classroom' && <ClassroomView />}
+        {screen === 'teacher' && <TeacherView />}
       </div>
 
       <Sheets />

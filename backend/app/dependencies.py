@@ -4,6 +4,7 @@ from functools import lru_cache
 
 from app.config import get_settings
 from app.db import get_engine as get_db_engine
+from app.repositories.classroom_repository import ClassroomRepository
 from app.repositories.game_store import SqlGameStore
 from app.repositories.pitch_repository import (
     LocalPitchRepository,
@@ -35,6 +36,11 @@ def get_run_repository() -> RunRepository:
 
 
 @lru_cache
+def get_classroom_repository() -> ClassroomRepository:
+    return ClassroomRepository(get_db_engine())
+
+
+@lru_cache
 def get_shark_repository() -> SharkRepository:
     return SharkRepository()
 
@@ -48,6 +54,7 @@ def get_engine() -> GameEngine:
         get_shark_repository(),
         SqlGameStore(get_db_engine(), settings.game_ttl_seconds),
         get_run_repository(),
+        get_classroom_repository(),
     )
 
 

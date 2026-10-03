@@ -144,7 +144,7 @@ function RevealCard({ r, sharks }: { r: RevealRound; sharks: SharkPersona[] }) {
 }
 
 function Summary({ reveal, sharks }: { reveal: Reveal; sharks: SharkPersona[] }) {
-  const { start, busy, health, portfolio, openPortfolio, openSheet } = useGame()
+  const { start, busy, health, portfolio, openPortfolio, openSheet, game } = useGame()
   const life = totals(portfolio)
   const rank = reveal.standings.findIndex((s) => s.investor === 'player') + 1
   const sat = reveal.invested === 0
@@ -206,6 +206,7 @@ function Summary({ reveal, sharks }: { reveal: Reveal; sharks: SharkPersona[] })
         </p>
       )}
       {reveal.saved && <p className="text-center text-[15px] text-win">✓ Saved</p>}
+      {game?.class_name && <p className="text-center text-[15px] text-win">✓ Sent to {game.class_name}</p>}
 
       <div className="flex flex-wrap justify-center gap-3 pt-2">
         <Button

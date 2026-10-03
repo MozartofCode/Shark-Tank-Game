@@ -1,6 +1,9 @@
 import { create } from 'zustand'
 import { setAccessToken } from '../api/client'
-import { initSupabase, supabase } from '../lib/supabase'
+import type { SupabaseClient } from '@supabase/supabase-js'
+
+/** Supabase is loaded on demand so players without accounts never download it. */
+let client: SupabaseClient | null = null
 
 interface AuthState {
   enabled: boolean
@@ -24,11 +27,12 @@ export const useAuth = create<AuthState>((set) => ({
   error: null,
 
   async init(url, key, onSignedIn) {
-    const sb = initSupabase(url, key)
-    if (!sb) {
+    if (!url || !key) {
       set({ ready: true })
       return
     }
+    const { createClient } = await import('@supabase/supabase-js')
+    const sb = (client = createClient(url, key))
     const { data } = await sb.auth.getSession()
     const session = data.session
     setAccessToken(session?.access_token ?? null)
@@ -45,7 +49,7 @@ export const useAuth = create<AuthState>((set) => ({
   },
 
   async sendMagicLink(email) {
-    const sb = supabase()
+    const sb = client
     if (!sb) return
     set({ error: null })
     const { error } = await sb.auth.signInWithOtp({
@@ -57,7 +61,7 @@ export const useAuth = create<AuthState>((set) => ({
   },
 
   async signOut() {
-    await supabase()?.auth.signOut()
+    await client?.auth.signOut()
     setAccessToken(null)
     set({ email: null, userId: null })
   },
