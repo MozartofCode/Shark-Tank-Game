@@ -4,7 +4,7 @@ from app.content.lessons import lessons_for
 from app.models.game import PLAYER, DealResult, GameState, RevealRound, RevealView, Standing
 from app.models.pitch import Pitch
 from app.models.shark import SharkPersona
-from app.services.deal_math import moic, stake_value
+from app.services.deal_math import moic, royalty_payout, stake_value
 
 INDEX_FUND_ANNUAL_RETURN = 0.10  # long-run S&P 500 average, roughly
 
@@ -17,6 +17,7 @@ def deal_result(round_winner, pitch: Pitch) -> DealResult:
         equity=round_winner.equity,
         valuation=round_winner.valuation,
         stake_value=value,
+        royalty_payout=royalty_payout(round_winner, pitch.outcome),
         moic=moic(round_winner.amount, value),
     )
 
@@ -71,7 +72,9 @@ def build_reveal(
     years = sum(pitches[r.pitch_id].outcome.years_later for r in game.rounds) / len(game.rounds)
     benchmark = round(start * (1 + INDEX_FUND_ANNUAL_RETURN) ** years)
 
-    my_deals = [(rr.pitch.company.name, rr.deal) for rr in rounds if rr.deal and rr.deal.investor == PLAYER]
+    my_deals = [
+        (rr.pitch.company.name, rr.deal) for rr in rounds if rr.deal and rr.deal.investor == PLAYER
+    ]
     best = max(my_deals, key=lambda d: d[1].moic)[0] if my_deals else None
     worst = min(my_deals, key=lambda d: d[1].moic)[0] if len(my_deals) > 1 else None
 

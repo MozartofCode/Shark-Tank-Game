@@ -97,7 +97,8 @@ export const GLOSSARY: GlossaryGroup[] = [
       {
         id: 'royalty',
         term: 'Royalty',
-        short: 'A deal where the investor gets a cut of every sale instead of (or as well as) equity.',
+        short: 'A cut of every sale until the investor gets their money back. It lowers risk for the investor.',
+        example: 'In this game, a royalty repays up to 1× over about 3 years, less if the company dies early.',
       },
       {
         id: 'smart-money',

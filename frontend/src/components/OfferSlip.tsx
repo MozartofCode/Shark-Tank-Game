@@ -8,6 +8,7 @@ import { Button, Card } from './ui'
 
 const MIN_AMOUNT = 10_000
 const MAX_ASK_MULTIPLE = 5
+const ROYALTY_DISCOUNT = 0.75
 
 export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
   const { offer, pass, busy } = useGame()
@@ -17,15 +18,22 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
   const [amount, setAmount] = useState(Math.max(MIN_AMOUNT, Math.min(ask.amount, maxAmount)))
   const [equityPct, setEquityPct] = useState(Math.round(ask.equity * 1000) / 10)
   const [reason, setReason] = useState<Reason | null>(null)
+  const [royalty, setRoyalty] = useState(false)
 
   const equity = equityPct / 100
   const yourValue = valuation(amount, equity)
   const bestShark = useMemo(
     () =>
-      Math.max(0, ...round.shark_reactions.filter((r) => r.offer).map((r) => valuation(r.offer!.amount, r.offer!.equity))),
+      Math.max(
+        0,
+        ...round.shark_reactions
+          .filter((r) => r.offer)
+          .map((r) => valuation(r.offer!.amount, r.offer!.equity) * (r.offer!.royalty ? ROYALTY_DISCOUNT : 1)),
+      ),
     [round.shark_reactions],
   )
-  const beatsSharks = yourValue >= bestShark
+  // Founders count royalty offers as worth less, same as the server's founder logic.
+  const beatsSharks = yourValue * (royalty ? ROYALTY_DISCOUNT : 1) >= bestShark
 
   const problem = !canInvest
     ? 'No money left today.'
@@ -83,6 +91,24 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
         )}
       </div>
 
+      <label className="mt-6 flex cursor-pointer items-center justify-between gap-4">
+        <span className="text-[15px]">
+          Add a <Term id="royalty">royalty</Term>
+          <span className="block text-[13px] text-muted">Get your money back from sales first. Founders like it less.</span>
+        </span>
+        <span className="relative inline-flex shrink-0">
+          <input
+            type="checkbox"
+            role="switch"
+            checked={royalty}
+            onChange={(e) => setRoyalty(e.target.checked)}
+            className="peer sr-only"
+          />
+          <span className="h-[31px] w-[51px] rounded-full bg-fill-strong transition peer-checked:bg-win peer-focus-visible:ring-2 peer-focus-visible:ring-accent/50" />
+          <span className="absolute top-[2px] left-[2px] h-[27px] w-[27px] rounded-full bg-white shadow transition peer-checked:translate-x-5" />
+        </span>
+      </label>
+
       <div className="mt-6">
         <p className="text-[13px] text-muted">Why this company?</p>
         <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Why this company?">
@@ -109,10 +135,11 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
         <Button size="lg" variant="secondary" onClick={pass} disabled={busy}>
           Pass
         </Button>
-        <Button size="lg" onClick={() => offer(amount, equity, reason)} disabled={busy || !!problem}>
+        <Button size="lg" onClick={() => offer(amount, equity, reason, royalty)} disabled={busy || !!problem}>
           <span className="sm:hidden">Offer</span>
           <span className="hidden sm:inline">
             Offer {money(amount, { compact: true })} for {pct(equity)}
+            {royalty ? ' + royalty' : ''}
           </span>
         </Button>
       </div>

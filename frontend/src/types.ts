@@ -34,13 +34,14 @@ export interface SharkReaction {
   questions: string[]
   comment: string
   decision: 'in' | 'out'
-  offer: { amount: number; equity: number } | null
+  offer: { amount: number; equity: number; royalty?: boolean } | null
 }
 
 export interface Offer {
   investor: string
   amount: number
   equity: number
+  royalty?: boolean
 }
 
 export interface ChatMessage {
@@ -98,6 +99,7 @@ export interface DealResult {
   equity: number
   valuation: number
   stake_value: number
+  royalty_payout: number
   moic: number
 }
 

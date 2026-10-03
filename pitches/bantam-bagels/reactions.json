@@ -24,11 +24,12 @@
       "questions": [
         "What are your margins?"
       ],
-      "comment": "I'll do it for a bigger share.",
+      "comment": "I'll do it for a bigger share, plus a royalty until I'm paid back.",
       "decision": "in",
       "offer": {
         "amount": 275000,
-        "equity": 0.3
+        "equity": 0.3,
+        "royalty": true
       }
     },
     {

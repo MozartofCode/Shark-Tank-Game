@@ -154,7 +154,12 @@ class GameEngine:
     def _shark_offers(self, pitch_id: str) -> list[Offer]:
         reactions = self.pitches.get_reactions(pitch_id).reactions
         return [
-            Offer(investor=x.shark_id, amount=x.offer.amount, equity=x.offer.equity)
+            Offer(
+                investor=x.shark_id,
+                amount=x.offer.amount,
+                equity=x.offer.equity,
+                royalty=x.offer.royalty,
+            )
             for x in reactions
             if x.decision == "in" and x.offer
         ]
@@ -168,6 +173,7 @@ class GameEngine:
         amount: int | None,
         equity: float | None,
         reason: str | None = None,
+        royalty: bool = False,
     ) -> GameState:
         r = self._round(game, index)
         if r.status != "open":
@@ -181,7 +187,7 @@ class GameEngine:
             if amount is None or equity is None:
                 raise GameError("An offer needs an amount and an equity percentage.")
             validate_player_offer(amount, equity, pitch.ask, game.cash)
-            r.player_offer = Offer(investor=PLAYER, amount=amount, equity=equity)
+            r.player_offer = Offer(investor=PLAYER, amount=amount, equity=equity, royalty=royalty)
             r.reason = reason
             offers.append(r.player_offer)
 
@@ -199,10 +205,10 @@ class GameEngine:
             original = next(o for o in offers if o.investor == decision.offer.investor)
             name = sharks[original.investor].name
             if founder.shark_takes_counter(original, decision.offer):
-                r.founder_line += f" {name}: \"You've got yourself a deal.\""
+                r.founder_line += f' {name}: "You\'ve got yourself a deal."'
                 self._close(game, r, decision.offer, "accepted")
             else:
-                r.founder_line += f" {name}: \"Too rich for me. I'm out.\""
+                r.founder_line += f' {name}: "Too rich for me. I\'m out."'
                 self._close(game, r, None, "walked")
         else:
             self._close(game, r, None, "walked")
@@ -244,7 +250,9 @@ class GameEngine:
         result = build_reveal(game, pitches, sharks)
         if game.user_id and not game.saved and self.runs.enabled:
             try:
-                self.runs.save(result, game.user_id, [r.pitch_id for r in game.rounds], game.daily_date)
+                self.runs.save(
+                    result, game.user_id, [r.pitch_id for r in game.rounds], game.daily_date
+                )
                 game.saved = True
             except Exception:
                 log.exception("Could not save run %s", game.id)

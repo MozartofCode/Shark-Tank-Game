@@ -49,3 +49,15 @@ def test_counter_when_close_then_walk_when_far(pitches, sharks):
 
 def test_no_offers_walks(pitches, sharks):
     assert founder.decide([], pitches.get("bombas"), sharks).kind == "walked"
+
+
+def test_founders_discount_royalty_offers(pitches, sharks):
+    pitch = pitches.get("scrub-daddy")
+    plain = Offer(investor="player", amount=100_000, equity=0.08)
+    royalty = Offer(investor="player", amount=100_000, equity=0.08, royalty=True)
+    assert founder.effective_valuation(
+        royalty, pitch, sharks
+    ) == 0.75 * founder.effective_valuation(plain, pitch, sharks)
+    # Same terms but with a royalty lose to Victoria's straight equity deal.
+    vance = Offer(investor="vance", amount=200_000, equity=0.20)
+    assert founder.decide([vance, royalty], pitch, sharks).offer.investor == "vance"

@@ -53,7 +53,9 @@ def optional_user(authorization: str | None = Header(default=None)) -> AuthUser 
         return verify_token(token)
     except jwt.PyJWTError as e:
         log.info("Rejected token: %s", e)
-        raise HTTPException(status_code=401, detail="Your session has expired. Please sign in again.")
+        raise HTTPException(
+            status_code=401, detail="Your session has expired. Please sign in again."
+        )
 
 
 def required_user(authorization: str | None = Header(default=None)) -> AuthUser:

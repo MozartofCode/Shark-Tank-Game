@@ -63,9 +63,7 @@ def make_engine(url: str) -> Engine:
     if url.startswith("postgresql://"):
         url = url.replace("postgresql://", "postgresql+psycopg://", 1)
     if url == "sqlite:///:memory:":
-        engine = create_engine(
-            url, connect_args={"check_same_thread": False}, poolclass=StaticPool
-        )
+        engine = create_engine(url, connect_args={"check_same_thread": False}, poolclass=StaticPool)
     elif url.startswith("sqlite"):
         engine = create_engine(url, connect_args={"check_same_thread": False})
     else:

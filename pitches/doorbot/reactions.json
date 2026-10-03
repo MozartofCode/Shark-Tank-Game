@@ -25,11 +25,12 @@
       "questions": [
         "How much cash do you burn every month?"
       ],
-      "comment": "Your valuation is a fantasy. I'll give you the money, but for a real piece of the company.",
+      "comment": "Your valuation is a fantasy. I'll give you the money, but for a real piece of the company, plus a royalty until I'm paid back.",
       "decision": "in",
       "offer": {
         "amount": 700000,
-        "equity": 0.2
+        "equity": 0.2,
+        "royalty": true
       }
     },
     {

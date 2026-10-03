@@ -22,6 +22,7 @@ class SharkPersona(BaseModel):
 class SharkOfferTerms(BaseModel):
     amount: int = Field(gt=0)
     equity: float = Field(gt=0, le=1)
+    royalty: bool = False
 
 
 class SharkReaction(BaseModel):

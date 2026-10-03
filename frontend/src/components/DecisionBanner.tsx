@@ -23,7 +23,7 @@ export function DecisionBanner({ game, round, sharks }: { game: GameView; round:
     'No deal'
   )
   const detail = countered
-    ? `${money(round.counter!.amount, { compact: true })} for ${pct(round.counter!.equity)}?`
+    ? `${money(round.counter!.amount, { compact: true })} for ${pct(round.counter!.equity)}${round.counter!.royalty ? ' + royalty' : ''}?`
     : mine
       ? `You own ${pct(round.winner!.equity)} of ${round.pitch.company.name}.`
       : round.winner

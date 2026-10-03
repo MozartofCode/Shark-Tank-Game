@@ -98,7 +98,9 @@ def test_sql_store_round_trip_and_ttl():
     from app.repositories.game_store import SqlGameStore
 
     store = SqlGameStore(make_engine("sqlite:///:memory:"), ttl_seconds=60)
-    game = GameState(id="g1", bankroll_start=1_000_000, cash=900_000, rounds=[RoundState(pitch_id="zipz")])
+    game = GameState(
+        id="g1", bankroll_start=1_000_000, cash=900_000, rounds=[RoundState(pitch_id="zipz")]
+    )
     store.save(game)
     game.cash = 800_000
     store.save(game)  # update path

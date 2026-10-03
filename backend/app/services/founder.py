@@ -18,6 +18,8 @@ from app.models.shark import SharkPersona
 from app.services.deal_math import floor_to_half_percent
 
 VALUE_ADD_BONUS = 0.15
+# Founders dislike giving up a cut of sales: a royalty offer counts as 25% less valuable.
+ROYALTY_DISCOUNT = 0.75
 COUNTER_THRESHOLD = 0.75
 # A shark accepts the founder's counter if it keeps at least this share of its ask.
 SHARK_COUNTER_TOLERANCE = 0.7
@@ -38,7 +40,8 @@ def value_add_bonus(offer: Offer, pitch: Pitch, sharks: dict[str, SharkPersona])
 
 
 def effective_valuation(offer: Offer, pitch: Pitch, sharks: dict[str, SharkPersona]) -> float:
-    return offer.valuation * (1 + value_add_bonus(offer, pitch, sharks))
+    royalty = ROYALTY_DISCOUNT if offer.royalty else 1.0
+    return offer.valuation * (1 + value_add_bonus(offer, pitch, sharks)) * royalty
 
 
 def _name(investor: str, sharks: dict[str, SharkPersona]) -> str:
@@ -49,9 +52,7 @@ def _offer_of(investor: str, sharks: dict[str, SharkPersona]) -> str:
     return "your offer" if investor == PLAYER else f"{sharks[investor].name}'s offer"
 
 
-def decide(
-    offers: list[Offer], pitch: Pitch, sharks: dict[str, SharkPersona]
-) -> FounderDecision:
+def decide(offers: list[Offer], pitch: Pitch, sharks: dict[str, SharkPersona]) -> FounderDecision:
     if not offers:
         return FounderDecision(
             "walked", None, "No offers? That's okay. We'll keep building on our own."
@@ -72,20 +73,24 @@ def decide(
             o.valuation for o in offers
         ):
             line = (
-                f"It's not the most money, but {who} can really help us grow. "
-                f"We accept {offer_of}!"
+                f"It's not the most money, but {who} can really help us grow. We accept {offer_of}!"
             )
         else:
             line = f"Yes! We accept {offer_of}. It's a deal!"
         return FounderDecision("accepted", best, line)
 
     if score >= walkaway * COUNTER_THRESHOLD:
-        target_valuation = walkaway / (1 + value_add_bonus(best, pitch, sharks))
-        equity = floor_to_half_percent(best.amount / target_valuation)
-        counter = Offer(investor=best.investor, amount=best.amount, equity=max(equity, 0.005))
-        line = (
-            f"So close! Would {who} do ${counter.amount:,} for {counter.equity:.1%} instead?"
+        target_valuation = walkaway / (
+            (1 + value_add_bonus(best, pitch, sharks)) * (ROYALTY_DISCOUNT if best.royalty else 1.0)
         )
+        equity = floor_to_half_percent(best.amount / target_valuation)
+        counter = Offer(
+            investor=best.investor,
+            amount=best.amount,
+            equity=max(equity, 0.005),
+            royalty=best.royalty,
+        )
+        line = f"So close! Would {who} do ${counter.amount:,} for {counter.equity:.1%} instead?"
         return FounderDecision("countered", counter, line)
 
     return FounderDecision(

@@ -27,11 +27,12 @@
       "questions": [
         "What's your margin?"
       ],
-      "comment": "I'll do it for a bigger slice.",
+      "comment": "I'll do it for a bigger slice, plus a royalty until I'm paid back.",
       "decision": "in",
       "offer": {
         "amount": 200000,
-        "equity": 0.3
+        "equity": 0.3,
+        "royalty": true
       }
     },
     {

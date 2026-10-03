@@ -46,3 +46,11 @@ def test_failed_company_is_worth_zero(pitches):
 def test_invalid_offers(amount, equity, cash, msg):
     with pytest.raises(InvalidOffer, match=msg):
         validate_player_offer(amount, equity, Ask(amount=100_000, equity=0.1), cash)
+
+
+def test_royalty_pays_back_over_three_years(pitches):
+    offer = Offer(investor="player", amount=300_000, equity=0.10, royalty=True)
+    failed_fast = pitches.get("toygaroo").outcome  # failed after 1 year
+    assert stake_value(offer, failed_fast) == 100_000  # 1/3 of the money back
+    survived = pitches.get("squatty-potty").outcome  # 7 years
+    assert stake_value(offer, survived) == round(0.10 * 30_800_000 * 0.9) + 300_000

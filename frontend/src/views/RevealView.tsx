@@ -91,6 +91,12 @@ function RevealCard({ r, sharks }: { r: RevealRound; sharks: SharkPersona[] }) {
                 </span>
               )}
             </p>
+            {r.deal.royalty_payout > 0 && (
+              <p className="mt-1 text-[13px] text-muted">
+                incl. {money(r.deal.royalty_payout, { compact: true })} paid back by the{' '}
+                <Term id="royalty">royalty</Term>
+              </p>
+            )}
           </>
         ) : (
           <p className="text-[15px] text-muted">No one invested.</p>

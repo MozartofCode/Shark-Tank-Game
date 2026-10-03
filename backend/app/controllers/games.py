@@ -134,6 +134,7 @@ def make_offer(
             amount=body.amount,
             equity=body.equity,
             reason=body.reason,
+            royalty=body.royalty,
         )
         return engine.view(game)
     except (GameError, InvalidOffer) as e:

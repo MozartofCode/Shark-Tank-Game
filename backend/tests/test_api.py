@@ -27,7 +27,9 @@ def test_media_never_serves_pitch_json():
 def test_question_streams_and_counts_down():
     game = client.post("/api/games").json()
     with client.stream(
-        "POST", f"/api/games/{game['id']}/rounds/0/questions", json={"question": "What are your sales?"}
+        "POST",
+        f"/api/games/{game['id']}/rounds/0/questions",
+        json={"question": "What are your sales?"},
     ) as res:
         body = "".join(res.iter_text())
     assert "event: done" in body

@@ -16,6 +16,7 @@ class Offer(BaseModel):
     investor: str  # "player" or a shark id
     amount: int = Field(gt=0)
     equity: float = Field(gt=0, le=1)
+    royalty: bool = False  # also take a cut of sales until the money is paid back
 
     @property
     def valuation(self) -> int:
@@ -76,6 +77,7 @@ class OfferRequest(BaseModel):
     pass_: bool = Field(default=False, alias="pass")
     amount: int | None = None
     equity: float | None = None
+    royalty: bool = False
     reason: Reason | None = None
 
 
@@ -121,7 +123,8 @@ class DealResult(BaseModel):
     amount: int
     equity: float
     valuation: int
-    stake_value: int
+    stake_value: int  # equity value + royalty payback
+    royalty_payout: int = 0
     moic: float
 
 

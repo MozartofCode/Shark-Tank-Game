@@ -38,8 +38,12 @@ Scope = Literal["all", "daily"]
 class RunRepository(Protocol):
     enabled: bool
 
-    def save(self, reveal: RevealView, user_id: str, pitch_ids: list[str], daily: date | None) -> None: ...
-    def leaderboard(self, scope: Scope, day: date | None, limit: int = 20) -> list[LeaderboardEntry]: ...
+    def save(
+        self, reveal: RevealView, user_id: str, pitch_ids: list[str], daily: date | None
+    ) -> None: ...
+    def leaderboard(
+        self, scope: Scope, day: date | None, limit: int = 20
+    ) -> list[LeaderboardEntry]: ...
     def runs_for(self, user_id: str, limit: int = 20) -> list[RunSummary]: ...
     def portfolio(self, user_id: str, names: dict[str, tuple[str, str]]) -> list[PortfolioDay]: ...
 
@@ -66,7 +70,9 @@ class SupabaseRunRepository:
     def __init__(self, url: str, secret_key: str):
         self.db = SupabaseRest(url, secret_key)
 
-    def save(self, reveal: RevealView, user_id: str, pitch_ids: list[str], daily: date | None) -> None:
+    def save(
+        self, reveal: RevealView, user_id: str, pitch_ids: list[str], daily: date | None
+    ) -> None:
         me = next(s for s in reveal.standings if s.investor == "player")
         [run] = self.db.insert(
             "game_runs",
@@ -99,7 +105,9 @@ class SupabaseRunRepository:
         if deals:
             self.db.insert("game_deals", deals)
 
-    def leaderboard(self, scope: Scope, day: date | None, limit: int = 20) -> list[LeaderboardEntry]:
+    def leaderboard(
+        self, scope: Scope, day: date | None, limit: int = 20
+    ) -> list[LeaderboardEntry]:
         params = {
             "select": "username,net_worth,return_pct,deals",
             "order": "net_worth.desc",

@@ -14,8 +14,6 @@ def finish(engine, game):
     return engine.reveal(game)
 
 
-
-
 def test_daily_challenge_is_deterministic(engine):
     d = date(2026, 10, 3)
     a = engine.new_game(daily=True, today=d)

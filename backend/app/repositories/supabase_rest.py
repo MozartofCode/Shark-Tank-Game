@@ -18,7 +18,9 @@ class SupabaseRest:
         res.raise_for_status()
         return res.json()
 
-    def insert(self, table: str, rows: list[dict[str, Any]] | dict[str, Any]) -> list[dict[str, Any]]:
+    def insert(
+        self, table: str, rows: list[dict[str, Any]] | dict[str, Any]
+    ) -> list[dict[str, Any]]:
         res = self._client.post(f"/{table}", json=rows, headers={"Prefer": "return=representation"})
         res.raise_for_status()
         return res.json()

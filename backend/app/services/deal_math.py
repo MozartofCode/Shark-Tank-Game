@@ -30,9 +30,7 @@ def validate_player_offer(amount: int, equity: float, ask: Ask, cash: int) -> No
             f"{MAX_ASK_MULTIPLE}x the ask (${ask.amount * MAX_ASK_MULTIPLE:,})."
         )
     if not (MIN_EQUITY <= equity <= MAX_EQUITY):
-        raise InvalidOffer(
-            f"Equity must be between {MIN_EQUITY:.0%} and {MAX_EQUITY:.0%}."
-        )
+        raise InvalidOffer(f"Equity must be between {MIN_EQUITY:.0%} and {MAX_EQUITY:.0%}.")
 
 
 def floor_to_half_percent(equity: float) -> float:
@@ -40,9 +38,26 @@ def floor_to_half_percent(equity: float) -> float:
     return math.floor(equity * 200 + 1e-9) / 200
 
 
-def stake_value(offer: Offer, outcome: Outcome) -> int:
-    """What the investor's stake is worth `years_later`, after dilution."""
+ROYALTY_PAYBACK_YEARS = 3
+
+
+def royalty_payout(offer: Offer, outcome: Outcome) -> int:
+    """Simplified royalty: sales pay the investor back (up to 1x) over ~3 years.
+
+    A company that shuts down early only pays back the years it was selling.
+    """
+    if not offer.royalty:
+        return 0
+    return round(offer.amount * min(1.0, outcome.years_later / ROYALTY_PAYBACK_YEARS))
+
+
+def equity_value(offer: Offer, outcome: Outcome) -> int:
     return round(offer.equity * outcome.exit_value * outcome.retention_factor)
+
+
+def stake_value(offer: Offer, outcome: Outcome) -> int:
+    """What the investor's deal is worth `years_later`: equity after dilution + royalty."""
+    return equity_value(offer, outcome) + royalty_payout(offer, outcome)
 
 
 def moic(invested: int, value: int) -> float:

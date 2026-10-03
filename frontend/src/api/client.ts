@@ -60,8 +60,8 @@ export const api = {
   myRuns: () => request<RunSummary[]>('/api/me/runs'),
   myPortfolio: () => request<PortfolioDay[]>('/api/me/portfolio'),
   getGame: (id: string) => request<GameView>(`/api/games/${id}`),
-  offer: (id: string, round: number, amount: number, equity: number, reason: string | null) =>
-    post<GameView>(`/api/games/${id}/rounds/${round}/offer`, { amount, equity, reason }),
+  offer: (id: string, round: number, amount: number, equity: number, reason: string | null, royalty: boolean) =>
+    post<GameView>(`/api/games/${id}/rounds/${round}/offer`, { amount, equity, reason, royalty }),
   pass: (id: string, round: number) =>
     post<GameView>(`/api/games/${id}/rounds/${round}/offer`, { pass: true }),
   counter: (id: string, round: number, accept: boolean) =>

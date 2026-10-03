@@ -39,6 +39,7 @@ export function SharkPanel({
                   <span className="font-semibold">{money(r.offer.amount, { compact: true })}</span>
                   <span className="text-muted"> for </span>
                   <span className="font-semibold">{pct(r.offer.equity)}</span>
+                  {r.offer.royalty && <span className="text-muted"> + royalty</span>}
                 </p>
               ) : (
                 <Pill>Out</Pill>
