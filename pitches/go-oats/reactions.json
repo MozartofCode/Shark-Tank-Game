@@ -1,0 +1,44 @@
+{
+  "pitch_id": "go-oats",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "What makes it better than a granola bar?"
+      ],
+      "comment": "I'm not sure it stands out. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What's your growth plan?"
+      ],
+      "comment": "Snacks aren't my thing. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "How much have you sold this year?"
+      ],
+      "comment": "Too early for me. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Why did you start this?"
+      ],
+      "comment": "You're a hustler and I like that. I'm in.",
+      "decision": "in",
+      "offer": {
+        "amount": 125000,
+        "equity": 0.15
+      }
+    }
+  ]
+}

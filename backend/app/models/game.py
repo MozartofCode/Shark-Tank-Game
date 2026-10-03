@@ -135,8 +135,8 @@ class Standing(BaseModel):
     name: str
     invested: int
     portfolio_value: int
-    net_worth: int
-    return_pct: float
+    profit: int
+    return_pct: float  # profit as a % of the money invested
     deals: int
 
 
@@ -154,5 +154,23 @@ class RevealView(BaseModel):
     worst_deal: str | None
     rounds: list[RevealRound]
     standings: list[Standing]
+    profit: int = 0
     daily_date: date | None = None
     saved: bool = False
+
+
+class Holding(BaseModel):
+    pitch_id: str
+    company: str
+    status: str
+    amount: int
+    equity: float
+    stake_value: int
+
+
+class PortfolioDay(BaseModel):
+    game_id: str
+    played_at: str
+    daily_date: date | None
+    bankroll: int
+    holdings: list[Holding]

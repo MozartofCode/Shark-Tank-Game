@@ -1,0 +1,63 @@
+{
+  "id": "kisstixx",
+  "source": {
+    "show": "shark_tank",
+    "season": 3,
+    "episode": null,
+    "channel": "CNBC (official licensee)",
+    "url": "https://www.youtube.com/watch?v=FUfiBIU3luo"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "FUfiBIU3luo",
+    "start": 0,
+    "end": 150
+  },
+  "company": {
+    "name": "Kisstixx",
+    "category": "consumer",
+    "one_liner": "Lip balm made for kissing: two flavors that react when they meet.",
+    "founders": [
+      "Dallas Robinson",
+      "Mike Buonomo"
+    ]
+  },
+  "ask": {
+    "amount": 200000,
+    "equity": 0.2
+  },
+  "facts": {
+    "summary": "Two friends sell pairs of lip balms with flavors designed to combine when two people kiss. They're aiming at gift shops, college students and big drugstore chains.",
+    "highlights": [
+      "Each pack has two matching flavors that mix when people kiss.",
+      "It's a fun, giftable impulse product that's cheap to make.",
+      "The founders say big retailers are interested.",
+      "Lip balm is a crowded category full of big brands."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 450000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Mark Cuban invested $200,000 for 40% of the company (a $500K value)."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 6,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "Sales faded after the TV buzz, and the company shut down in 2018.",
+    "story": "Kisstixx had a burst of sales after the episode, but a claimed big-retailer deal turned out to be paperwork, not a real order, and sales slowed once the buzz wore off. The business closed in 2018.",
+    "as_of": "2018",
+    "sources": [
+      "https://www.thelist.com/1360933/what-happened-kisstixx-after-shark-tank/",
+      "https://www.women.com/1366811/what-went-down-with-kisstixx-after-shark-tank/"
+    ]
+  },
+  "lessons": [
+    "survivorship_bias",
+    "execution_risk"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "pitch_id": "coffee-meets-bagel",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "How do you make money from a free app?"
+      ],
+      "comment": "Apps aren't my world. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What's your monthly revenue?",
+        "How fast are users growing?"
+      ],
+      "comment": "I like it, but not at $10 million. Here's my offer.",
+      "decision": "in",
+      "offer": {
+        "amount": 500000,
+        "equity": 0.1
+      }
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "Are you profitable?"
+      ],
+      "comment": "Dating apps burn cash. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "How do you keep users safe?"
+      ],
+      "comment": "Great founders, but not my space. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

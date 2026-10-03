@@ -1,0 +1,61 @@
+{
+  "id": "titin",
+  "source": {
+    "show": "shark_tank",
+    "season": 6,
+    "episode": null,
+    "channel": "ABC (official)",
+    "url": "https://www.youtube.com/watch?v=uJwR3zdgLqY"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "uJwR3zdgLqY",
+    "start": 0,
+    "end": null
+  },
+  "company": {
+    "name": "TITIN",
+    "category": "apparel",
+    "one_liner": "Workout shirts with built-in gel weights so your clothes become your training gear.",
+    "founders": [
+      "Patrick Whaley"
+    ]
+  },
+  "ask": {
+    "amount": 500000,
+    "equity": 0.05
+  },
+  "facts": {
+    "summary": "Compression workout clothing with weighted gel packs built in, so athletes carry extra resistance while they train.",
+    "highlights": [
+      "The weight is spread evenly across the body in gel pads.",
+      "The founder says pro athletes have tried it.",
+      "It's premium priced compared with normal workout shirts.",
+      "The ask values the company at $10 million."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 2500000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Daymond John invested $500,000 for 20% (a $2.5M value) and later became a bigger partner."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 9,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "Hit by a lawsuit and fading sales, the company eventually closed.",
+    "story": "After the show TITIN faced a dispute from someone claiming he invented the technology, and the brand never became a mainstream hit. Its website and social accounts went dark and the company is no longer operating.",
+    "as_of": "2024",
+    "sources": [
+      "https://www.sharktankblog.com/business/titin/"
+    ]
+  },
+  "lessons": [
+    "valuation",
+    "execution_risk"
+  ]
+}

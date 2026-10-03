@@ -1,0 +1,61 @@
+{
+  "id": "go-oats",
+  "source": {
+    "show": "shark_tank",
+    "season": 12,
+    "episode": 2,
+    "channel": "Sony Pictures Television (official)",
+    "url": "https://www.youtube.com/watch?v=eRlp5hKOQZ4"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "eRlp5hKOQZ4",
+    "start": 0,
+    "end": 200
+  },
+  "company": {
+    "name": "Go Oats",
+    "category": "food",
+    "one_liner": "Bite-sized baked oatmeal balls for a healthy breakfast on the go.",
+    "founders": [
+      "Nahum Jeannot"
+    ]
+  },
+  "ask": {
+    "amount": 125000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "A founder sells baked oatmeal bites with fruit fillings, aimed at busy people who skip breakfast.",
+    "highlights": [
+      "It's a healthier grab-and-go breakfast snack.",
+      "Products are starting to appear in grocery stores.",
+      "Sales are still small; the business is early.",
+      "Healthy snacks is a crowded space with lots of brands."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 750000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Barbara Corcoran agreed to $150,000 for 20% on the show, but the deal never closed."
+  },
+  "outcome": {
+    "status": "thriving",
+    "years_later": 3,
+    "exit_value": 2000000,
+    "value_basis": "estimate",
+    "retention_factor": 1.0,
+    "headline": "Still a small business: in some big stores, with about $2M a year in sales.",
+    "story": "Go Oats got into stores like Costco and Whole Foods in some regions and kept growing slowly. It's private and small, so the value here (~$2M) is an estimate based on reported sales.",
+    "as_of": "2022",
+    "sources": [
+      "https://www.mashed.com/963636/what-happened-to-go-oats-after-shark-tank/"
+    ]
+  },
+  "lessons": [
+    "deal_closing",
+    "patience"
+  ]
+}

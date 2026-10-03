@@ -1,0 +1,48 @@
+{
+  "pitch_id": "showno",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Is it patented?",
+        "Who makes it for you?"
+      ],
+      "comment": "Every family at the pool needs this. I'm in!",
+      "decision": "in",
+      "offer": {
+        "amount": 75000,
+        "equity": 0.25
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How big can a towel company get?"
+      ],
+      "comment": "Not for me. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What does each one cost you?"
+      ],
+      "comment": "Small market, but I'll take a big slice.",
+      "decision": "in",
+      "offer": {
+        "amount": 50000,
+        "equity": 0.35
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Have customers asked for more?"
+      ],
+      "comment": "Not my area. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "pitch_id": "you-smell-soap",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "How many bars can you make in a week?"
+      ],
+      "comment": "Funny names sell on TV! I'm in.",
+      "decision": "in",
+      "offer": {
+        "amount": 55000,
+        "equity": 0.25
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How will you scale handmade soap?"
+      ],
+      "comment": "It's a craft, not a company. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What's your profit per bar?"
+      ],
+      "comment": "Soap is a commodity. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "What do you want this brand to become?"
+      ],
+      "comment": "I like your energy. I'll back you.",
+      "decision": "in",
+      "offer": {
+        "amount": 55000,
+        "equity": 0.22
+      }
+    }
+  ]
+}

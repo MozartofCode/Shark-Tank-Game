@@ -1,0 +1,62 @@
+{
+  "id": "zipz",
+  "source": {
+    "show": "shark_tank",
+    "season": 6,
+    "episode": 11,
+    "channel": "ABC (official)",
+    "url": "https://www.youtube.com/watch?v=IXWFjSNavc0"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "IXWFjSNavc0",
+    "start": 0,
+    "end": null
+  },
+  "company": {
+    "name": "Zipz",
+    "category": "food",
+    "one_liner": "Single-serve wine in a sealed, recyclable glass you can take anywhere.",
+    "founders": [
+      "Andrew McMurray"
+    ]
+  },
+  "ask": {
+    "amount": 2500000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "Premium wine sold in its own sealed, stackable glass, so you can drink one serving on the go without opening a bottle.",
+    "highlights": [
+      "Each sealed glass holds one serving of wine.",
+      "The packaging design is patented.",
+      "The founder wants to get into big warehouse retailers.",
+      "This is a $25 million valuation: one of the biggest asks ever."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 20000000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Kevin O'Leary invested $2.5 million for 10%, one of the biggest deals in the show's history at the time."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 2,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "The big retail deal never happened, and Zipz quit selling wine in 2016.",
+    "story": "A hoped-for warehouse-store deal fell through and the business wasn't profitable. Zipz left the wine business in 2016 and shrank to licensing its glass design, leaving little value for an investor who paid a $25M price.",
+    "as_of": "2016",
+    "sources": [
+      "https://www.tastingtable.com/1972109/what-happened-zipz-wine-shark-tank-now/",
+      "https://www.mashed.com/797688/heres-what-happened-to-zipz-wine-after-shark-tank/"
+    ]
+  },
+  "lessons": [
+    "valuation",
+    "execution_risk"
+  ]
+}

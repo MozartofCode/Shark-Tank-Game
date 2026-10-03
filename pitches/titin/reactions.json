@@ -1,0 +1,44 @@
+{
+  "pitch_id": "titin",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "How much does one shirt cost to make?"
+      ],
+      "comment": "Too niche for my shoppers. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "Where's the technology advantage?"
+      ],
+      "comment": "$10 million for a shirt? I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "How many shirts have you actually sold?"
+      ],
+      "comment": "Your valuation is fantasy. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Which athletes actually wear it?"
+      ],
+      "comment": "I believe in you, but at a real valuation.",
+      "decision": "in",
+      "offer": {
+        "amount": 500000,
+        "equity": 0.2
+      }
+    }
+  ]
+}

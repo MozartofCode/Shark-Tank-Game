@@ -1,0 +1,47 @@
+{
+  "pitch_id": "bantam-bagels",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Can you make enough for big stores?"
+      ],
+      "comment": "Cute, but I'm not sure it travels. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How do you scale a bakery?"
+      ],
+      "comment": "Food isn't scalable for me. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What are your margins?"
+      ],
+      "comment": "I'll do it for a bigger share.",
+      "decision": "in",
+      "offer": {
+        "amount": 275000,
+        "equity": 0.3
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "How do you two divide the work?"
+      ],
+      "comment": "I love you two and I love the product. I'm in.",
+      "decision": "in",
+      "offer": {
+        "amount": 275000,
+        "equity": 0.25
+      }
+    }
+  ]
+}

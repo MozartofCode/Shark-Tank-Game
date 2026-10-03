@@ -45,15 +45,15 @@
   "outcome": {
     "status": "acquired",
     "years_later": 7,
-    "exit_value": 500000000,
+    "exit_value": 200000000,
     "value_basis": "estimate",
     "retention_factor": 0.6,
-    "headline": "Became a protein-pancake powerhouse; private-equity firm L Catterton bought a majority stake in 2021.",
-    "story": "Kodiak rode the protein trend into nearly every US grocery store and reportedly reached about $200M in annual sales. L Catterton acquired a majority stake in 2021 (terms undisclosed). The value here (~$500M) is an estimate, and earlier investors would have been diluted.",
+    "headline": "Became a protein-pancake powerhouse and sold a majority stake at a $200M+ value.",
+    "story": "Kodiak rode the protein trend into nearly every US grocery store, passing $160M in yearly sales by 2020. Private-equity firm L Catterton bought a majority stake in 2021 at a reported $200M+ value. Earlier investors would have been diluted along the way.",
     "as_of": "2021-07",
     "sources": [
-      "https://www.foodbusinessnews.net/articles/19007-l-catterton-wraps-deal-for-kodiak-cakes",
-      "https://www.foodrepublic.com/1405423/kodiak-cakes-shark-tank-now/"
+      "https://www.failory.com/blog/shark-tank-failures",
+      "https://www.foodbusinessnews.net/articles/19007-l-catterton-wraps-deal-for-kodiak-cakes"
     ]
   },
   "lessons": [

@@ -12,7 +12,7 @@ def test_new_game_has_five_unique_pitches(engine):
     game = engine.new_game()
     ids = [r.pitch_id for r in game.rounds]
     assert len(ids) == 5 and len(set(ids)) == 5
-    assert game.cash == game.bankroll_start == 10_000_000
+    assert game.cash == game.bankroll_start == 1_000_000
 
 
 def test_full_day_and_reveal_math(engine):
@@ -29,7 +29,7 @@ def test_full_day_and_reveal_math(engine):
     for i in (2, 3, 4):
         engine.submit_offer(game, i, passed=True, amount=None, equity=None)
     assert game.finished
-    assert game.cash == 10_000_000 - 100_000 - 700_000
+    assert game.cash == 1_000_000 - 100_000 - 700_000
 
     reveal = engine.reveal(game)
     scrub = 0.08 * 500_000_000 * 0.9  # 36M
@@ -67,3 +67,24 @@ def test_question_limit(engine):
         engine.record_answer(game, 0, f"q{i}", "a")
     with pytest.raises(GameError, match="all your questions"):
         engine.check_can_ask(game, 0)
+
+
+def test_every_day_mixes_flops_and_survivors(engine, pitches):
+    """1-3 failed companies per day, never all winners, never all losers."""
+    counts = set()
+    for seed in range(200):
+        game = engine.new_game(seed=seed)
+        statuses = [pitches.get(r.pitch_id).outcome.status for r in game.rounds]
+        flops = statuses.count("failed")
+        assert 1 <= flops <= 3 and len({r.pitch_id for r in game.rounds}) == 5
+        counts.add(flops)
+    assert counts == {1, 2, 3}
+
+
+def test_shark_standings_rank_by_profit(engine):
+    game = game_with(engine, DAY)
+    for i in range(5):
+        engine.submit_offer(game, i, passed=True, amount=None, equity=None)
+    reveal = engine.reveal(game)
+    profits = [s.profit for s in reveal.standings]
+    assert profits == sorted(profits, reverse=True)

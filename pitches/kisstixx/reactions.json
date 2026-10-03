@@ -1,0 +1,47 @@
+{
+  "pitch_id": "kisstixx",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Which stores are selling it right now?"
+      ],
+      "comment": "It's a fun gift. I can sell that!",
+      "decision": "in",
+      "offer": {
+        "amount": 200000,
+        "equity": 0.4
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "Is there anything here a big brand can't copy?"
+      ],
+      "comment": "It's lip balm. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What's your profit on each pack?"
+      ],
+      "comment": "Gimmicks fade fast. I'll only do it for a big piece.",
+      "decision": "in",
+      "offer": {
+        "amount": 150000,
+        "equity": 0.45
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Why are you two the right team?"
+      ],
+      "comment": "Cute idea, but I don't see a lasting brand. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

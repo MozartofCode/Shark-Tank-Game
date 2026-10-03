@@ -51,19 +51,19 @@ def build_reveal(
     start = game.bankroll_start
     standings = []
     for investor, t in totals.items():
-        net = start - t["invested"] + t["value"]
+        profit = t["value"] - t["invested"]
         standings.append(
             Standing(
                 investor=investor,
                 name="You" if investor == PLAYER else sharks[investor].name,
                 invested=t["invested"],
                 portfolio_value=t["value"],
-                net_worth=net,
-                return_pct=round((net - start) / start * 100, 2),
+                profit=profit,
+                return_pct=round(profit / t["invested"] * 100, 2) if t["invested"] else 0.0,
                 deals=t["deals"],
             )
         )
-    standings.sort(key=lambda s: s.net_worth, reverse=True)
+    standings.sort(key=lambda s: s.profit, reverse=True)
 
     me = totals[PLAYER]
     net_worth = game.cash + me["value"]
@@ -80,6 +80,7 @@ def build_reveal(
         cash_left=game.cash,
         invested=me["invested"],
         portfolio_value=me["value"],
+        profit=me["value"] - me["invested"],
         net_worth=net_worth,
         return_pct=round((net_worth - start) / start * 100, 2),
         benchmark_years=round(years, 1),

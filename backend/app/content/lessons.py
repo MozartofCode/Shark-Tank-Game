@@ -60,6 +60,12 @@ LESSONS: dict[str, dict[str, str]] = {
         "body": "Franchising lets a brand grow with other people's capital: franchisees "
         "pay to open locations, the brand collects fees and royalties.",
     },
+    "deal_closing": {
+        "title": "A handshake isn't a deal",
+        "body": "Many TV deals change or fall apart afterwards, once investors check the "
+        "details (that's called due diligence). The money only counts once the paperwork "
+        "is signed.",
+    },
     "patience": {
         "title": "Patience",
         "body": "Some companies grow slowly for decades before taking off. Long-term "

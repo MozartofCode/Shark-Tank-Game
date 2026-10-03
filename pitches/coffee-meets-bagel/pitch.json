@@ -1,0 +1,64 @@
+{
+  "id": "coffee-meets-bagel",
+  "source": {
+    "show": "shark_tank",
+    "season": 6,
+    "episode": 13,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=vuQOI4It294"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "vuQOI4It294",
+    "start": 0,
+    "end": 260
+  },
+  "company": {
+    "name": "Coffee Meets Bagel",
+    "category": "tech",
+    "one_liner": "A dating app that sends you one carefully picked match a day.",
+    "founders": [
+      "Dawoon Kang",
+      "Arum Kang",
+      "Soo Kang"
+    ]
+  },
+  "ask": {
+    "amount": 500000,
+    "equity": 0.05
+  },
+  "facts": {
+    "summary": "Three sisters built a dating app that sends each user a small number of curated matches every day, instead of endless swiping.",
+    "highlights": [
+      "Users get a limited number of quality matches each day.",
+      "The app makes money when users pay for extra features.",
+      "It already has a large and growing number of users.",
+      "Big competitors like Match and Tinder dominate dating apps."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 8000000
+  },
+  "real_deal": {
+    "result": "no_deal",
+    "summary": "No deal. Mark Cuban offered $30 million to buy the whole company, and the sisters said no."
+  },
+  "outcome": {
+    "status": "thriving",
+    "years_later": 9,
+    "exit_value": 100000000,
+    "value_basis": "estimate",
+    "retention_factor": 0.6,
+    "headline": "Kept growing on its own into a well-known dating app.",
+    "story": "The sisters turned down the offer, raised more money from investors and grew the app to millions of users. It's private; the value here (~$100M) is an estimate, and an early stake would have been diluted by later fundraising.",
+    "as_of": "2024",
+    "sources": [
+      "https://www.geekwire.com/2019/numbers-geek-meets-shark-tank-startup-founder-turned-mark-cubans-30m-deal/",
+      "https://en.wikipedia.org/wiki/Coffee_Meets_Bagel"
+    ]
+  },
+  "lessons": [
+    "rejected_winner",
+    "dilution"
+  ]
+}

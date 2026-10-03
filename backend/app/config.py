@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     )
 
     pitches_dir: Path = REPO_ROOT / "pitches"
-    starting_bankroll: int = 10_000_000
+    starting_bankroll: int = 1_000_000  # fresh cash every day
     rounds_per_game: int = 5
     max_questions_per_round: int = 3
     game_ttl_seconds: int = 60 * 60 * 24

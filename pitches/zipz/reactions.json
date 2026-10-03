@@ -1,0 +1,44 @@
+{
+  "pitch_id": "zipz",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Will stores give this shelf space?"
+      ],
+      "comment": "Wine isn't my world. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What's your profit margin today?"
+      ],
+      "comment": "Packaging isn't scalable tech. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "When do you become profitable?"
+      ],
+      "comment": "I love wine and I love royalties. Here's a big check.",
+      "decision": "in",
+      "offer": {
+        "amount": 2500000,
+        "equity": 0.125
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Who's your perfect customer?"
+      ],
+      "comment": "Too much money for me. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

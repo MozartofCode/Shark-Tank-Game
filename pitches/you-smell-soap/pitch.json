@@ -1,0 +1,62 @@
+{
+  "id": "you-smell-soap",
+  "source": {
+    "show": "shark_tank",
+    "season": 3,
+    "episode": null,
+    "channel": "ABC (official)",
+    "url": "https://www.youtube.com/watch?v=Dr0BOCM9hcg"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "Dr0BOCM9hcg",
+    "start": 0,
+    "end": 140
+  },
+  "company": {
+    "name": "You Smell Soap",
+    "category": "consumer",
+    "one_liner": "Handmade soaps with funny names and bold scents.",
+    "founders": [
+      "Megan Cummins"
+    ]
+  },
+  "ask": {
+    "amount": 55000,
+    "equity": 0.2
+  },
+  "facts": {
+    "summary": "A young founder makes and sells handmade soaps with jokey names and packaging, mostly online and at local shops.",
+    "highlights": [
+      "The funny branding makes the soap a fun gift.",
+      "Every bar is handmade by the founder.",
+      "She wants money to grow production and quit her day job.",
+      "Handmade products are hard to make in big quantities."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 200000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Robert Herjavec offered $55,000 for 20% plus a salary, but the deal never closed after the show."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 5,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "The TV deal fell apart, and the company closed in 2016.",
+    "story": "After filming, the investor asked for 50% instead of 20%, and the founder said no. She kept going with another investor and later sold the business, but it shut down in 2016.",
+    "as_of": "2016",
+    "sources": [
+      "https://www.sharktankblog.com/business/you-smell-soap/",
+      "https://www.failory.com/blog/shark-tank-failures"
+    ]
+  },
+  "lessons": [
+    "deal_closing",
+    "execution_risk"
+  ]
+}

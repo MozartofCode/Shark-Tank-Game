@@ -1,0 +1,62 @@
+{
+  "id": "bantam-bagels",
+  "source": {
+    "show": "shark_tank",
+    "season": 6,
+    "episode": null,
+    "channel": "CNBC (official licensee)",
+    "url": "https://www.youtube.com/watch?v=YvCWbw2YpZg"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "YvCWbw2YpZg",
+    "start": 0,
+    "end": 140
+  },
+  "company": {
+    "name": "Bantam Bagels",
+    "category": "food",
+    "one_liner": "Mini bagel balls stuffed with cream cheese, from a New York bagel shop.",
+    "founders": [
+      "Elyse Oleksak",
+      "Nick Oleksak"
+    ]
+  },
+  "ask": {
+    "amount": 275000,
+    "equity": 0.11
+  },
+  "facts": {
+    "summary": "A husband-and-wife team runs a small New York shop selling bite-sized bagel balls with the cream cheese already inside.",
+    "highlights": [
+      "Sales are about $200,000 so far, mostly from one shop and delivery.",
+      "The product is unique and easy to eat on the go.",
+      "They want to get into grocery freezers and coffee shops.",
+      "Food manufacturing at scale is expensive and tricky."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 1000000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Lori Greiner invested $275,000 for 25% (a $1.1M value)."
+  },
+  "outcome": {
+    "status": "acquired",
+    "years_later": 4,
+    "exit_value": 34000000,
+    "value_basis": "acquisition",
+    "retention_factor": 0.9,
+    "headline": "Landed in Starbucks nationwide and sold for $34 million in 2018.",
+    "story": "Lori got Bantam Bagels into Starbucks and thousands of grocery stores. In 2018 the company was sold to T. Marzetti for $34 million, a huge win for early investors.",
+    "as_of": "2018",
+    "sources": [
+      "https://www.foxbusiness.com/markets/bantam-bagels-of-shark-tank-fame-sells-for-34m"
+    ]
+  },
+  "lessons": [
+    "licensing",
+    "exit"
+  ]
+}

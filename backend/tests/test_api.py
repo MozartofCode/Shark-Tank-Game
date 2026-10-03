@@ -44,6 +44,6 @@ def test_offer_flow_and_reveal():
         res = client.post(f"/api/games/{gid}/rounds/{i}/offer", json={"pass": True})
         assert res.status_code == 200
     reveal = client.post(f"/api/games/{gid}/reveal").json()
-    assert reveal["net_worth"] == 10_000_000
+    assert reveal["net_worth"] == 1_000_000 and reveal["profit"] == 0
     assert len(reveal["rounds"]) == game["total_rounds"]
     assert all(r["outcome"]["sources"] for r in reveal["rounds"])

@@ -1,0 +1,62 @@
+{
+  "id": "showno",
+  "source": {
+    "show": "shark_tank",
+    "season": 3,
+    "episode": 4,
+    "channel": "ABC (official)",
+    "url": "https://www.youtube.com/watch?v=YSCu-zjt_Pg"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "YSCu-zjt_Pg",
+    "start": 0,
+    "end": 150
+  },
+  "company": {
+    "name": "ShowNo Towels",
+    "category": "consumer",
+    "one_liner": "A 3-in-1 towel that becomes a changing cover, so you can change at the beach or pool.",
+    "founders": [
+      "Shelly Ehler"
+    ]
+  },
+  "ask": {
+    "amount": 50000,
+    "equity": 0.25
+  },
+  "facts": {
+    "summary": "A mom invented a wearable towel that works as a towel, a changing cover and a wrap, for families at pools, beaches and water parks.",
+    "highlights": [
+      "It works as a towel, a wrap and a private changing cover.",
+      "Parents and swimmers are the target customers.",
+      "The founder is selling small quantities herself.",
+      "She needs a partner for manufacturing and big retail orders."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 150000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Lori Greiner offered $75,000 for 25% (a $300K value), but the final agreement never went through."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 5,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "A theme-park order didn't repeat, and the business closed.",
+    "story": "ShowNo got into water parks for a while, but the orders didn't come back and the investor deal never finalized. The founder struggled to get big production contracts and the company is no longer in business.",
+    "as_of": "2024",
+    "sources": [
+      "https://www.looper.com/1146691/whatever-happened-to-showno-towels-after-shark-tank/",
+      "https://www.failory.com/blog/shark-tank-failures"
+    ]
+  },
+  "lessons": [
+    "deal_closing",
+    "execution_risk"
+  ]
+}
