@@ -1,7 +1,9 @@
 import { Term } from '../components/Term'
 import { Button, Card, Pill } from '../components/ui'
 import { growth, money, pct, profitTone, signedMoney } from '../lib/format'
+import { achievements, dailyStreak } from '../lib/achievements'
 import { totals } from '../lib/portfolio'
+import { loadProgress } from '../lib/progress'
 import { REASON_LABEL, type Reason } from '../lib/reasons'
 import { useAuth } from '../store/authStore'
 import { useGame } from '../store/gameStore'
@@ -14,6 +16,8 @@ export function PortfolioView() {
     .flatMap((day, i) => day.holdings.map((h) => ({ ...h, day: i + 1 })))
     .sort((a, b) => b.stake_value - b.amount - (a.stake_value - a.amount))
 
+  const badges = achievements(portfolio, loadProgress())
+  const streak = dailyStreak(portfolio)
   const byReason = new Map<Reason, { profit: number; count: number }>()
   for (const h of holdings) {
     if (!h.reason) continue
@@ -39,6 +43,7 @@ export function PortfolioView() {
     <main className="mx-auto max-w-2xl px-5 pt-12 pb-6">
       <p className="text-[13px] font-medium text-muted">
         Portfolio · {t.days} day{t.days === 1 ? '' : 's'}
+        {streak >= 2 && <span className="text-warn"> · 🔥 {streak}-day streak</span>}
       </p>
       <h1 className={`mt-1 text-[56px] leading-none font-bold tabular-nums ${profitTone(t.profit)}`}>
         {signedMoney(t.profit, true)}
@@ -105,6 +110,30 @@ export function PortfolioView() {
           </ul>
         )}
       </Card>
+
+      <section className="mt-8">
+        <p className="px-1 text-[13px] font-semibold tracking-wide text-muted uppercase">
+          Achievements · {badges.filter((b) => b.earned).length}/{badges.length}
+        </p>
+        <div className="mt-2 grid grid-cols-3 gap-3">
+          {badges.map((b) => (
+            <div
+              key={b.id}
+              title={b.how}
+              className={`flex flex-col items-center rounded-2xl bg-surface p-4 text-center shadow-[var(--shadow-card)] ${
+                b.earned ? '' : 'opacity-40 grayscale'
+              }`}
+            >
+              <span className="text-3xl" aria-hidden>
+                {b.emoji}
+              </span>
+              <span className="mt-2 text-[13px] font-semibold">{b.title}</span>
+              <span className="mt-0.5 text-[11px] leading-tight text-muted">{b.how}</span>
+              <span className="sr-only">{b.earned ? 'Earned' : 'Not earned yet'}</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {health?.accounts && !signedIn && (
         <p className="mt-5 text-center">

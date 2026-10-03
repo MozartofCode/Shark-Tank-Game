@@ -1,6 +1,7 @@
 import { Leaderboard } from '../components/Leaderboard'
 import { Button } from '../components/ui'
 import { money, profitTone, signedMoney } from '../lib/format'
+import { dailyStreak } from '../lib/achievements'
 import { totals } from '../lib/portfolio'
 import { resumeGame, useGame } from '../store/gameStore'
 
@@ -16,6 +17,7 @@ export function HomeView() {
   const bankroll = health?.bankroll ?? 1_000_000
   const inProgress = game && !game.revealed
   const t = totals(portfolio)
+  const streak = dailyStreak(portfolio)
 
   return (
     <main className="mx-auto max-w-5xl px-5">
@@ -64,6 +66,7 @@ export function HomeView() {
             <span className={`text-[15px] font-semibold tabular-nums ${profitTone(t.profit)}`}>
               {signedMoney(t.profit, true)}
             </span>
+            {streak >= 2 && <span className="text-[15px] text-warn">🔥 {streak}</span>}
             <span className="text-faint" aria-hidden>
               ›
             </span>
