@@ -45,12 +45,16 @@ def _name(investor: str, sharks: dict[str, SharkPersona]) -> str:
     return "you" if investor == PLAYER else sharks[investor].name
 
 
+def _offer_of(investor: str, sharks: dict[str, SharkPersona]) -> str:
+    return "your offer" if investor == PLAYER else f"{sharks[investor].name}'s offer"
+
+
 def decide(
     offers: list[Offer], pitch: Pitch, sharks: dict[str, SharkPersona]
 ) -> FounderDecision:
     if not offers:
         return FounderDecision(
-            "walked", None, "No offers on the table. Thank you for your time, Sharks."
+            "walked", None, "No offers? That's okay. We'll keep building on our own."
         )
 
     # Highest effective valuation wins; ties go to the player.
@@ -61,17 +65,18 @@ def decide(
     score = effective_valuation(best, pitch, sharks)
     walkaway = pitch.founder_prefs.walkaway_valuation
     who = _name(best.investor, sharks)
+    offer_of = _offer_of(best.investor, sharks)
 
     if score >= walkaway:
         if value_add_bonus(best, pitch, sharks) and best.valuation < max(
             o.valuation for o in offers
         ):
             line = (
-                f"It's not the highest number, but {who} can really help us grow. "
-                "We have a deal!"
+                f"It's not the most money, but {who} can really help us grow. "
+                f"We accept {offer_of}!"
             )
         else:
-            line = f"We'd love to accept the offer from {who}. We have a deal!"
+            line = f"Yes! We accept {offer_of}. It's a deal!"
         return FounderDecision("accepted", best, line)
 
     if score >= walkaway * COUNTER_THRESHOLD:
@@ -79,14 +84,14 @@ def decide(
         equity = floor_to_half_percent(best.amount / target_valuation)
         counter = Offer(investor=best.investor, amount=best.amount, equity=max(equity, 0.005))
         line = (
-            f"We're close. Would {who} do ${counter.amount:,} for {counter.equity:.1%}?"
+            f"So close! Would {who} do ${counter.amount:,} for {counter.equity:.1%} instead?"
         )
         return FounderDecision("countered", counter, line)
 
     return FounderDecision(
         "walked",
         None,
-        "With respect, those valuations are way below what we're worth. We'll pass.",
+        "Sorry, those offers say our company is worth way less than we think. We'll pass.",
     )
 
 

@@ -4,10 +4,10 @@ import type { RoundView } from '../types'
 import { Button } from './ui'
 
 const SUGGESTIONS = [
-  'What are your sales so far?',
-  'Why is it worth that valuation?',
+  'How much have you sold so far?',
+  'Why is your company worth that much?',
   'What will you do with the money?',
-  'What stops a competitor from copying you?',
+  'What if a big company copies you?',
 ]
 
 export function FounderChat({ round }: { round: RoundView }) {
@@ -34,19 +34,18 @@ export function FounderChat({ round }: { round: RoundView }) {
     <div className="flex h-full flex-col rounded-2xl border border-line bg-panel/80">
       <div className="flex items-center justify-between border-b border-line px-4 py-3">
         <div>
-          <p className="text-sm font-semibold">Grill the founder</p>
+          <p className="text-sm font-semibold">Ask the founder</p>
           <p className="text-xs text-muted">{founder}</p>
         </div>
         <span className="rounded-full bg-panel-2 px-2.5 py-1 text-xs text-muted">
-          {round.questions_left} question{round.questions_left === 1 ? '' : 's'} left
+          {round.questions_left} of 3 questions left
         </span>
       </div>
 
       <div className="max-h-80 min-h-40 flex-1 space-y-3 overflow-y-auto p-4 text-sm">
         {round.chat.length === 0 && streaming === null && (
           <p className="text-muted">
-            You get {round.questions_left} questions. Ask about sales, margins, competition: anything an investor
-            should know before writing a check.
+            Good investors ask questions first. Tap a suggestion or type your own.
           </p>
         )}
         {round.chat.map((m, i) => (

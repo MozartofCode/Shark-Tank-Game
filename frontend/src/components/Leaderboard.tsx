@@ -25,7 +25,7 @@ export function Leaderboard() {
   return (
     <Card>
       <div className="flex items-center justify-between gap-3">
-        <p className="font-semibold">Leaderboard</p>
+        <p className="font-semibold">🏆 Leaderboard (best day)</p>
         <div className="flex rounded-full border border-line p-0.5 text-xs">
           {(['daily', 'all'] as const).map((s) => (
             <button
@@ -33,7 +33,7 @@ export function Leaderboard() {
               onClick={() => setScope(s)}
               className={`rounded-full px-3 py-1 ${scope === s ? 'bg-gold font-semibold text-ink' : 'text-muted'}`}
             >
-              {s === 'daily' ? "Today's challenge" : 'All time'}
+              {s === 'daily' ? 'Today' : 'All time'}
             </button>
           ))}
         </div>

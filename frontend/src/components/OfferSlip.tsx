@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { money, pct, valuation } from '../lib/format'
 import { useGame } from '../store/gameStore'
 import type { RoundView } from '../types'
-import { Button, Learn } from './ui'
+import { Button } from './ui'
 
 const MIN_AMOUNT = 10_000
 const MAX_ASK_MULTIPLE = 5
@@ -10,150 +10,154 @@ const MAX_ASK_MULTIPLE = 5
 export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
   const { offer, pass, busy } = useGame()
   const ask = round.pitch.ask
-  const [amount, setAmount] = useState(ask.amount)
+  const name = round.pitch.company.name
+  const maxAmount = Math.min(cash, ask.amount * MAX_ASK_MULTIPLE)
+  const [amount, setAmount] = useState(Math.min(ask.amount, maxAmount))
   const [equityPct, setEquityPct] = useState(Math.round(ask.equity * 1000) / 10)
 
-  const maxAmount = Math.min(cash, ask.amount * MAX_ASK_MULTIPLE)
   const equity = equityPct / 100
-  const yourValuation = valuation(amount, equity)
-  const sharkBest = useMemo(
-    () =>
-      Math.max(
-        0,
-        ...round.shark_reactions.filter((r) => r.offer).map((r) => valuation(r.offer!.amount, r.offer!.equity)),
-      ),
-    [round.shark_reactions],
-  )
+  const yourValue = valuation(amount, equity)
+  const bestShark = useMemo(() => {
+    const offers = round.shark_reactions.filter((r) => r.offer)
+    if (!offers.length) return null
+    return offers.reduce((best, r) =>
+      valuation(r.offer!.amount, r.offer!.equity) > valuation(best.offer!.amount, best.offer!.equity) ? r : best,
+    ).offer!
+  }, [round.shark_reactions])
+
   const problem =
-    amount < MIN_AMOUNT
-      ? `Minimum offer is ${money(MIN_AMOUNT)}.`
-      : amount > cash
-        ? `You only have ${money(cash)} left.`
-        : amount > ask.amount * MAX_ASK_MULTIPLE
-          ? `Capped at ${MAX_ASK_MULTIPLE}× the ask (${money(ask.amount * MAX_ASK_MULTIPLE)}).`
-          : equityPct < 1 || equityPct > 90
-            ? 'Equity must be between 1% and 90%.'
-            : null
+    cash < MIN_AMOUNT
+      ? "You're out of money for today. Skip this one."
+      : amount < MIN_AMOUNT
+        ? `The smallest offer is ${money(MIN_AMOUNT)}.`
+        : amount > cash
+          ? `You only have ${money(cash)} left today.`
+          : amount > ask.amount * MAX_ASK_MULTIPLE
+            ? `That's way more than they need. The most you can offer is ${money(ask.amount * MAX_ASK_MULTIPLE)}.`
+            : equityPct < 1 || equityPct > 90
+              ? 'Pick between 1% and 90% of the company.'
+              : null
 
   return (
-    <div className="rounded-2xl border border-gold/40 bg-panel/90 p-5 shadow-[0_0_40px_rgb(245_185_66/0.08)]">
-      <div className="flex items-baseline justify-between">
+    <div className="rounded-2xl border border-gold/40 bg-panel/90 p-5">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="font-display text-lg tracking-wide text-gold">YOUR OFFER</p>
-        <p className="text-xs text-muted">
-          Founder asked {money(ask.amount)} for {pct(ask.equity)}
+        <p className="text-sm text-muted">
+          Money left today: <span className="font-semibold text-[#e6ecf7]">{money(cash)}</span>
         </p>
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <label className="block">
-          <span className="text-xs text-muted">Investment</span>
-          <div className="mt-1 flex items-center rounded-xl border border-line bg-stage px-3 focus-within:border-gold">
-            <span className="text-muted">$</span>
-            <input
-              type="number"
-              inputMode="numeric"
-              min={MIN_AMOUNT}
-              step={5000}
-              max={maxAmount}
-              value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
-              className="w-full bg-transparent px-2 py-2 text-lg font-semibold tabular-nums outline-none"
-            />
-          </div>
-          <input
-            type="range"
-            min={MIN_AMOUNT}
-            max={Math.max(MIN_AMOUNT, maxAmount)}
-            step={5000}
-            value={Math.min(amount, maxAmount)}
-            onChange={(e) => setAmount(Number(e.target.value))}
-            className="mt-2 w-full accent-[#f5b942]"
-            aria-label="Investment amount"
-          />
-        </label>
-        <label className="block">
-          <span className="text-xs text-muted">
-            <Learn term="Equity">The percentage of the company you'd own in exchange for your money.</Learn>
-          </span>
-          <div className="mt-1 flex items-center rounded-xl border border-line bg-stage px-3 focus-within:border-gold">
-            <input
-              type="number"
-              inputMode="decimal"
-              min={1}
-              max={90}
-              step={0.5}
-              value={equityPct}
-              onChange={(e) => setEquityPct(Number(e.target.value))}
-              className="w-full bg-transparent py-2 text-lg font-semibold tabular-nums outline-none"
-            />
-            <span className="text-muted">%</span>
-          </div>
-          <input
-            type="range"
-            min={1}
-            max={90}
-            step={0.5}
-            value={equityPct}
-            onChange={(e) => setEquityPct(Number(e.target.value))}
-            className="mt-2 w-full accent-[#f5b942]"
-            aria-label="Equity percentage"
-          />
-        </label>
+      <div className="mt-4 grid gap-5 sm:grid-cols-2">
+        <Field
+          label="How much money will you invest?"
+          prefix="$"
+          value={amount}
+          onChange={setAmount}
+          min={MIN_AMOUNT}
+          max={Math.max(MIN_AMOUNT, maxAmount)}
+          step={5000}
+        />
+        <Field
+          label="How much of the company do you want?"
+          suffix="%"
+          value={equityPct}
+          onChange={setEquityPct}
+          min={1}
+          max={90}
+          step={0.5}
+        />
       </div>
 
-      <ValuationMeter yours={yourValuation} ask={round.pitch.implied_valuation} sharkBest={sharkBest} />
+      <div className="mt-5 rounded-xl bg-stage/70 p-4 text-sm leading-relaxed">
+        <p>
+          You'd pay <strong className="text-gold">{money(amount)}</strong> for{' '}
+          <strong className="text-gold">{pct(equity)}</strong> of {name}. That means you think the whole company is
+          worth <strong className="text-gold">{money(yourValue, { compact: true })}</strong>.
+        </p>
+        <ul className="mt-3 grid gap-2 text-muted sm:grid-cols-2">
+          <li>
+            The founder thinks it's worth{' '}
+            <span className="text-[#e6ecf7]">{money(round.pitch.implied_valuation, { compact: true })}</span>
+          </li>
+          <li>
+            {bestShark ? (
+              <>
+                Best shark offer values it at{' '}
+                <span className="text-[#e6ecf7]">
+                  {money(valuation(bestShark.amount, bestShark.equity), { compact: true })}
+                </span>
+              </>
+            ) : (
+              'No shark made an offer'
+            )}
+          </li>
+        </ul>
+        <p className="mt-3 text-xs text-muted">
+          💡 Asking for a bigger slice is a better deal for you, but the founder may say no. The founder picks the offer
+          that values their company highest.
+        </p>
+      </div>
 
       {problem && <p className="mt-3 text-sm text-loss">{problem}</p>}
 
       <div className="mt-4 flex flex-wrap gap-3">
         <Button onClick={() => offer(amount, equity)} disabled={busy || !!problem}>
-          Make offer: {money(amount, { compact: true })} for {pct(equity)}
+          Send offer
         </Button>
         <Button variant="ghost" onClick={pass} disabled={busy}>
-          I'm out
+          Skip this company
         </Button>
       </div>
     </div>
   )
 }
 
-function ValuationMeter({ yours, ask, sharkBest }: { yours: number; ask: number; sharkBest: number }) {
-  const max = Math.max(yours, ask, sharkBest) * 1.15 || 1
-  const marks = [
-    { label: 'Founder ask', value: ask, color: 'bg-sea' },
-    ...(sharkBest ? [{ label: 'Best shark', value: sharkBest, color: 'bg-[#e0457b]' }] : []),
-  ]
+function Field({
+  label,
+  prefix,
+  suffix,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+}: {
+  label: string
+  prefix?: string
+  suffix?: string
+  value: number
+  onChange: (v: number) => void
+  min: number
+  max: number
+  step: number
+}) {
   return (
-    <div className="mt-5">
-      <div className="mb-2 flex items-baseline justify-between text-sm">
-        <span className="text-muted">
-          Your offer values the company at{' '}
-          <Learn term="valuation">
-            Valuation = investment ÷ equity. Higher is better for the founder; lower means you get more for your money,
-            but a lowball may get rejected.
-          </Learn>
-        </span>
-        <span className="text-lg font-bold text-gold tabular-nums">{money(yours, { compact: true })}</span>
+    <label className="block">
+      <span className="text-sm font-semibold">{label}</span>
+      <div className="mt-2 flex items-center rounded-xl border border-line bg-stage px-3 focus-within:border-gold">
+        {prefix && <span className="text-muted">{prefix}</span>}
+        <input
+          type="number"
+          inputMode="decimal"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="w-full bg-transparent px-2 py-2 text-lg font-semibold tabular-nums outline-none"
+        />
+        {suffix && <span className="text-muted">{suffix}</span>}
       </div>
-      <div className="relative h-3 rounded-full bg-stage">
-        <div className="h-full rounded-full bg-gradient-to-r from-gold-dim to-gold" style={{ width: `${(yours / max) * 100}%` }} />
-        {marks.map((m) => (
-          <div
-            key={m.label}
-            className={`absolute -top-1 h-5 w-1 rounded ${m.color}`}
-            style={{ left: `${(m.value / max) * 100}%` }}
-            title={`${m.label}: ${money(m.value)}`}
-          />
-        ))}
-      </div>
-      <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted">
-        {marks.map((m) => (
-          <span key={m.label} className="flex items-center gap-1.5">
-            <span className={`inline-block h-2 w-2 rounded-full ${m.color}`} />
-            {m.label}: {money(m.value, { compact: true })}
-          </span>
-        ))}
-      </div>
-    </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={Math.min(Math.max(value, min), max)}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="mt-3 w-full accent-[#f5b942]"
+        aria-label={label}
+      />
+    </label>
   )
 }

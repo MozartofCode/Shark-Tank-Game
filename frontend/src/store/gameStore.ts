@@ -1,11 +1,12 @@
 import { create } from 'zustand'
 import { api, ApiError } from '../api/client'
-import type { GameView, Health, RevealView, SharkPersona } from '../types'
+import { loadLocalPortfolio, saveDayLocally } from '../lib/portfolio'
+import type { GameView, Health, PortfolioDay, RevealView, SharkPersona } from '../types'
 import { useAuth } from './authStore'
 
 /** Client-side steps within one pitch. The server only tracks offers/decisions. */
 export type Step = 'intro' | 'video' | 'qa' | 'offers'
-export type Screen = 'home' | 'game' | 'reveal'
+export type Screen = 'home' | 'game' | 'reveal' | 'portfolio'
 
 const GAME_KEY = 'tankday.gameId'
 
@@ -38,6 +39,7 @@ interface State {
   error: string | null
   streamingAnswer: string | null
   pendingQuestion: string | null
+  portfolio: PortfolioDay[]
 
   boot: () => Promise<void>
   start: (mode?: 'random' | 'daily') => Promise<void>
@@ -49,7 +51,9 @@ interface State {
   respondCounter: (accept: boolean) => Promise<void>
   next: () => void
   showReveal: () => Promise<void>
-  quit: () => void
+  loadPortfolio: () => Promise<void>
+  openPortfolio: () => void
+  goHome: () => void
   clearError: () => void
 }
 
@@ -78,6 +82,7 @@ export const useGame = create<State>((set, get) => {
     error: null,
     streamingAnswer: null,
     pendingQuestion: null,
+    portfolio: loadLocalPortfolio(),
 
     async boot() {
       await run(async () => {
@@ -88,6 +93,7 @@ export const useGame = create<State>((set, get) => {
           .getState()
           .init(config.supabase_url, config.supabase_publishable_key, () => void get().claimCurrent())
       })
+      void get().loadPortfolio()
       const id = recall()
       if (!id) return
       try {
@@ -103,16 +109,19 @@ export const useGame = create<State>((set, get) => {
       if (!game) return
       remember(game.id)
       set({ game, reveal: null, viewIndex: 0, step: 'intro', screen: 'game' })
+      window.scrollTo({ top: 0 })
     },
 
     /** After signing in, attach the current guest game to the account (saves it if finished). */
     async claimCurrent() {
       const { game, reveal } = get()
+      void get().loadPortfolio()
       if (!game || game.signed_in) return
       try {
         const claimed = await api.claim(game.id)
         set({ game: claimed })
         if (reveal) set({ reveal: await api.reveal(game.id) })
+        void get().loadPortfolio()
       } catch {
         /* someone else's game or expired: leave as is */
       }
@@ -161,18 +170,46 @@ export const useGame = create<State>((set, get) => {
       const { game } = get()
       if (!game) return
       set({ viewIndex: Math.min(game.current_round, game.total_rounds - 1), step: 'intro' })
+      window.scrollTo({ top: 0 })
     },
 
     async showReveal() {
       const { game } = get()
       if (!game) return
       const reveal = await run(() => api.reveal(game.id))
-      if (reveal) set({ reveal, screen: 'reveal' })
+      if (!reveal) return
+      saveDayLocally(reveal)
+      set({ reveal, screen: 'reveal' })
+      window.scrollTo({ top: 0 })
+      void get().loadPortfolio()
     },
 
-    quit() {
-      remember(null)
-      set({ game: null, reveal: null, screen: 'home', viewIndex: 0, step: 'intro' })
+    /** Signed-in players with saved runs get their server portfolio; everyone else, this browser's. */
+    async loadPortfolio() {
+      const local = loadLocalPortfolio()
+      const { health } = get()
+      if (useAuth.getState().userId && health?.leaderboards) {
+        try {
+          const server = await api.myPortfolio()
+          set({ portfolio: server.length ? server : local })
+          return
+        } catch {
+          /* fall back to local */
+        }
+      }
+      set({ portfolio: local })
+    },
+
+    openPortfolio() {
+      void get().loadPortfolio()
+      set({ screen: 'portfolio' })
+      window.scrollTo({ top: 0 })
+    },
+
+    /** Back to the home screen; an unfinished day can be continued from there. */
+    goHome() {
+      set({ screen: 'home', step: 'intro' })
+      window.scrollTo({ top: 0 })
     },
 
     clearError: () => set({ error: null }),
@@ -184,5 +221,5 @@ export function resumeGame() {
   const { game } = useGame.getState()
   if (!game) return
   if (game.finished) void useGame.getState().showReveal()
-  else useGame.setState({ screen: 'game', step: 'intro' })
+  else useGame.setState({ screen: 'game', step: 'intro', viewIndex: Math.min(game.current_round, game.total_rounds - 1) })
 }

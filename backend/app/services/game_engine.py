@@ -215,10 +215,10 @@ class GameEngine:
         if accept:
             if r.counter.amount > game.cash:
                 raise GameError("You don't have enough cash left for this deal.")
-            r.founder_line = "Deal! Thank you so much, we can't wait to work with you."
+            r.founder_line = "Deal! Thank you, we can't wait to work with you."
             self._close(game, r, r.counter, "accepted")
         else:
-            r.founder_line = "We'll respectfully walk away and keep building on our own."
+            r.founder_line = "No problem. We'll keep building on our own."
             self._close(game, r, None, "walked")
         self.store.save(game)
         return game

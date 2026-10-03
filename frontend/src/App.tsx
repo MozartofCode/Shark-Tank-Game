@@ -3,6 +3,7 @@ import { TopBar } from './components/TopBar'
 import { useGame } from './store/gameStore'
 import { GameView } from './views/GameView'
 import { HomeView } from './views/HomeView'
+import { PortfolioView } from './views/PortfolioView'
 import { RevealView } from './views/RevealView'
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         {screen === 'home' && <HomeView />}
         {screen === 'game' && <GameView />}
         {screen === 'reveal' && <RevealView />}
+        {screen === 'portfolio' && <PortfolioView />}
       </div>
 
       {error && (
@@ -31,11 +33,11 @@ export default function App() {
       )}
 
       <footer className="border-t border-line/60 px-4 py-6 text-center text-xs leading-relaxed text-muted">
-        Educational game, not financial advice. Company outcomes are based on public reporting; private-company values
-        are estimates.
+        A learning game, not real financial advice. What happened to each company comes from news reports; values for
+        private companies are estimates.
         <br />
-        Pitch clips are embedded from official Shark Tank YouTube channels; all rights belong to their owners. Tank Day
-        is not affiliated with Shark Tank, ABC or Sony Pictures Television. The sharks are fictional characters.
+        Videos are shown from official Shark Tank YouTube channels and belong to their owners. Tank Day isn't connected
+        to Shark Tank, ABC or Sony. The sharks in this game are made-up characters.
       </footer>
     </div>
   )

@@ -84,15 +84,16 @@ function SharkSeat({
 
       {mode === 'offers' && reaction?.offer && (
         <div className="mt-3 rounded-xl border border-line/80 px-3 py-2 text-sm">
-          <span className="font-semibold">{money(reaction.offer.amount)}</span>
-          <span className="text-muted"> for </span>
-          <span className="font-semibold">{pct(reaction.offer.equity)}</span>
+          <p>
+            Offers <span className="font-semibold">{money(reaction.offer.amount, { compact: true })}</span> for{' '}
+            <span className="font-semibold">{pct(reaction.offer.equity)}</span>
+          </p>
           <p className="text-xs text-muted">
-            values company at {money(valuation(reaction.offer.amount, reaction.offer.equity), { compact: true })}
+            = company worth {money(valuation(reaction.offer.amount, reaction.offer.equity), { compact: true })}
           </p>
         </div>
       )}
-      {won && <p className="mt-2 text-xs font-semibold text-gold">Got the deal</p>}
+      {won && <p className="mt-2 text-xs font-semibold text-gold">✓ Got the deal</p>}
     </div>
   )
 }

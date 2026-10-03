@@ -24,3 +24,14 @@ export function valuation(amount: number, equity: number): number {
 export function signedPct(n: number): string {
   return `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`
 }
+
+/** Text color for a gain, a loss, or nothing. */
+export function profitTone(n: number): string {
+  return n > 0 ? 'text-win' : n < 0 ? 'text-loss' : 'text-muted'
+}
+
+/** "+$1.2M" / "-$50,000" (compact shortens big numbers). */
+export function signedMoney(n: number, compact = false): string {
+  const s = money(Math.abs(n), { compact })
+  return `${n > 0 ? '+' : n < 0 ? '-' : ''}${s}`
+}

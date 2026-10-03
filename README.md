@@ -1,8 +1,8 @@
 # Tank Day 🦈
 
-Take a seat on the panel. You have **$10M** and **five real startup pitches**. Watch each pitch, grill the founder, compete with four AI sharks for the deal, then fast-forward years later and see what really happened to every company and what your stake is worth.
+Take a seat on the panel. Every day you get **$1M** and **five real startup pitches**. Watch each pitch, question the founder, compete with four AI sharks for the deal, then fast-forward years later and see what really happened to every company and what your slice is worth. Every day adds to your lifetime **portfolio**.
 
-It's a game for people who love Shark Tank and want to learn how startup investing works: valuation, equity, dilution, exits, survivorship bias.
+It's built to teach (including teenagers) how startup investing works: valuation, equity, dilution, exits, survivorship bias, and why investors spread their bets. The wording is deliberately plain, with a "money words" glossary and a short lesson after every company.
 
 ## Quick start
 
@@ -38,11 +38,15 @@ Supabase's built-in email sender is rate-limited. Configure custom SMTP before a
 
 ## How a day works
 
-1. **Intro**: company, the ask, and the implied valuation (ask ÷ equity).
-2. **Pitch**: the real clip, cut before the deal so there are no spoilers.
-3. **Q&A**: up to 3 questions to an AI founder who only knows pitch-day facts.
-4. **Offers**: the four sharks go in or out. You make your own offer or pass. The founder accepts the best offer, counters once if it's close, or walks.
-5. **Reveal**: real outcome, your stake's value after dilution, MOIC, a lesson, a leaderboard against the sharks, and an index-fund benchmark.
+Each day picks 5 of the 17 pitches. Every day includes **1–3 companies that really went out of business**, mixed with survivors and shuffled, so you can't just "buy everything" and win.
+
+1. **Meet**: who's asking, how much, and what that says the company is worth.
+2. **Watch**: the real clip, cut before the deal so there are no spoilers.
+3. **Ask**: up to 3 questions to an AI founder who only knows pitch-day facts.
+4. **Invest**: the four sharks go in or out. You offer money for a slice, or skip. The founder takes the offer that values the company highest (sharks get a small bonus when they can help), counters once if it's close, or walks.
+5. **Find out**: what really happened, what your slice is worth now, a lesson, how you did against the sharks, and an index-fund comparison.
+
+**Portfolio.** Every finished day is added to your portfolio: total invested, what it's worth now, profit, and every company you own. Guests' portfolios live in the browser; signed-in players' portfolios are saved in Supabase (`GET /api/me/portfolio`).
 
 ## Architecture (MVC)
 
@@ -80,6 +84,7 @@ supabase/migrations/  Database schema + RLS policies
 | POST | `/api/games/{id}/claim` | Attach a guest game to the signed-in account |
 | GET | `/api/leaderboard?scope=daily\|all` | Daily challenge / all-time leaderboard |
 | GET | `/api/me/runs` | Signed-in player's run history |
+| GET | `/api/me/portfolio` | Every finished day and the companies the player owns |
 
 `POST /api/games` takes `{"mode": "daily"}` for the daily challenge: everyone gets the same 5 pitches each UTC day, and only your first daily run is ranked. Requests may carry `Authorization: Bearer <supabase access token>`. The backend verifies it against the project's JWKS (ES256).
 

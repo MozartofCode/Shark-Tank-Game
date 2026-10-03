@@ -1,85 +1,108 @@
 import { AccountPanel } from '../components/AccountPanel'
+import { Glossary } from '../components/Glossary'
 import { Leaderboard } from '../components/Leaderboard'
 import { Button, Card, Eyebrow } from '../components/ui'
 import { money } from '../lib/format'
+import { totals } from '../lib/portfolio'
 import { resumeGame, useGame } from '../store/gameStore'
 
 const STEPS = [
-  { n: '1', title: 'Watch the pitch', body: 'Real founders, real pitches, embedded from official Shark Tank channels.' },
-  { n: '2', title: 'Grill the founder', body: 'Ask up to 3 questions. An AI founder answers using only what they knew that day.' },
-  { n: '3', title: 'Make your offer', body: 'Compete with four AI sharks. Too low and the founder walks; too high and you overpay.' },
-  { n: '4', title: 'Fast-forward', body: 'See what really happened to each company and what your stake would be worth.' },
+  { n: '1', title: 'Watch', body: 'See a real founder pitch their company on Shark Tank.' },
+  { n: '2', title: 'Ask', body: 'Ask the founder up to 3 questions before you decide.' },
+  { n: '3', title: 'Invest', body: 'Offer money for a slice of the company, or skip it.' },
+  { n: '4', title: 'Find out', body: 'Jump years ahead and see if your money grew or vanished.' },
 ]
 
 export function HomeView() {
-  const { start, busy, health, sharks, game } = useGame()
-  const bankroll = health?.bankroll ?? 10_000_000
-  const canResume = game && !game.revealed
+  const { start, busy, health, sharks, game, portfolio, openPortfolio } = useGame()
+  const bankroll = health?.bankroll ?? 1_000_000
+  const inProgress = game && !game.revealed
+  const t = totals(portfolio)
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-12 sm:py-20">
+    <main className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
       <section className="animate-rise text-center">
-        <Eyebrow>Five pitches · {money(bankroll, { compact: true })} · one day in the tank</Eyebrow>
-        <h1 className="mt-4 font-display text-5xl leading-none tracking-tight sm:text-7xl">
+        <h1 className="font-display text-5xl leading-none tracking-tight sm:text-7xl">
           TANK <span className="text-gold">DAY</span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-lg text-[#c3cde0]">
-          Take a seat on the panel. You have {money(bankroll, { compact: true })} and five real pitches. Back the
-          winners, dodge the flops, and find out years later who was right.
+          You're the investor. Every day you get <strong className="text-gold">{money(bankroll)}</strong> to invest in
+          5 real companies from Shark Tank. Some became huge. Some went broke. Can you tell which?
         </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button onClick={() => start('random')} disabled={busy} className="px-8 py-3 text-base">
-            {busy ? 'Setting the stage…' : 'Start a new day'}
-          </Button>
-          <Button variant="ghost" onClick={() => start('daily')} disabled={busy} className="px-6 py-3 text-base">
-            ☀️ Daily challenge
-          </Button>
-          {canResume && (
-            <Button variant="ghost" onClick={resumeGame} className="px-6 py-3 text-base">
+
+        <div className="mt-8 flex flex-col items-center gap-3">
+          {inProgress ? (
+            <Button onClick={resumeGame} className="px-10 py-3 text-base">
               {game.finished
-                ? 'See your results'
-                : `Resume pitch ${game.current_round + 1} of ${game.total_rounds}`}
+                ? '▶ See your results'
+                : `▶ Continue (company ${game.current_round + 1} of ${game.total_rounds})`}
+            </Button>
+          ) : (
+            <Button onClick={() => start('random')} disabled={busy} className="px-10 py-3 text-base">
+              {busy ? 'Getting ready…' : '▶ Play'}
             </Button>
           )}
-        </div>
-        {health?.accounts && (
-          <div className="mt-6">
-            <AccountPanel />
-            <p className="mt-2 text-xs text-muted">Sign in to save your runs and join the leaderboard. No password needed.</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {inProgress && (
+              <Button variant="ghost" onClick={() => start('random')} disabled={busy}>
+                Start a new day instead
+              </Button>
+            )}
+            <Button variant="ghost" onClick={() => start('daily')} disabled={busy}>
+              ☀️ Daily challenge
+            </Button>
+            {t.days > 0 && (
+              <Button variant="ghost" onClick={openPortfolio}>
+                📈 My portfolio ({t.profit >= 0 ? '+' : ''}
+                {money(t.profit, { compact: true })})
+              </Button>
+            )}
           </div>
-        )}
-        {health && !health.ai_founder && (
-          <p className="mt-4 text-xs text-muted">Offline founder mode. Add an Anthropic API key for live AI answers.</p>
-        )}
+          <p className="text-xs text-muted">Daily challenge: the same 5 companies for everyone today.</p>
+        </div>
       </section>
 
-      <section className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="mt-14 grid grid-cols-2 gap-3 lg:grid-cols-4">
         {STEPS.map((s) => (
           <Card key={s.n} className="animate-rise">
-            <span className="font-display text-3xl text-gold/80">
-              {s.n}
-            </span>
-            <p className="mt-2 font-semibold">{s.title}</p>
+            <span className="font-display text-2xl text-gold/80">{s.n}</span>
+            <p className="mt-1 font-semibold">{s.title}</p>
             <p className="mt-1 text-sm text-muted">{s.body}</p>
           </Card>
         ))}
       </section>
 
+      <section className="mt-8">
+        <Glossary />
+      </section>
+
+      {health?.accounts && (
+        <section className="mt-8">
+          <Card className="text-center">
+            <p className="font-semibold">Save your portfolio</p>
+            <p className="mt-1 mb-4 text-sm text-muted">
+              Sign in to keep your portfolio on any device and get on the leaderboard. No password needed.
+            </p>
+            <AccountPanel />
+          </Card>
+        </section>
+      )}
+
       {health?.leaderboards && (
-        <section className="mx-auto mt-16 max-w-2xl">
+        <section className="mt-8">
           <Leaderboard />
         </section>
       )}
 
       {sharks.length > 0 && (
-        <section className="mt-16">
-          <Eyebrow>Your fellow sharks</Eyebrow>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mt-14">
+          <Eyebrow>You'll compete with these sharks</Eyebrow>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {sharks.map((s) => (
               <Card key={s.id}>
                 <div className="flex items-center gap-3">
                   <div
-                    className="grid h-12 w-12 place-items-center rounded-full text-2xl"
+                    className="grid h-11 w-11 place-items-center rounded-full text-xl"
                     style={{ background: `${s.color}22`, boxShadow: `inset 0 0 0 2px ${s.color}` }}
                     aria-hidden
                   >
@@ -91,11 +114,17 @@ export function HomeView() {
                   </div>
                 </div>
                 <p className="mt-3 text-sm text-[#c3cde0]">{s.bio}</p>
-                <p className="mt-2 text-xs text-muted italic">“{s.catchphrase}”</p>
               </Card>
             ))}
           </div>
+          <p className="mt-3 text-xs text-muted">These sharks are made-up characters, not the real Shark Tank cast.</p>
         </section>
+      )}
+
+      {health && !health.ai_founder && (
+        <p className="mt-10 text-center text-xs text-muted">
+          Founder answers are in simple offline mode. Add an Anthropic API key for full AI answers.
+        </p>
       )}
     </main>
   )

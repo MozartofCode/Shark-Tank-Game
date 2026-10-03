@@ -112,9 +112,26 @@ export interface Standing {
   name: string
   invested: number
   portfolio_value: number
-  net_worth: number
+  profit: number
   return_pct: number
   deals: number
+}
+
+export interface Holding {
+  pitch_id: string
+  company: string
+  status: string
+  amount: number
+  equity: number
+  stake_value: number
+}
+
+export interface PortfolioDay {
+  game_id: string
+  played_at: string
+  daily_date: string | null
+  bankroll: number
+  holdings: Holding[]
 }
 
 export interface RevealView {
@@ -131,6 +148,7 @@ export interface RevealView {
   worst_deal: string | null
   rounds: RevealRound[]
   standings: Standing[]
+  profit: number
   daily_date: string | null
   saved: boolean
 }

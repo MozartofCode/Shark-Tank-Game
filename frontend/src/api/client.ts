@@ -1,4 +1,13 @@
-import type { GameView, Health, LeaderboardEntry, PublicConfig, RevealView, RunSummary, SharkPersona } from '../types'
+import type {
+  GameView,
+  Health,
+  LeaderboardEntry,
+  PortfolioDay,
+  PublicConfig,
+  RevealView,
+  RunSummary,
+  SharkPersona,
+} from '../types'
 
 const BASE = import.meta.env.VITE_API_URL ?? ''
 
@@ -49,6 +58,7 @@ export const api = {
   claim: (id: string) => post<GameView>(`/api/games/${id}/claim`),
   leaderboard: (scope: 'daily' | 'all') => request<LeaderboardEntry[]>(`/api/leaderboard?scope=${scope}`),
   myRuns: () => request<RunSummary[]>('/api/me/runs'),
+  myPortfolio: () => request<PortfolioDay[]>('/api/me/portfolio'),
   getGame: (id: string) => request<GameView>(`/api/games/${id}`),
   offer: (id: string, round: number, amount: number, equity: number) =>
     post<GameView>(`/api/games/${id}/rounds/${round}/offer`, { amount, equity }),
