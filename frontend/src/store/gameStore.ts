@@ -5,8 +5,9 @@ import type { GameView, Health, PortfolioDay, RevealView, SharkPersona } from '.
 import { useAuth } from './authStore'
 
 /** Client-side steps within one pitch. The server only tracks offers/decisions. */
-export type Step = 'intro' | 'video' | 'qa' | 'offers'
+export type Step = 'pitch' | 'ask' | 'invest'
 export type Screen = 'home' | 'game' | 'reveal' | 'portfolio'
+export type SheetName = 'account' | 'glossary' | null
 
 const GAME_KEY = 'tankday.gameId'
 
@@ -40,6 +41,7 @@ interface State {
   streamingAnswer: string | null
   pendingQuestion: string | null
   portfolio: PortfolioDay[]
+  sheet: SheetName
 
   boot: () => Promise<void>
   start: (mode?: 'random' | 'daily') => Promise<void>
@@ -55,6 +57,7 @@ interface State {
   openPortfolio: () => void
   goHome: () => void
   clearError: () => void
+  openSheet: (sheet: SheetName) => void
 }
 
 export const useGame = create<State>((set, get) => {
@@ -77,12 +80,13 @@ export const useGame = create<State>((set, get) => {
     game: null,
     reveal: null,
     viewIndex: 0,
-    step: 'intro',
+    step: 'pitch',
     busy: false,
     error: null,
     streamingAnswer: null,
     pendingQuestion: null,
     portfolio: loadLocalPortfolio(),
+    sheet: null,
 
     async boot() {
       await run(async () => {
@@ -108,7 +112,7 @@ export const useGame = create<State>((set, get) => {
       const game = await run(() => api.newGame(mode))
       if (!game) return
       remember(game.id)
-      set({ game, reveal: null, viewIndex: 0, step: 'intro', screen: 'game' })
+      set({ game, reveal: null, viewIndex: 0, step: 'pitch', screen: 'game' })
       window.scrollTo({ top: 0 })
     },
 
@@ -127,7 +131,10 @@ export const useGame = create<State>((set, get) => {
       }
     },
 
-    setStep: (step) => set({ step }),
+    setStep: (step) => {
+      set({ step })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
 
     async ask(question) {
       const { game, viewIndex } = get()
@@ -169,7 +176,7 @@ export const useGame = create<State>((set, get) => {
     next() {
       const { game } = get()
       if (!game) return
-      set({ viewIndex: Math.min(game.current_round, game.total_rounds - 1), step: 'intro' })
+      set({ viewIndex: Math.min(game.current_round, game.total_rounds - 1), step: 'pitch' })
       window.scrollTo({ top: 0 })
     },
 
@@ -208,11 +215,12 @@ export const useGame = create<State>((set, get) => {
 
     /** Back to the home screen; an unfinished day can be continued from there. */
     goHome() {
-      set({ screen: 'home', step: 'intro' })
+      set({ screen: 'home', step: 'pitch' })
       window.scrollTo({ top: 0 })
     },
 
     clearError: () => set({ error: null }),
+    openSheet: (sheet) => set({ sheet }),
   }
 })
 
@@ -221,5 +229,5 @@ export function resumeGame() {
   const { game } = useGame.getState()
   if (!game) return
   if (game.finished) void useGame.getState().showReveal()
-  else useGame.setState({ screen: 'game', step: 'intro', viewIndex: Math.min(game.current_round, game.total_rounds - 1) })
+  else useGame.setState({ screen: 'game', step: 'pitch', viewIndex: Math.min(game.current_round, game.total_rounds - 1) })
 }

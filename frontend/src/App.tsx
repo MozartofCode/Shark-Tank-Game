@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { TopBar } from './components/TopBar'
+import { Nav } from './components/Nav'
+import { Sheets } from './components/Sheets'
 import { useGame } from './store/gameStore'
 import { GameView } from './views/GameView'
 import { HomeView } from './views/HomeView'
@@ -15,29 +16,34 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {screen !== 'home' && <TopBar />}
-      <div className="flex-1">
+      <Nav />
+      <div key={screen} className="animate-fade-in flex-1">
         {screen === 'home' && <HomeView />}
         {screen === 'game' && <GameView />}
         {screen === 'reveal' && <RevealView />}
         {screen === 'portfolio' && <PortfolioView />}
       </div>
 
+      <Sheets />
+
       {error && (
-        <div role="alert" className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-lg items-start gap-3 rounded-xl border border-loss/50 bg-stage p-4 text-sm shadow-2xl">
-          <span className="flex-1 text-loss">{error}</span>
-          <button onClick={clearError} className="text-muted hover:text-[#e6ecf7]" aria-label="Dismiss">
-            ✕
+        <div
+          role="alert"
+          className="animate-sheet-up fixed inset-x-4 bottom-6 z-50 mx-auto flex max-w-md items-center gap-3 rounded-2xl bg-surface px-5 py-4 text-[15px] shadow-[var(--shadow-float)]"
+        >
+          <span className="flex-1">{error}</span>
+          <button onClick={clearError} className="font-medium text-accent">
+            OK
           </button>
         </div>
       )}
 
-      <footer className="border-t border-line/60 px-4 py-6 text-center text-xs leading-relaxed text-muted">
-        A learning game, not real financial advice. What happened to each company comes from news reports; values for
-        private companies are estimates.
-        <br />
-        Videos are shown from official Shark Tank YouTube channels and belong to their owners. Tank Day isn't connected
-        to Shark Tank, ABC or Sony. The sharks in this game are made-up characters.
+      <footer className="mx-auto w-full max-w-5xl px-5 py-10 text-xs leading-relaxed text-faint">
+        <div className="border-t border-line pt-6">
+          A learning game, not financial advice. Outcomes come from public news reports; private-company values are
+          estimates. Videos are embedded from official Shark Tank YouTube channels and belong to their owners. Tank Day
+          isn’t affiliated with Shark Tank, ABC or Sony, and its sharks are fictional.
+        </div>
       </footer>
     </div>
   )

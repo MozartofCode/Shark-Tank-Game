@@ -1,48 +1,98 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
 
-type Variant = 'gold' | 'ghost' | 'danger'
+type Variant = 'primary' | 'secondary' | 'plain'
+type Size = 'md' | 'lg'
 
 const VARIANTS: Record<Variant, string> = {
-  gold: 'bg-gold text-ink hover:bg-[#ffcb5c] shadow-[0_0_24px_rgb(245_185_66/0.35)]',
-  ghost: 'border border-line bg-panel-2/60 text-[#e6ecf7] hover:border-sea/60 hover:bg-panel-2',
-  danger: 'border border-loss/40 bg-loss/10 text-loss hover:bg-loss/20',
+  primary: 'bg-accent text-white hover:bg-accent-hover active:scale-[0.98]',
+  secondary: 'bg-fill text-fg hover:bg-fill-strong active:scale-[0.98]',
+  plain: 'text-accent hover:underline underline-offset-4',
+}
+
+const SIZES: Record<Size, string> = {
+  md: 'h-10 px-5 text-[15px]',
+  lg: 'h-12 px-7 text-[17px]',
 }
 
 export function Button({
-  variant = 'gold',
+  variant = 'primary',
+  size = 'md',
   className = '',
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
+}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: Size }) {
+  const shape = variant === 'plain' ? 'text-[15px]' : `rounded-full ${SIZES[size]}`
   return (
     <button
       {...props}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${VARIANTS[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap transition duration-200 disabled:pointer-events-none disabled:opacity-40 ${shape} ${VARIANTS[variant]} ${className}`}
     />
   )
 }
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <div className={`rounded-3xl bg-surface p-6 shadow-[var(--shadow-card)] ${className}`}>{children}</div>
+}
+
+type Tone = 'neutral' | 'win' | 'loss' | 'accent'
+
+const TONES: Record<Tone, string> = {
+  neutral: 'bg-fill text-muted',
+  win: 'bg-win/12 text-win',
+  loss: 'bg-loss/12 text-loss',
+  accent: 'bg-accent/12 text-accent',
+}
+
+export function Pill({ children, tone = 'neutral', className = '' }: { children: ReactNode; tone?: Tone; className?: string }) {
   return (
-    <div className={`rounded-2xl border border-line bg-panel/80 p-5 backdrop-blur ${className}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${TONES[tone]} ${className}`}>
       {children}
-    </div>
+    </span>
   )
 }
 
-export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className="text-xs font-semibold tracking-[0.18em] text-sea uppercase">{children}</p>
+export function Avatar({ emoji, color, size = 40 }: { emoji: string; color: string; size?: number }) {
+  return (
+    <span
+      aria-hidden
+      className="grid shrink-0 place-items-center rounded-full"
+      style={{ width: size, height: size, fontSize: size * 0.5, background: `${color}1f` }}
+    >
+      {emoji}
+    </span>
+  )
 }
 
-export function Learn({ term, children }: { term: string; children: ReactNode }) {
+/** Centered modal sheet with a dimmed backdrop. Closes on Escape or backdrop click. */
+export function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [onClose])
+
   return (
-    <span className="group relative inline-flex cursor-help items-center">
-      <span className="border-b border-dotted border-muted">{term}</span>
-      <span
-        role="tooltip"
-        className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 rounded-lg border border-line bg-stage p-3 text-xs leading-relaxed font-normal text-[#cdd6e8] opacity-0 shadow-xl transition group-hover:opacity-100"
-      >
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-modal aria-label={title}>
+      <div className="animate-fade-in absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
+      <div className="animate-sheet-up relative max-h-[88vh] w-full overflow-y-auto rounded-t-3xl bg-surface p-6 shadow-[var(--shadow-float)] sm:max-w-md sm:rounded-3xl sm:p-8">
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-xl font-semibold">{title}</h2>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="grid h-8 w-8 place-items-center rounded-full bg-fill text-muted transition hover:bg-fill-strong"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
         {children}
-      </span>
-    </span>
+      </div>
+    </div>
   )
 }

@@ -3,53 +3,61 @@ import { useAuth } from '../store/authStore'
 import { Button } from './ui'
 
 /** Magic-link sign-in. Renders nothing when accounts aren't configured. */
-export function AccountPanel({ compact = false }: { compact?: boolean }) {
+export function AccountPanel() {
   const { enabled, email, linkSentTo, error, sendMagicLink, signOut } = useAuth()
   const [value, setValue] = useState('')
   if (!enabled) return null
 
   if (email) {
     return (
-      <div className="flex items-center gap-3 text-sm">
-        <span className="text-muted">
-          Signed in as <span className="text-[#e6ecf7]">{email}</span>
-        </span>
-        <button onClick={signOut} className="text-muted underline hover:text-[#e6ecf7]">
+      <div className="space-y-4">
+        <p className="text-[15px] text-muted">
+          You're signed in as <span className="font-medium text-fg">{email}</span>. Your portfolio is saved to your
+          account.
+        </p>
+        <Button variant="secondary" onClick={signOut} className="w-full">
           Sign out
-        </button>
+        </Button>
       </div>
     )
   }
 
   if (linkSentTo) {
     return (
-      <p className="text-sm text-win">
-        Check {linkSentTo} for your sign-in link. You can keep playing; your run will be saved when you sign in.
-      </p>
+      <div className="space-y-2 text-center">
+        <p className="text-3xl">✉️</p>
+        <p className="font-medium">Check your email</p>
+        <p className="text-[15px] text-muted">
+          We sent a sign-in link to {linkSentTo}. You can keep playing in the meantime.
+        </p>
+      </div>
     )
   }
 
   return (
     <form
-      className={`flex flex-wrap items-center gap-2 ${compact ? '' : 'justify-center'}`}
+      className="space-y-3"
       onSubmit={(e) => {
         e.preventDefault()
         if (value.includes('@')) void sendMagicLink(value.trim())
       }}
     >
+      <p className="text-[15px] text-muted">
+        Save your portfolio on any device and join the leaderboard. No password, just a link in your email.
+      </p>
       <input
         type="email"
         required
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="you@email.com"
+        placeholder="Email address"
         aria-label="Email address"
-        className="w-56 rounded-xl border border-line bg-stage px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-sea"
+        className="h-12 w-full rounded-xl bg-fill px-4 text-[17px] outline-none placeholder:text-faint focus:ring-2 focus:ring-accent/50"
       />
-      <Button type="submit" variant="ghost">
-        Email me a sign-in link
+      <Button type="submit" size="lg" className="w-full">
+        Continue
       </Button>
-      {error && <p className="w-full text-sm text-loss">{error}</p>}
+      {error && <p className="text-sm text-loss">{error}</p>}
     </form>
   )
 }

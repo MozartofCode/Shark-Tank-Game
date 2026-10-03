@@ -35,3 +35,11 @@ export function signedMoney(n: number, compact = false): string {
   const s = money(Math.abs(n), { compact })
   return `${n > 0 ? '+' : n < 0 ? '-' : ''}${s}`
 }
+
+/** Friendly growth: "+35%", "-100%", or "12× your money" for big wins. */
+export function growth(invested: number, value: number): string {
+  if (!invested) return '0%'
+  const multiple = value / invested
+  if (multiple >= 3) return `${multiple >= 10 ? Math.round(multiple) : multiple.toFixed(1)}× your money`
+  return signedPct((multiple - 1) * 100)
+}

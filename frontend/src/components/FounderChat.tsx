@@ -1,108 +1,118 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useGame } from '../store/gameStore'
-import type { RoundView } from '../types'
-import { Button } from './ui'
+import type { RoundView, SharkPersona } from '../types'
 
-const SUGGESTIONS = [
-  'How much have you sold so far?',
-  'Why is your company worth that much?',
-  'What will you do with the money?',
-  'What if a big company copies you?',
-]
+const GENERIC = ['How much have you sold so far?', 'Why is your company worth that much?']
 
-export function FounderChat({ round }: { round: RoundView }) {
+/** iMessage-style chat with the founder. The sharks' questions double as suggestions. */
+export function FounderChat({ round, sharks }: { round: RoundView; sharks: SharkPersona[] }) {
   const ask = useGame((s) => s.ask)
   const streaming = useGame((s) => s.streamingAnswer)
   const pending = useGame((s) => s.pendingQuestion)
   const [text, setText] = useState('')
-  const endRef = useRef<HTMLDivElement>(null)
-  const founder = round.pitch.company.founders.join(' & ')
-  const disabled = streaming !== null || round.questions_left === 0
+  const scroller = useRef<HTMLDivElement>(null)
+  const founder = round.pitch.company.founders[0]
+  const busy = streaming !== null
+  const outOfQuestions = round.questions_left === 0
+
+  const suggestions = useMemo(() => {
+    const asked = new Set(round.chat.filter((m) => m.role === 'user').map((m) => m.content))
+    const fromSharks = round.shark_reactions.flatMap((r) => {
+      const shark = sharks.find((s) => s.id === r.shark_id)
+      return r.questions.slice(0, 1).map((q) => ({ q, emoji: shark?.avatar ?? '🦈' }))
+    })
+    return [...fromSharks, ...GENERIC.map((q) => ({ q, emoji: '💬' }))].filter((s) => !asked.has(s.q)).slice(0, 3)
+  }, [round.chat, round.shark_reactions, sharks])
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-  }, [round.chat.length, streaming])
+    scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' })
+  }, [round.chat.length, streaming, pending])
 
   function submit(q: string) {
     const question = q.trim()
-    if (!question || disabled) return
+    if (!question || busy || outOfQuestions) return
     setText('')
     void ask(question)
   }
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-line bg-panel/80">
-      <div className="flex items-center justify-between border-b border-line px-4 py-3">
+    <div className="flex h-full min-h-[420px] flex-col overflow-hidden rounded-3xl bg-surface shadow-[var(--shadow-card)]">
+      <div className="flex items-center justify-between border-b border-line px-5 py-3">
         <div>
-          <p className="text-sm font-semibold">Ask the founder</p>
-          <p className="text-xs text-muted">{founder}</p>
+          <p className="text-[15px] font-semibold">{founder}</p>
+          <p className="text-xs text-muted">Founder</p>
         </div>
-        <span className="rounded-full bg-panel-2 px-2.5 py-1 text-xs text-muted">
-          {round.questions_left} of 3 questions left
-        </span>
+        <p className="text-xs text-muted">
+          {outOfQuestions ? 'No questions left' : `${round.questions_left} question${round.questions_left === 1 ? '' : 's'} left`}
+        </p>
       </div>
 
-      <div className="max-h-80 min-h-40 flex-1 space-y-3 overflow-y-auto p-4 text-sm">
-        {round.chat.length === 0 && streaming === null && (
-          <p className="text-muted">
-            Good investors ask questions first. Tap a suggestion or type your own.
+      <div ref={scroller} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
+        {round.chat.length === 0 && !pending && (
+          <p className="px-6 pt-6 text-center text-[15px] text-muted">
+            Great investors ask before they buy. Pick a question below or write your own.
           </p>
         )}
         {round.chat.map((m, i) => (
-          <Bubble key={i} role={m.role} text={m.content} />
+          <Bubble key={i} mine={m.role === 'user'} text={m.content} />
         ))}
-        {pending && <Bubble role="user" text={pending} />}
-        {streaming !== null && <Bubble role="assistant" text={streaming || '…'} />}
-        <div ref={endRef} />
+        {pending && <Bubble mine text={pending} />}
+        {busy && <Bubble mine={false} text={streaming || '•••'} typing={!streaming} />}
       </div>
 
-      <div className="border-t border-line p-3">
-        {round.chat.length === 0 && (
-          <div className="mb-2 flex flex-wrap gap-1.5">
-            {SUGGESTIONS.map((s) => (
-              <button
-                key={s}
-                onClick={() => submit(s)}
-                disabled={disabled}
-                className="rounded-full border border-line px-2.5 py-1 text-xs text-muted hover:border-sea/60 hover:text-[#e6ecf7] disabled:opacity-50"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        )}
-        <form
-          className="flex gap-2"
-          onSubmit={(e) => {
-            e.preventDefault()
-            submit(text)
-          }}
+      {!outOfQuestions && suggestions.length > 0 && (
+        <div className="flex flex-wrap gap-2 px-4 pb-3">
+          {suggestions.map((s) => (
+            <button
+              key={s.q}
+              onClick={() => submit(s.q)}
+              disabled={busy}
+              className="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-left text-[13px] text-fg transition hover:bg-fill disabled:opacity-40"
+            >
+              <span aria-hidden>{s.emoji}</span>
+              {s.q}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <form
+        className="flex items-center gap-2 border-t border-line px-3 py-3"
+        onSubmit={(e) => {
+          e.preventDefault()
+          submit(text)
+        }}
+      >
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          maxLength={500}
+          disabled={busy || outOfQuestions}
+          placeholder={outOfQuestions ? 'You’ve asked all your questions' : `Ask ${founder} anything…`}
+          className="h-10 min-w-0 flex-1 rounded-full bg-fill px-4 text-[15px] outline-none placeholder:text-faint focus:ring-2 focus:ring-accent/40 disabled:opacity-60"
+        />
+        <button
+          type="submit"
+          aria-label="Send"
+          disabled={busy || outOfQuestions || !text.trim()}
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-white transition disabled:bg-fill-strong disabled:text-faint"
         >
-          <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            maxLength={500}
-            disabled={disabled}
-            placeholder={round.questions_left ? 'Ask the founder anything…' : 'No questions left'}
-            className="min-w-0 flex-1 rounded-xl border border-line bg-stage px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-sea"
-          />
-          <Button type="submit" variant="ghost" disabled={disabled || !text.trim()}>
-            Ask
-          </Button>
-        </form>
-      </div>
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
+            <path d="M7 12V2M2.5 6.5L7 2l4.5 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </form>
     </div>
   )
 }
 
-function Bubble({ role, text }: { role: 'user' | 'assistant'; text: string }) {
-  const mine = role === 'user'
+function Bubble({ mine, text, typing = false }: { mine: boolean; text: string; typing?: boolean }) {
   return (
-    <div className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
+    <div className={`animate-scale-in flex ${mine ? 'justify-end' : 'justify-start'}`}>
       <p
-        className={`max-w-[85%] rounded-2xl px-3.5 py-2 leading-relaxed ${
-          mine ? 'rounded-br-sm bg-sea/20 text-[#dff3ff]' : 'rounded-bl-sm bg-panel-2 text-[#e6ecf7]'
-        }`}
+        className={`max-w-[80%] rounded-[20px] px-4 py-2 text-[15px] leading-snug ${
+          mine ? 'rounded-br-md bg-accent text-white' : 'rounded-bl-md bg-fill text-fg'
+        } ${typing ? 'animate-pulse tracking-widest text-muted' : ''}`}
       >
         {text}
       </p>

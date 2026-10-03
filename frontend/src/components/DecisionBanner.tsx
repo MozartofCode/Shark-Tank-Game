@@ -1,63 +1,67 @@
 import { money, pct } from '../lib/format'
 import { useGame } from '../store/gameStore'
 import type { GameView, RoundView, SharkPersona } from '../types'
-import { Button } from './ui'
+import { Button, Card } from './ui'
 
+/** What the founder decided: deal, counter-offer, or no deal. */
 export function DecisionBanner({ game, round, sharks }: { game: GameView; round: RoundView; sharks: SharkPersona[] }) {
   const { respondCounter, next, showReveal, busy } = useGame()
   const company = round.pitch.company.name
-  const founder = round.pitch.company.founders.join(' & ')
+  const founder = round.pitch.company.founders[0]
   const mine = round.winner?.investor === 'player'
   const sharkName = sharks.find((s) => s.id === round.winner?.investor)?.name
 
-  let headline: string
-  if (round.status === 'countered') headline = 'The founder wants a better deal'
-  else if (mine) headline = `🎉 Deal! You now own ${pct(round.winner!.equity)} of ${company}.`
-  else if (round.winner) headline = `${sharkName} got the deal.`
-  else headline = 'No deal.'
+  const countered = round.status === 'countered' && round.counter
+  const icon = countered ? '🤝' : mine ? '🎉' : round.winner ? '🦈' : '👋'
+  const title = countered
+    ? 'They want a better deal'
+    : mine
+      ? 'It’s a deal!'
+      : round.winner
+        ? `${sharkName} got the deal`
+        : 'No deal'
+  const detail = countered
+    ? `${money(round.counter!.amount)} for ${pct(round.counter!.equity)} instead of your offer.`
+    : mine
+      ? `You now own ${pct(round.winner!.equity)} of ${company} for ${money(round.winner!.amount)}.`
+      : round.winner
+        ? `${money(round.winner.amount)} for ${pct(round.winner.equity)}. You keep your money.`
+        : 'Nobody invested in this one.'
 
   return (
-    <div className="animate-rise rounded-2xl border border-line bg-panel/90 p-5">
-      <p className={`text-xl font-bold ${mine ? 'text-win' : ''}`}>{headline}</p>
-      <p className="mt-2 text-[#c3cde0]">
+    <Card className="animate-scale-in mx-auto max-w-2xl p-8 text-center">
+      <p className="text-5xl" aria-hidden>
+        {icon}
+      </p>
+      <h2 className="mt-4 text-[28px] font-bold">{title}</h2>
+      <p className="mt-2 text-[17px] text-muted">{detail}</p>
+      <p className="mx-auto mt-5 max-w-md text-[15px] text-faint italic">
         {founder}: “{round.founder_line}”
       </p>
 
-      {round.status === 'countered' && round.counter && (
-        <div className="mt-4 rounded-xl border border-gold/50 bg-gold/5 p-4">
-          <p>
-            They'll take <strong>{money(round.counter.amount)}</strong> for <strong>{pct(round.counter.equity)}</strong>{' '}
-            instead. Do you accept?
-          </p>
-          <div className="mt-3 flex gap-3">
-            <Button onClick={() => respondCounter(true)} disabled={busy}>
-              Yes, deal!
-            </Button>
-            <Button variant="ghost" onClick={() => respondCounter(false)} disabled={busy}>
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
+        {countered ? (
+          <>
+            <Button size="lg" variant="secondary" onClick={() => respondCounter(false)} disabled={busy}>
               No thanks
             </Button>
-          </div>
-        </div>
-      )}
-
-      {round.status === 'closed' && (
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-muted">
-            {mine
-              ? `You paid ${money(round.winner!.amount)}. Will it grow? You'll find out at the end of the day.`
-              : round.winner
-                ? `${sharkName} paid ${money(round.winner.amount)} for ${pct(round.winner.equity)}.`
-                : 'Nobody invested in this company today.'}
-          </p>
-          {game.finished ? (
-            <Button onClick={showReveal} disabled={busy}>
-              See what happened →
+            <Button size="lg" onClick={() => respondCounter(true)} disabled={busy}>
+              Accept
             </Button>
-          ) : (
-            <Button onClick={next}>Next company →</Button>
-          )}
-        </div>
+          </>
+        ) : game.finished ? (
+          <Button size="lg" onClick={showReveal} disabled={busy}>
+            See what happened
+          </Button>
+        ) : (
+          <Button size="lg" onClick={next}>
+            Next company
+          </Button>
+        )}
+      </div>
+      {!countered && game.finished && (
+        <p className="mt-3 text-[13px] text-faint">That was the last company. Time to find out how you did.</p>
       )}
-    </div>
+    </Card>
   )
 }

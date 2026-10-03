@@ -4,10 +4,10 @@ import type { PublicPitch } from '../types'
 /** Plays a pitch clip from any supported source (YouTube embed, self-hosted file, URL). */
 export function VideoPlayer({ pitch }: { pitch: PublicPitch }) {
   const v = pitch.video
-  const frame = 'aspect-video w-full overflow-hidden rounded-2xl border border-line bg-black shadow-2xl'
+  const frame = 'aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-[var(--shadow-float)]'
 
   if (v.type === 'youtube') {
-    const params = new URLSearchParams({ autoplay: '1', rel: '0', modestbranding: '1', start: String(v.start) })
+    const params = new URLSearchParams({ autoplay: '1', rel: '0', modestbranding: '1', playsinline: '1', start: String(v.start) })
     if (v.end) params.set('end', String(v.end))
     return (
       <div className={frame}>
@@ -15,7 +15,7 @@ export function VideoPlayer({ pitch }: { pitch: PublicPitch }) {
           className="h-full w-full"
           src={`https://www.youtube-nocookie.com/embed/${v.id}?${params}`}
           title={`${pitch.company.name} pitch`}
-          allow="autoplay; encrypted-media; picture-in-picture"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
         />
       </div>

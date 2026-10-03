@@ -56,16 +56,66 @@ def build_system_prompt(pitch: Pitch) -> str:
 _WORD = re.compile(r"[a-z0-9$%]+")
 _SALES = re.compile(r"sales|sold|revenue|subscri", re.IGNORECASE)
 _STOP = {
-    "the", "a", "an", "is", "are", "you", "your", "what", "how", "do", "does", "of", "to",
-    "and", "in", "it", "for", "on", "i", "me", "my", "we", "our", "that", "this", "with",
-    "why", "can", "be", "have", "has", "was", "so", "much", "many",
+    "the",
+    "a",
+    "an",
+    "is",
+    "are",
+    "you",
+    "your",
+    "what",
+    "how",
+    "do",
+    "does",
+    "of",
+    "to",
+    "and",
+    "in",
+    "it",
+    "for",
+    "on",
+    "i",
+    "me",
+    "my",
+    "we",
+    "our",
+    "that",
+    "this",
+    "with",
+    "why",
+    "can",
+    "be",
+    "have",
+    "has",
+    "was",
+    "so",
+    "much",
+    "many",
 }
+
+
+_FIRST_PERSON = [
+    (re.compile(r"^The founders? (?:says?|believes?|thinks?) (?:that )?", re.IGNORECASE), ""),
+    (re.compile(r"\bThe founders are\b", re.IGNORECASE), "We're"),
+    (re.compile(r"\bThe founder is\b", re.IGNORECASE), "I'm"),
+    (re.compile(r"\bThe founders\b", re.IGNORECASE), "We"),
+    (re.compile(r"\bThe founder\b", re.IGNORECASE), "I"),
+]
+
+
+def _in_first_person(sentence: str) -> str:
+    """Fact sheets are written about the founder; the offline founder speaks as themself."""
+    for pattern, repl in _FIRST_PERSON:
+        sentence = pattern.sub(repl, sentence)
+    return sentence[:1].upper() + sentence[1:]
 
 
 def fallback_answer(pitch: Pitch, question: str) -> str:
     """Offline founder: pick the fact sentence that best overlaps the question."""
     q = {w for w in _WORD.findall(question.lower()) if w not in _STOP}
-    candidates = pitch.facts.highlights + [pitch.facts.summary]
+    highlights = [_in_first_person(h) for h in pitch.facts.highlights]
+    summary = _in_first_person(pitch.facts.summary)
+    candidates = highlights + [summary]
     best, best_score = None, 0
     for c in candidates:
         score = len(q & set(_WORD.findall(c.lower())))
@@ -76,16 +126,16 @@ def fallback_answer(pitch: Pitch, question: str) -> str:
     if any(w in q for w in ("valuation", "worth", "value", "lower", "equity", "percent")):
         return (
             f"We believe ${pitch.ask.valuation:,} is fair for what we've built. "
-            f"{pitch.facts.highlights[0] if pitch.facts.highlights else ''}"
+            f"{highlights[0] if highlights else ''}"
         ).strip()
     if q & {"sales", "sold", "revenue", "selling", "sell", "customers", "subscribers"}:
-        numeric = [h for h in pitch.facts.highlights if any(c.isdigit() for c in h)]
-        sales = [h for h in pitch.facts.highlights if _SALES.search(h)]
+        numeric = [h for h in highlights if any(c.isdigit() for c in h)]
+        sales = [h for h in highlights if _SALES.search(h)]
         if numeric or sales:
             return f"Great question. {(numeric or sales)[0]}"
     if best:
         return f"Great question. {best}"
-    return f"Great question. What I can tell you is: {pitch.facts.summary}"
+    return f"Great question. What I can tell you is: {summary}"
 
 
 class FounderChat:
