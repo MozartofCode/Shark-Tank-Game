@@ -11,10 +11,7 @@ export function AccountPanel() {
   if (email) {
     return (
       <div className="space-y-4">
-        <p className="text-[15px] text-muted">
-          You're signed in as <span className="font-medium text-fg">{email}</span>. Your portfolio is saved to your
-          account.
-        </p>
+        <p className="text-[15px] text-muted">{email}</p>
         <Button variant="secondary" onClick={signOut} className="w-full">
           Sign out
         </Button>
@@ -27,9 +24,7 @@ export function AccountPanel() {
       <div className="space-y-2 text-center">
         <p className="text-3xl">✉️</p>
         <p className="font-medium">Check your email</p>
-        <p className="text-[15px] text-muted">
-          We sent a sign-in link to {linkSentTo}. You can keep playing in the meantime.
-        </p>
+        <p className="text-[15px] text-muted">Tap the link we sent to {linkSentTo}.</p>
       </div>
     )
   }
@@ -42,9 +37,7 @@ export function AccountPanel() {
         if (value.includes('@')) void sendMagicLink(value.trim())
       }}
     >
-      <p className="text-[15px] text-muted">
-        Save your portfolio on any device and join the leaderboard. No password, just a link in your email.
-      </p>
+      <p className="text-[15px] text-muted">Save your portfolio and join the leaderboard.</p>
       <input
         type="email"
         required

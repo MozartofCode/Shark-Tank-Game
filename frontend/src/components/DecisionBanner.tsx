@@ -1,32 +1,33 @@
 import { money, pct } from '../lib/format'
 import { useGame } from '../store/gameStore'
 import type { GameView, RoundView, SharkPersona } from '../types'
+import { Term } from './Term'
 import { Button, Card } from './ui'
 
-/** What the founder decided: deal, counter-offer, or no deal. */
+/** What the founder decided: deal, counteroffer, or no deal. */
 export function DecisionBanner({ game, round, sharks }: { game: GameView; round: RoundView; sharks: SharkPersona[] }) {
   const { respondCounter, next, showReveal, busy } = useGame()
-  const company = round.pitch.company.name
-  const founder = round.pitch.company.founders[0]
   const mine = round.winner?.investor === 'player'
-  const sharkName = sharks.find((s) => s.id === round.winner?.investor)?.name
-
+  const sharkName = sharks.find((s) => s.id === round.winner?.investor)?.name.split(' ')[0]
   const countered = round.status === 'countered' && round.counter
+
   const icon = countered ? '🤝' : mine ? '🎉' : round.winner ? '🦈' : '👋'
-  const title = countered
-    ? 'They want a better deal'
-    : mine
-      ? 'It’s a deal!'
-      : round.winner
-        ? `${sharkName} got the deal`
-        : 'No deal'
+  const title = countered ? (
+    <Term id="counteroffer">Counteroffer</Term>
+  ) : mine ? (
+    'It’s a deal!'
+  ) : round.winner ? (
+    `${sharkName} got it`
+  ) : (
+    'No deal'
+  )
   const detail = countered
-    ? `${money(round.counter!.amount)} for ${pct(round.counter!.equity)} instead of your offer.`
+    ? `${money(round.counter!.amount, { compact: true })} for ${pct(round.counter!.equity)}?`
     : mine
-      ? `You now own ${pct(round.winner!.equity)} of ${company} for ${money(round.winner!.amount)}.`
+      ? `You own ${pct(round.winner!.equity)} of ${round.pitch.company.name}.`
       : round.winner
-        ? `${money(round.winner.amount)} for ${pct(round.winner.equity)}. You keep your money.`
-        : 'Nobody invested in this one.'
+        ? `${money(round.winner.amount, { compact: true })} for ${pct(round.winner.equity)}`
+        : 'The founder walked away.'
 
   return (
     <Card className="animate-scale-in mx-auto max-w-2xl p-8 text-center">
@@ -35,15 +36,12 @@ export function DecisionBanner({ game, round, sharks }: { game: GameView; round:
       </p>
       <h2 className="mt-4 text-[28px] font-bold">{title}</h2>
       <p className="mt-2 text-[17px] text-muted">{detail}</p>
-      <p className="mx-auto mt-5 max-w-md text-[15px] text-faint italic">
-        {founder}: “{round.founder_line}”
-      </p>
 
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         {countered ? (
           <>
             <Button size="lg" variant="secondary" onClick={() => respondCounter(false)} disabled={busy}>
-              No thanks
+              No
             </Button>
             <Button size="lg" onClick={() => respondCounter(true)} disabled={busy}>
               Accept
@@ -59,9 +57,6 @@ export function DecisionBanner({ game, round, sharks }: { game: GameView; round:
           </Button>
         )}
       </div>
-      {!countered && game.finished && (
-        <p className="mt-3 text-[13px] text-faint">That was the last company. Time to find out how you did.</p>
-      )}
     </Card>
   )
 }

@@ -4,6 +4,7 @@ import { Sheets } from './components/Sheets'
 import { useGame } from './store/gameStore'
 import { GameView } from './views/GameView'
 import { HomeView } from './views/HomeView'
+import { LearnView } from './views/LearnView'
 import { PortfolioView } from './views/PortfolioView'
 import { RevealView } from './views/RevealView'
 
@@ -22,6 +23,7 @@ export default function App() {
         {screen === 'game' && <GameView />}
         {screen === 'reveal' && <RevealView />}
         {screen === 'portfolio' && <PortfolioView />}
+        {screen === 'learn' && <LearnView />}
       </div>
 
       <Sheets />
@@ -40,9 +42,8 @@ export default function App() {
 
       <footer className="mx-auto w-full max-w-5xl px-5 py-10 text-xs leading-relaxed text-faint">
         <div className="border-t border-line pt-6">
-          A learning game, not financial advice. Outcomes come from public news reports; private-company values are
-          estimates. Videos are embedded from official Shark Tank YouTube channels and belong to their owners. Tank Day
-          isn’t affiliated with Shark Tank, ABC or Sony, and its sharks are fictional.
+          A learning game, not financial advice. Videos belong to their owners. Not affiliated with Shark Tank; the
+          sharks are fictional.
         </div>
       </footer>
     </div>

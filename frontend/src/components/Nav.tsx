@@ -4,7 +4,7 @@ import { useGame } from '../store/gameStore'
 
 /** Translucent top bar. In a game it shows progress and money left; elsewhere, quick links. */
 export function Nav() {
-  const { game, viewIndex, screen, goHome, openPortfolio, openSheet, health } = useGame()
+  const { game, viewIndex, screen, goHome, openPortfolio, openSheet, openLearn, health } = useGame()
   const email = useAuth((s) => s.email)
   const inGame = screen === 'game' && game
 
@@ -19,6 +19,9 @@ export function Nav() {
         {inGame ? (
           <>
             <div className="mx-auto flex items-center gap-1.5" aria-label={`Company ${viewIndex + 1} of ${game.total_rounds}`}>
+              <span className="mr-1.5 text-muted tabular-nums">
+                {viewIndex + 1}/{game.total_rounds}
+              </span>
               {game.rounds.map((r, i) => (
                 <span
                   key={r.index}
@@ -28,17 +31,16 @@ export function Nav() {
                 />
               ))}
             </div>
-            <span className="text-muted">
-              <span className="hidden sm:inline">Left to invest </span>
-              <span className="font-semibold text-fg tabular-nums">{money(game.cash, { compact: true })}</span>
+            <span className="font-semibold tabular-nums" title="Money left to invest today">
+              {money(game.cash, { compact: true })}
             </span>
           </>
         ) : (
           <div className="ml-auto flex items-center gap-5 text-muted">
-            <button onClick={() => openSheet('glossary')} className="transition hover:text-fg">
-              Money words
+            <button onClick={openLearn} className={`transition hover:text-fg ${screen === 'learn' ? 'text-fg' : ''}`}>
+              Learn
             </button>
-            <button onClick={openPortfolio} className="transition hover:text-fg">
+            <button onClick={openPortfolio} className={`transition hover:text-fg ${screen === 'portfolio' ? 'text-fg' : ''}`}>
               Portfolio
             </button>
             {health?.accounts && (

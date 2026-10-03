@@ -5,10 +5,10 @@ import { totals } from '../lib/portfolio'
 import { resumeGame, useGame } from '../store/gameStore'
 
 const STEPS = [
-  { icon: '🎬', title: 'Watch', body: 'A real founder pitches on Shark Tank.' },
-  { icon: '💬', title: 'Ask', body: 'Question them before you decide.' },
-  { icon: '💸', title: 'Invest', body: 'Offer money for a slice, or pass.' },
-  { icon: '⏩', title: 'Find out', body: 'Skip ahead years and see what happened.' },
+  { icon: '🎬', title: 'Watch' },
+  { icon: '💬', title: 'Ask' },
+  { icon: '💸', title: 'Invest' },
+  { icon: '⏩', title: 'Find out' },
 ]
 
 export function HomeView() {
@@ -23,16 +23,15 @@ export function HomeView() {
         <h1 className="text-[56px] leading-[1.02] font-bold sm:text-[88px]">
           Invest like a <span className="text-gradient">Shark.</span>
         </h1>
-        <p className="mt-6 max-w-xl text-[19px] leading-relaxed text-muted sm:text-[21px]">
-          Every day you get {money(bankroll)} and five real companies from Shark Tank. Some went on to make millions.
-          Some went broke. It’s your call.
+        <p className="mt-6 max-w-lg text-[19px] leading-relaxed text-muted sm:text-[21px]">
+          {money(bankroll, { compact: true })} a day. Five real companies. Some made millions, some went broke.
         </p>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           {inProgress ? (
             <>
               <Button size="lg" onClick={resumeGame}>
-                {game.finished ? 'See your results' : 'Continue playing'}
+                {game.finished ? 'See results' : 'Continue'}
               </Button>
               <Button size="lg" variant="secondary" onClick={() => start('random')} disabled={busy}>
                 New day
@@ -41,24 +40,27 @@ export function HomeView() {
           ) : (
             <>
               <Button size="lg" onClick={() => start('random')} disabled={busy} className="min-w-36">
-                {busy ? 'Loading…' : 'Play'}
+                Play
               </Button>
-              <Button size="lg" variant="secondary" onClick={() => start('daily')} disabled={busy}>
+              <Button
+                size="lg"
+                variant="secondary"
+                onClick={() => start('daily')}
+                disabled={busy}
+                title="Same five companies for everyone today"
+              >
                 Daily challenge
               </Button>
             </>
           )}
         </div>
-        {!inProgress && (
-          <p className="mt-4 text-[13px] text-faint">The daily challenge has the same five companies for everyone.</p>
-        )}
 
         {t.days > 0 && (
           <button
             onClick={openPortfolio}
-            className="mt-10 flex items-center gap-4 rounded-full bg-surface py-2.5 pr-4 pl-5 text-left shadow-[var(--shadow-card)] transition hover:scale-[1.01]"
+            className="mt-10 flex items-center gap-4 rounded-full bg-surface py-2.5 pr-4 pl-5 shadow-[var(--shadow-card)] transition hover:scale-[1.01]"
           >
-            <span className="text-[15px] text-muted">Your portfolio</span>
+            <span className="text-[15px] text-muted">Portfolio</span>
             <span className={`text-[15px] font-semibold tabular-nums ${profitTone(t.profit)}`}>
               {signedMoney(t.profit, true)}
             </span>
@@ -69,14 +71,16 @@ export function HomeView() {
         )}
       </section>
 
-      <section className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-line shadow-[var(--shadow-card)] lg:grid-cols-4">
-        {STEPS.map((s) => (
-          <div key={s.title} className="bg-surface p-6">
+      <section className="grid grid-cols-4 gap-px overflow-hidden rounded-3xl bg-line shadow-[var(--shadow-card)]">
+        {STEPS.map((s, i) => (
+          <div key={s.title} className="flex flex-col items-center gap-3 bg-surface px-2 py-7 text-center">
             <span className="text-3xl" aria-hidden>
               {s.icon}
             </span>
-            <p className="mt-4 text-[17px] font-semibold">{s.title}</p>
-            <p className="mt-1 text-[15px] leading-snug text-muted">{s.body}</p>
+            <span className="text-[15px] font-semibold">
+              <span className="text-faint">{i + 1} </span>
+              {s.title}
+            </span>
           </div>
         ))}
       </section>
@@ -85,12 +89,6 @@ export function HomeView() {
         <section className="mx-auto mt-16 max-w-xl">
           <Leaderboard />
         </section>
-      )}
-
-      {health && !health.ai_founder && (
-        <p className="mt-12 text-center text-xs text-faint">
-          Founder answers are running in simple offline mode. Add an Anthropic API key for full AI answers.
-        </p>
       )}
     </main>
   )

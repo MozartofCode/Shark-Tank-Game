@@ -1,38 +1,27 @@
+import { TERMS } from '../lib/glossary'
 import { useGame } from '../store/gameStore'
 import { AccountPanel } from './AccountPanel'
-import { Sheet } from './ui'
-
-const WORDS = [
-  ['Investment', 'Money you put into a company now, hoping it grows into more money later.'],
-  ['Equity', 'Your slice of the company. Owning 10% means one tenth of it is yours.'],
-  ['Valuation', 'What the whole company is worth. $100K for 10% means it’s worth $1M.'],
-  ['Profit', 'What your slice is worth later, minus what you paid. It can be negative.'],
-  ['Exit', 'When investors finally get paid, usually because a bigger company buys it.'],
-  ['Diversify', 'Spreading money across many bets so one failure doesn’t wipe you out.'],
-]
+import { Button, Sheet } from './ui'
 
 export function Sheets() {
-  const { sheet, openSheet } = useGame()
-  const close = () => openSheet(null)
+  const { sheet, openSheet, term, openTerm, openLearn } = useGame()
 
-  if (sheet === 'account') {
+  if (term && TERMS[term]) {
+    const t = TERMS[term]
     return (
-      <Sheet title="Your account" onClose={close}>
-        <AccountPanel />
+      <Sheet title={t.term} onClose={() => openTerm(null)}>
+        <p className="text-[17px] leading-relaxed">{t.short}</p>
+        {t.example && <p className="mt-3 rounded-2xl bg-fill px-4 py-3 text-[15px] text-muted">{t.example}</p>}
+        <Button variant="plain" onClick={openLearn} className="mt-5">
+          All money words ›
+        </Button>
       </Sheet>
     )
   }
-  if (sheet === 'glossary') {
+  if (sheet === 'account') {
     return (
-      <Sheet title="Money words" onClose={close}>
-        <dl className="divide-y divide-line">
-          {WORDS.map(([word, meaning]) => (
-            <div key={word} className="py-3 first:pt-0 last:pb-0">
-              <dt className="font-semibold">{word}</dt>
-              <dd className="mt-0.5 text-[15px] leading-relaxed text-muted">{meaning}</dd>
-            </div>
-          ))}
-        </dl>
+      <Sheet title="Account" onClose={() => openSheet(null)}>
+        <AccountPanel />
       </Sheet>
     )
   }

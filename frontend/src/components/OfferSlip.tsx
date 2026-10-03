@@ -1,7 +1,8 @@
-import { useMemo, useState, type CSSProperties } from 'react'
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { money, pct, valuation } from '../lib/format'
 import { useGame } from '../store/gameStore'
 import type { RoundView } from '../types'
+import { Term } from './Term'
 import { Button, Card } from './ui'
 
 const MIN_AMOUNT = 10_000
@@ -10,7 +11,6 @@ const MAX_ASK_MULTIPLE = 5
 export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
   const { offer, pass, busy } = useGame()
   const ask = round.pitch.ask
-  const name = round.pitch.company.name
   const maxAmount = Math.min(cash, ask.amount * MAX_ASK_MULTIPLE)
   const canInvest = maxAmount >= MIN_AMOUNT
   const [amount, setAmount] = useState(Math.max(MIN_AMOUNT, Math.min(ask.amount, maxAmount)))
@@ -23,35 +23,28 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
       Math.max(0, ...round.shark_reactions.filter((r) => r.offer).map((r) => valuation(r.offer!.amount, r.offer!.equity))),
     [round.shark_reactions],
   )
+  const beatsSharks = yourValue >= bestShark
 
   const problem = !canInvest
-    ? 'You’ve used up today’s money. Pass on this one.'
+    ? 'No money left today.'
     : amount < MIN_AMOUNT
-      ? `The smallest offer is ${money(MIN_AMOUNT)}.`
+      ? `Minimum ${money(MIN_AMOUNT, { compact: true })}.`
       : amount > cash
-        ? `You only have ${money(cash)} left today.`
+        ? `You have ${money(cash, { compact: true })} left.`
         : amount > ask.amount * MAX_ASK_MULTIPLE
-          ? `That’s more than they need. The most you can offer is ${money(ask.amount * MAX_ASK_MULTIPLE)}.`
+          ? `Maximum ${money(ask.amount * MAX_ASK_MULTIPLE, { compact: true })}.`
           : equityPct < 1 || equityPct > 90
-            ? 'Choose between 1% and 90%.'
+            ? 'Pick 1% to 90%.'
             : null
-
-  const hint = !bestShark
-    ? 'No shark made an offer, so yours is the only one.'
-    : yourValue >= bestShark
-      ? 'That’s at least as high as any shark’s price. The founder will like that.'
-      : 'A shark values the company higher than you do. The founder may choose them instead.'
 
   return (
     <Card className="mx-auto max-w-2xl p-6 sm:p-8">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-[22px] font-semibold">Your offer</h2>
-        <p className="text-[13px] text-muted">{money(cash)} left to invest today</p>
-      </div>
+      <h2 className="text-[22px] font-semibold">Your offer</h2>
 
       <div className="mt-6 space-y-6">
         <SliderRow
           label="You invest"
+          name="Amount"
           display={money(amount)}
           value={amount}
           onChange={setAmount}
@@ -62,7 +55,8 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
           parse={(s) => Number(s.replace(/[^0-9]/g, ''))}
         />
         <SliderRow
-          label="Your share"
+          label={<Term id="equity">You get</Term>}
+          name="Percent of the company"
           display={`${equityPct}%`}
           value={equityPct}
           onChange={setEquityPct}
@@ -74,13 +68,17 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
         />
       </div>
 
-      <div className="mt-7 rounded-2xl bg-fill px-5 py-4">
-        <p className="text-[15px] leading-relaxed">
-          This says {name} is worth{' '}
-          <strong className="font-semibold">{money(yourValue, { compact: true })}</strong>. The founder said{' '}
-          {money(round.pitch.implied_valuation, { compact: true })}.
-        </p>
-        <p className="mt-1 text-[13px] text-muted">{hint}</p>
+      <div className="mt-7 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-fill px-5 py-4 text-[15px]">
+        <span>
+          <Term id="valuation">Valuation</Term>{' '}
+          <strong className="font-semibold">{money(yourValue, { compact: true })}</strong>
+          <span className="text-muted"> · asked {money(round.pitch.implied_valuation, { compact: true })}</span>
+        </span>
+        {bestShark > 0 && (
+          <span className={`text-[13px] font-medium ${beatsSharks ? 'text-win' : 'text-warn'}`}>
+            {beatsSharks ? '✓ Beats the sharks' : 'A shark offers more'}
+          </span>
+        )}
       </div>
 
       {problem && <p className="mt-4 text-[15px] text-loss">{problem}</p>}
@@ -90,7 +88,7 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
           Pass
         </Button>
         <Button size="lg" onClick={() => offer(amount, equity)} disabled={busy || !!problem}>
-          <span className="sm:hidden">Make offer</span>
+          <span className="sm:hidden">Offer</span>
           <span className="hidden sm:inline">
             Offer {money(amount, { compact: true })} for {pct(equity)}
           </span>
@@ -102,6 +100,7 @@ export function OfferSlip({ round, cash }: { round: RoundView; cash: number }) {
 
 function SliderRow({
   label,
+  name,
   display,
   value,
   onChange,
@@ -111,7 +110,8 @@ function SliderRow({
   disabled,
   parse,
 }: {
-  label: string
+  label: ReactNode
+  name: string
   display: string
   value: number
   onChange: (v: number) => void
@@ -129,28 +129,26 @@ function SliderRow({
     <div>
       <div className="flex items-baseline justify-between gap-3">
         <span className="min-w-0 text-[15px] text-muted">{label}</span>
-        <span className="shrink-0">
-          <input
-            aria-label={label}
-            inputMode="decimal"
-            disabled={disabled}
-            value={editing ?? display}
-            placeholder={display}
-            onFocus={() => setEditing('')}
-            onChange={(e) => {
-              setEditing(e.target.value)
-              const n = parse(e.target.value)
-              if (e.target.value.trim() && !Number.isNaN(n)) onChange(n)
-            }}
-            onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-            onBlur={() => {
-              const n = parse(editing ?? '')
-              if (editing?.trim() && !Number.isNaN(n)) onChange(Math.min(Math.max(n, min), max))
-              setEditing(null)
-            }}
-            className="w-40 rounded-lg bg-transparent px-1 text-right text-[28px] font-semibold tabular-nums outline-none placeholder:text-faint focus:bg-fill"
-          />
-        </span>
+        <input
+          aria-label={name}
+          inputMode="decimal"
+          disabled={disabled}
+          value={editing ?? display}
+          placeholder={display}
+          onFocus={() => setEditing('')}
+          onChange={(e) => {
+            setEditing(e.target.value)
+            const n = parse(e.target.value)
+            if (e.target.value.trim() && !Number.isNaN(n)) onChange(n)
+          }}
+          onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+          onBlur={() => {
+            const n = parse(editing ?? '')
+            if (editing?.trim() && !Number.isNaN(n)) onChange(Math.min(Math.max(n, min), max))
+            setEditing(null)
+          }}
+          className="w-40 shrink-0 rounded-lg bg-transparent px-1 text-right text-[28px] font-semibold tabular-nums outline-none placeholder:text-faint focus:bg-fill"
+        />
       </div>
       <input
         type="range"
@@ -162,7 +160,7 @@ function SliderRow({
         value={clamped}
         disabled={disabled}
         onChange={(e) => onChange(Number(e.target.value))}
-        aria-label={`${label} slider`}
+        aria-label={`${name} slider`}
       />
     </div>
   )

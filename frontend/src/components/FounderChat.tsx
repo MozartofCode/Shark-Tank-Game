@@ -40,19 +40,13 @@ export function FounderChat({ round, sharks }: { round: RoundView; sharks: Shark
       <div className="flex items-center justify-between border-b border-line px-5 py-3">
         <div>
           <p className="text-[15px] font-semibold">{founder}</p>
-          <p className="text-xs text-muted">Founder</p>
         </div>
         <p className="text-xs text-muted">
-          {outOfQuestions ? 'No questions left' : `${round.questions_left} question${round.questions_left === 1 ? '' : 's'} left`}
+          {round.questions_left} left
         </p>
       </div>
 
       <div ref={scroller} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
-        {round.chat.length === 0 && !pending && (
-          <p className="px-6 pt-6 text-center text-[15px] text-muted">
-            Great investors ask before they buy. Pick a question below or write your own.
-          </p>
-        )}
         {round.chat.map((m, i) => (
           <Bubble key={i} mine={m.role === 'user'} text={m.content} />
         ))}
@@ -88,7 +82,7 @@ export function FounderChat({ round, sharks }: { round: RoundView; sharks: Shark
           onChange={(e) => setText(e.target.value)}
           maxLength={500}
           disabled={busy || outOfQuestions}
-          placeholder={outOfQuestions ? 'You’ve asked all your questions' : `Ask ${founder} anything…`}
+          placeholder={outOfQuestions ? 'No questions left' : 'Ask a question'}
           className="h-10 min-w-0 flex-1 rounded-full bg-fill px-4 text-[15px] outline-none placeholder:text-faint focus:ring-2 focus:ring-accent/40 disabled:opacity-60"
         />
         <button

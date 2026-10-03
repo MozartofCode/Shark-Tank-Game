@@ -2,6 +2,7 @@ import { DecisionBanner } from '../components/DecisionBanner'
 import { FounderChat } from '../components/FounderChat'
 import { OfferSlip } from '../components/OfferSlip'
 import { SharkPanel } from '../components/SharkPanel'
+import { Term } from '../components/Term'
 import { Button, Card } from '../components/ui'
 import { VideoPlayer } from '../components/VideoPlayer'
 import { money, pct } from '../lib/format'
@@ -24,7 +25,7 @@ export function GameView() {
 
   return (
     <main className="mx-auto max-w-5xl px-5 pt-10 pb-6">
-      <Header round={round} index={viewIndex} total={game.total_rounds} />
+      <Header round={round} />
 
       <div className="mt-8 flex justify-center">
         <div className="inline-flex rounded-full bg-fill p-1" role="tablist" aria-label="Steps">
@@ -50,12 +51,14 @@ export function GameView() {
           <div className="mx-auto max-w-4xl space-y-5">
             <VideoPlayer pitch={round.pitch} />
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <p className="text-[13px] text-faint">
-                The clip stops before the deal, so no spoilers. Video:{' '}
-                <a className="hover:underline" href={round.pitch.source.url} target="_blank" rel="noreferrer">
-                  {round.pitch.source.channel}
-                </a>
-              </p>
+              <a
+                className="text-[13px] text-faint hover:underline"
+                href={round.pitch.source.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {round.pitch.source.channel}
+              </a>
               <Button onClick={() => setStep('ask')}>Continue</Button>
             </div>
           </div>
@@ -94,21 +97,21 @@ export function GameView() {
   )
 }
 
-function Header({ round, index, total }: { round: RoundView; index: number; total: number }) {
+function Header({ round }: { round: RoundView }) {
   const p = round.pitch
   return (
     <div className="text-center">
-      <p className="text-[13px] font-medium text-muted">
-        Company {index + 1} of {total}
-      </p>
-      <h1 className="mt-2 text-[40px] leading-tight font-bold sm:text-[48px]">{p.company.name}</h1>
+      <h1 className="text-[40px] leading-tight font-bold sm:text-[48px]">{p.company.name}</h1>
       <p className="mx-auto mt-2 max-w-2xl text-[17px] text-muted">{p.company.one_liner}</p>
       <p className="mx-auto mt-5 inline-flex flex-wrap items-center justify-center gap-x-2 rounded-full bg-surface px-4 py-2 text-[15px] shadow-[var(--shadow-card)]">
         <span>
-          Asking <strong>{money(p.ask.amount)}</strong> for <strong>{pct(p.ask.equity)}</strong>
+          <Term id="ask">Asking</Term> <strong>{money(p.ask.amount, { compact: true })}</strong> for{' '}
+          <strong>{pct(p.ask.equity)}</strong>
         </span>
         <span className="text-faint">·</span>
-        <span className="text-muted">values the company at {money(p.implied_valuation, { compact: true })}</span>
+        <span className="text-muted">
+          <Term id="valuation">Valuation</Term> {money(p.implied_valuation, { compact: true })}
+        </span>
       </p>
     </div>
   )
@@ -118,8 +121,7 @@ function FactSheet({ round }: { round: RoundView }) {
   const p = round.pitch
   return (
     <Card className="lg:col-span-2">
-      <p className="text-[13px] font-semibold tracking-wide text-muted uppercase">Fact sheet</p>
-      <p className="mt-3 text-[15px] leading-relaxed">{p.facts.summary}</p>
+      <p className="text-[13px] font-semibold tracking-wide text-muted uppercase">Facts</p>
       <ul className="mt-4 space-y-3">
         {p.facts.highlights.map((h) => (
           <li key={h} className="flex gap-3 text-[15px] leading-snug text-muted">
@@ -128,7 +130,6 @@ function FactSheet({ round }: { round: RoundView }) {
           </li>
         ))}
       </ul>
-      <p className="mt-5 text-[13px] text-faint">Founded by {p.company.founders.join(' & ')}</p>
     </Card>
   )
 }

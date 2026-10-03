@@ -2,74 +2,56 @@
 
 LESSONS: dict[str, dict[str, str]] = {
     "valuation": {
-        "title": "Valuation",
-        "body": "Amount ÷ equity = the company's implied value. $100K for 10% means you "
-        "think the whole company is worth $1M. Overpay on day one and even a winner "
-        "can disappoint.",
+        "title": "Price matters",
+        "body": "Overpay on day one and even a winner can disappoint.",
     },
     "dilution": {
         "title": "Dilution",
-        "body": "When a startup raises more money later, it issues new shares. Your "
-        "percentage shrinks, but a smaller slice of a much bigger pie can still be "
-        "worth far more.",
+        "body": "Your slice shrank as the company raised more money, but the pie grew much more.",
     },
     "survivorship_bias": {
         "title": "Survivorship bias",
-        "body": "We remember the Scrub Daddys and forget the hundreds of pitches that "
-        "quietly closed. Most early-stage bets lose money; a few big winners pay for "
-        "everything else.",
+        "body": "We remember the hits. Most startups quietly fail.",
     },
     "rejected_winner": {
-        "title": "The ones that got away",
-        "body": "Sometimes every expert says no and the company wins anyway. Investors "
-        "miss great deals all the time. That's why they spread their bets.",
+        "title": "The one that got away",
+        "body": "Every expert said no, and it won anyway. That's why investors spread their bets.",
     },
     "execution_risk": {
-        "title": "Execution risk",
-        "body": "A great idea and a viral TV moment aren't a business. Operations, unit "
-        "economics and cash flow decide whether a company survives the spotlight.",
+        "title": "Ideas aren't enough",
+        "body": "A great pitch doesn't mean a great business. Costs and operations decide who survives.",
     },
     "product_claims": {
-        "title": "Due diligence",
-        "body": "Investors trusted the pitch instead of verifying the product. Asking "
-        "hard questions about whether something truly works is part of the job.",
+        "title": "Check the claims",
+        "body": "Investors trusted the pitch instead of testing whether the product really worked.",
     },
     "exit": {
-        "title": "Exits",
-        "body": "You only make money from private-company equity when there's an exit: "
-        "an acquisition, IPO or buyback. A quick sale at a modest price can still be "
-        "a great return.",
+        "title": "Exits pay",
+        "body": "You only cash out when the company is bought or goes public.",
     },
     "unit_economics": {
-        "title": "Unit economics",
-        "body": "Revenue isn't profit. A subscription that costs more to ship than "
-        "customers pay gets worse, not better, as it grows.",
+        "title": "Revenue isn't profit",
+        "body": "If each sale costs more than it earns, growing faster just loses money faster.",
     },
     "mission_brand": {
-        "title": "Brand & mission",
-        "body": "A clear story (like 'buy one, give one') turns a commodity into a brand "
-        "people choose and talk about. That's pricing power.",
+        "title": "Brands win",
+        "body": "A clear story turns a plain product into something people choose.",
     },
     "licensing": {
-        "title": "Licensing & retail reach",
-        "body": "Getting into big retailers or TV shopping can multiply sales overnight. "
-        "The right partner can be worth more than the money they invest.",
+        "title": "Reach matters",
+        "body": "The right partner can get a product into thousands of stores overnight.",
     },
     "franchising": {
         "title": "Franchising",
-        "body": "Franchising lets a brand grow with other people's capital: franchisees "
-        "pay to open locations, the brand collects fees and royalties.",
+        "body": "Other people pay to open locations, and the brand earns fees from each one.",
     },
     "deal_closing": {
         "title": "A handshake isn't a deal",
-        "body": "Many TV deals change or fall apart afterwards, once investors check the "
-        "details (that's called due diligence). The money only counts once the paperwork "
-        "is signed.",
+        "body": "Many TV deals fell apart once investors checked the details.",
     },
     "patience": {
         "title": "Patience",
-        "body": "Some companies grow slowly for decades before taking off. Long-term "
-        "compounding rewards investors who hold on.",
+        "body": "Some companies grow slowly for years before taking off.",
     },
 }
 

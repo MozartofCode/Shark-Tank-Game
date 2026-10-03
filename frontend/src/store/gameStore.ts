@@ -6,8 +6,8 @@ import { useAuth } from './authStore'
 
 /** Client-side steps within one pitch. The server only tracks offers/decisions. */
 export type Step = 'pitch' | 'ask' | 'invest'
-export type Screen = 'home' | 'game' | 'reveal' | 'portfolio'
-export type SheetName = 'account' | 'glossary' | null
+export type Screen = 'home' | 'game' | 'reveal' | 'portfolio' | 'learn'
+export type SheetName = 'account' | null
 
 const GAME_KEY = 'tankday.gameId'
 
@@ -42,6 +42,8 @@ interface State {
   pendingQuestion: string | null
   portfolio: PortfolioDay[]
   sheet: SheetName
+  term: string | null
+  returnTo: Screen
 
   boot: () => Promise<void>
   start: (mode?: 'random' | 'daily') => Promise<void>
@@ -58,6 +60,9 @@ interface State {
   goHome: () => void
   clearError: () => void
   openSheet: (sheet: SheetName) => void
+  openTerm: (id: string | null) => void
+  openLearn: () => void
+  back: () => void
 }
 
 export const useGame = create<State>((set, get) => {
@@ -87,6 +92,8 @@ export const useGame = create<State>((set, get) => {
     pendingQuestion: null,
     portfolio: loadLocalPortfolio(),
     sheet: null,
+    term: null,
+    returnTo: 'home',
 
     async boot() {
       await run(async () => {
@@ -221,6 +228,19 @@ export const useGame = create<State>((set, get) => {
 
     clearError: () => set({ error: null }),
     openSheet: (sheet) => set({ sheet }),
+    openTerm: (term) => set({ term }),
+
+    /** The glossary page; remembers where you came from so "Back" returns there. */
+    openLearn() {
+      const { screen } = get()
+      set({ screen: 'learn', term: null, returnTo: screen === 'learn' ? 'home' : screen })
+      window.scrollTo({ top: 0 })
+    },
+
+    back() {
+      set({ screen: get().returnTo })
+      window.scrollTo({ top: 0 })
+    },
   }
 })
 

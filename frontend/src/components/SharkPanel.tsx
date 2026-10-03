@@ -28,10 +28,9 @@ export function SharkPanel({
           >
             <div className="flex items-center gap-3">
               <Avatar emoji={s.avatar} color={s.color} size={36} />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-[15px] font-semibold">{s.name.split(' ')[0]}</p>
-                <p className="truncate text-xs text-muted">{s.title}</p>
-              </div>
+              <p className="min-w-0 flex-1 truncate text-[15px] font-semibold" title={s.title}>
+                {s.name.split(' ')[0]}
+              </p>
             </div>
             {r && <p className="mt-3 flex-1 text-[13px] leading-snug text-muted">“{r.comment}”</p>}
             <div className="mt-3">
@@ -46,7 +45,7 @@ export function SharkPanel({
               )}
               {won && (
                 <Pill tone="accent" className="mt-2">
-                  Got the deal
+                  Won
                 </Pill>
               )}
             </div>
