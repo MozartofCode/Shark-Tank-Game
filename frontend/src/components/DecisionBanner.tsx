@@ -2,6 +2,7 @@ import { money, pct } from '../lib/format'
 import { useGame } from '../store/gameStore'
 import type { GameView, RoundView, SharkPersona } from '../types'
 import { Term } from './Term'
+import { ValuationQuiz } from './ValuationQuiz'
 import { Button, Card } from './ui'
 
 /** What the founder decided: deal, counteroffer, or no deal. */
@@ -36,6 +37,7 @@ export function DecisionBanner({ game, round, sharks }: { game: GameView; round:
       </p>
       <h2 className="mt-4 text-[28px] font-bold">{title}</h2>
       <p className="mt-2 text-[17px] text-muted">{detail}</p>
+      {mine && round.status === 'closed' && <ValuationQuiz key={`${game.id}-${round.index}`} amount={round.winner!.amount} equity={round.winner!.equity} />}
 
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         {countered ? (
