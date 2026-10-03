@@ -1,3 +1,7 @@
+import os
+
+os.environ.setdefault("DATABASE_URL", "sqlite:///:memory:")
+
 import pytest
 
 from app.config import get_settings

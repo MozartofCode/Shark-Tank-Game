@@ -3,7 +3,8 @@
 from functools import lru_cache
 
 from app.config import get_settings
-from app.repositories.game_store import InMemoryGameStore
+from app.db import get_engine as get_db_engine
+from app.repositories.game_store import SqlGameStore
 from app.repositories.pitch_repository import (
     LocalPitchRepository,
     PitchRepository,
@@ -45,7 +46,7 @@ def get_engine() -> GameEngine:
         settings,
         get_pitch_repository(),
         get_shark_repository(),
-        InMemoryGameStore(settings.game_ttl_seconds),
+        SqlGameStore(get_db_engine(), settings.game_ttl_seconds),
         get_run_repository(),
     )
 

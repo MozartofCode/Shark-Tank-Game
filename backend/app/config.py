@@ -19,7 +19,9 @@ class Settings(BaseSettings):
     starting_bankroll: int = 1_000_000  # fresh cash every day
     rounds_per_game: int = 5
     max_questions_per_round: int = 3
-    game_ttl_seconds: int = 60 * 60 * 24
+    game_ttl_seconds: int = 60 * 60 * 24 * 7
+    # SQLite locally; in production use the Supabase Postgres connection string.
+    database_url: str = f"sqlite:///{REPO_ROOT / 'backend' / 'data' / 'tankday.db'}"
 
     anthropic_api_key: str | None = None
     founder_model: str = "claude-haiku-4-5"

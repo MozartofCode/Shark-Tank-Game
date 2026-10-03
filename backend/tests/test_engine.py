@@ -88,3 +88,23 @@ def test_shark_standings_rank_by_profit(engine):
     reveal = engine.reveal(game)
     profits = [s.profit for s in reveal.standings]
     assert profits == sorted(profits, reverse=True)
+
+
+def test_sql_store_round_trip_and_ttl():
+    import time
+
+    from app.db import make_engine
+    from app.models.game import GameState, RoundState
+    from app.repositories.game_store import SqlGameStore
+
+    store = SqlGameStore(make_engine("sqlite:///:memory:"), ttl_seconds=60)
+    game = GameState(id="g1", bankroll_start=1_000_000, cash=900_000, rounds=[RoundState(pitch_id="zipz")])
+    store.save(game)
+    game.cash = 800_000
+    store.save(game)  # update path
+    loaded = store.get("g1")
+    assert loaded is not game and loaded.cash == 800_000 and loaded.rounds[0].pitch_id == "zipz"
+    old = GameState(id="g2", bankroll_start=1, cash=1, rounds=[], created_at=time.time() - 120)
+    store.save(old)
+    assert store.get("g2") is None
+    assert store.get("missing") is None

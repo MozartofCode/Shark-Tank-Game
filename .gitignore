@@ -19,3 +19,6 @@ pitches/**/*.mp4
 pitches/**/*.webm
 
 .DS_Store
+
+# Local SQLite database
+backend/data/
