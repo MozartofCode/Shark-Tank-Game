@@ -1,4 +1,4 @@
-.PHONY: install dev backend frontend test lint validate build
+.PHONY: install dev backend frontend test lint validate embeds build
 
 install:            ## Install backend + frontend dependencies
 	cd backend && uv sync
@@ -22,6 +22,9 @@ lint:
 
 validate:           ## Validate pitch content
 	cd backend && uv run python ../scripts/validate_pitches.py
+
+embeds:             ## Check every YouTube clip is still embeddable
+	python3 scripts/check_embeds.py
 
 build:              ## Production build of the frontend
 	cd frontend && npm run build
