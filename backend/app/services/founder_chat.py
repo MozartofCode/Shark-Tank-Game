@@ -54,6 +54,7 @@ def build_system_prompt(pitch: Pitch) -> str:
 
 
 _WORD = re.compile(r"[a-z0-9$%]+")
+_SALES = re.compile(r"sales|sold|revenue|subscri", re.IGNORECASE)
 _STOP = {
     "the", "a", "an", "is", "are", "you", "your", "what", "how", "do", "does", "of", "to",
     "and", "in", "it", "for", "on", "i", "me", "my", "we", "our", "that", "this", "with",
@@ -77,6 +78,11 @@ def fallback_answer(pitch: Pitch, question: str) -> str:
             f"We believe ${pitch.ask.valuation:,} is fair for what we've built. "
             f"{pitch.facts.highlights[0] if pitch.facts.highlights else ''}"
         ).strip()
+    if q & {"sales", "sold", "revenue", "selling", "sell", "customers", "subscribers"}:
+        numeric = [h for h in pitch.facts.highlights if any(c.isdigit() for c in h)]
+        sales = [h for h in pitch.facts.highlights if _SALES.search(h)]
+        if numeric or sales:
+            return f"Great question. {(numeric or sales)[0]}"
     if best:
         return f"Great question. {best}"
     return f"Great question. What I can tell you is: {pitch.facts.summary}"
