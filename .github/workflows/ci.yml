@@ -36,3 +36,16 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build API image
+        run: docker build -t tank-day-api .
+      - name: Smoke test
+        run: |
+          docker run -d --name api -p 8000:8000 -e DATABASE_URL=sqlite:////tmp/t.db tank-day-api
+          for i in $(seq 1 30); do curl -sf localhost:8000/api/health && break; sleep 1; done
+          curl -sf localhost:8000/api/health | grep '"status":"ok"'
+          curl -sf -X POST localhost:8000/api/games > /dev/null
