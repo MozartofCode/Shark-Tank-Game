@@ -19,6 +19,7 @@ from app.services.auth import AuthUser, optional_user, required_user
 from app.services.deal_math import InvalidOffer
 from app.services.founder_chat import FounderChat
 from app.services.game_engine import GameEngine, GameError
+from app.services.rate_limit import rate_limit
 
 router = APIRouter(prefix="/api/games", tags=["games"])
 
@@ -32,7 +33,7 @@ def _uid(user: AuthUser | None) -> str | None:
     return user.id if user else None
 
 
-@router.post("", response_model=GameView)
+@router.post("", response_model=GameView, dependencies=[Depends(rate_limit("new_game", 30, 3600))])
 def create_game(
     body: NewGameRequest | None = None,
     engine: GameEngine = Depends(get_engine),
@@ -72,7 +73,10 @@ def claim_game(
         raise _http(e)
 
 
-@router.post("/{game_id}/rounds/{index}/questions")
+@router.post(
+    "/{game_id}/rounds/{index}/questions",
+    dependencies=[Depends(rate_limit("questions", 60, 3600))],
+)
 async def ask_question(
     game_id: str,
     index: int,
@@ -109,7 +113,11 @@ async def ask_question(
     return EventSourceResponse(events())
 
 
-@router.post("/{game_id}/rounds/{index}/offer", response_model=GameView)
+@router.post(
+    "/{game_id}/rounds/{index}/offer",
+    response_model=GameView,
+    dependencies=[Depends(rate_limit("actions", 120, 60))],
+)
 def make_offer(
     game_id: str,
     index: int,
@@ -119,9 +127,7 @@ def make_offer(
 ):
     try:
         game = engine.get_game(game_id, _uid(user))
-        engine.submit_offer(
-            game, index, passed=body.pass_, amount=body.amount, equity=body.equity
-        )
+        engine.submit_offer(game, index, passed=body.pass_, amount=body.amount, equity=body.equity)
         return engine.view(game)
     except (GameError, InvalidOffer) as e:
         raise _http(e)

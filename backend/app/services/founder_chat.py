@@ -17,6 +17,7 @@ import anthropic
 from app.config import Settings
 from app.models.game import ChatMessage
 from app.models.pitch import Pitch
+from app.services.rate_limit import ai_budget
 
 log = logging.getLogger(__name__)
 
@@ -150,7 +151,7 @@ class FounderChat:
     async def answer(
         self, pitch: Pitch, history: list[ChatMessage], question: str
     ) -> AsyncIterator[str]:
-        if self.client is None:
+        if self.client is None or not ai_budget.try_spend(self.settings.ai_daily_call_cap):
             yield fallback_answer(pitch, question)
             return
 

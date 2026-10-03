@@ -27,6 +27,11 @@ class Settings(BaseSettings):
     founder_model: str = "claude-haiku-4-5"
     reactions_model: str = "claude-sonnet-5-5"
 
+    # Abuse protection
+    rate_limits_enabled: bool = True
+    trust_proxy_headers: bool = False  # set true behind Fly/Render/Vercel proxies
+    ai_daily_call_cap: int = 2000  # live AI founder answers per day, then offline answers
+
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
     # Supabase (v2): auth, saved runs, leaderboards, optional pitch storage.

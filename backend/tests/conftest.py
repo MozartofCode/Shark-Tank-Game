@@ -9,6 +9,7 @@ from app.dependencies import get_pitch_repository, get_shark_repository
 from app.repositories.game_store import InMemoryGameStore
 from app.repositories.run_repository import NullRunRepository
 from app.services.game_engine import GameEngine
+from app.services.rate_limit import limiter
 
 
 @pytest.fixture
@@ -53,3 +54,10 @@ def game_with(engine, pitch_ids):
     game.rounds = [RoundState(pitch_id=p) for p in pitch_ids]
     engine.store.save(game)
     return game
+
+
+@pytest.fixture(autouse=True)
+def _reset_rate_limits():
+    limiter.reset()
+    yield
+    limiter.reset()
