@@ -1,0 +1,48 @@
+{
+  "pitch_id": "squatty-potty",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Are you in any big retailers yet?",
+        "Is this patented?"
+      ],
+      "comment": "Every bathroom in America needs one. I'm in!",
+      "decision": "in",
+      "offer": {
+        "amount": 350000,
+        "equity": 0.1
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What stops a big brand from copying this tomorrow?"
+      ],
+      "comment": "Funny, but no defensibility. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "How much profit did you make last year?"
+      ],
+      "comment": "I like a profitable business, even if it's a toilet stool.",
+      "decision": "in",
+      "offer": {
+        "amount": 350000,
+        "equity": 0.15
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Who's your core customer?"
+      ],
+      "comment": "I can't see myself building a toilet brand. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

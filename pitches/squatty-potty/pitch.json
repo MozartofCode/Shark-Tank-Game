@@ -1,0 +1,62 @@
+{
+  "id": "squatty-potty",
+  "source": {
+    "show": "shark_tank",
+    "season": 6,
+    "episode": 9,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=2atjT5fKK8A"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "2atjT5fKK8A",
+    "start": 0,
+    "end": 230
+  },
+  "company": {
+    "name": "Squatty Potty",
+    "category": "health",
+    "one_liner": "A toilet stool that puts your body in a more natural position.",
+    "founders": [
+      "Bobby Edwards",
+      "Judy Edwards"
+    ]
+  },
+  "ask": {
+    "amount": 350000,
+    "equity": 0.05
+  },
+  "facts": {
+    "summary": "A mother-and-son company selling a simple stool that sits around the toilet base and raises your feet, which they say improves posture in the bathroom.",
+    "highlights": [
+      "The product is simple and cheap to manufacture.",
+      "Sales are already strong, mainly online, and the founders say they are profitable.",
+      "The category is embarrassing to talk about, so marketing needs humor.",
+      "They want a partner to get into big-box retail."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 3500000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Lori Greiner invested $350,000 for 10% (a $3.5M valuation)."
+  },
+  "outcome": {
+    "status": "acquired",
+    "years_later": 7,
+    "exit_value": 30800000,
+    "value_basis": "acquisition",
+    "retention_factor": 0.9,
+    "headline": "A viral ad and retail push, then sold to Aterian for ~$31M.",
+    "story": "Squatty Potty landed in major retailers and made a famously viral unicorn ad. In May 2021 its assets were bought by Aterian for about $30.8M in total consideration (cash, inventory, earnout and transition services).",
+    "as_of": "2021-05",
+    "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1757715/000156459021048879/filename1.htm"
+    ]
+  },
+  "lessons": [
+    "exit",
+    "licensing"
+  ]
+}

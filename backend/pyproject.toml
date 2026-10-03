@@ -1,0 +1,34 @@
+[project]
+name = "tank-day-backend"
+version = "0.1.0"
+description = "Tank Day: a Shark Tank-style investing game (FastAPI backend)"
+authors = [
+    { name = "Bertan Berker", email = "bertan.berker@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=1.11.0",
+    "fastapi>=0.142.2",
+    "pydantic-settings>=2.15.0",
+    "pyyaml>=6.0.3",
+    "sse-starlette>=3.5.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "ruff>=0.16.10",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# B008: FastAPI's `Depends()` in argument defaults is the framework idiom.
+ignore = ["B008"]

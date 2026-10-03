@@ -1,0 +1,120 @@
+"""The live AI founder who answers the player's questions.
+
+The founder is grounded ONLY in pitch-time facts. The real outcome, the real
+on-show deal and the founder's walk-away number are never put in the prompt,
+so the future can't leak.
+
+With no ANTHROPIC_API_KEY configured, a keyword-matching fallback answers from
+the same facts so the game remains fully playable offline.
+"""
+
+import logging
+import re
+from collections.abc import AsyncIterator
+
+import anthropic
+
+from app.config import Settings
+from app.models.game import ChatMessage
+from app.models.pitch import Pitch
+
+log = logging.getLogger(__name__)
+
+SYSTEM_TEMPLATE = """You are {founders}, the founder(s) of {name}, pitching on a TV investing \
+show. You are talking to an investor ("Shark") who just watched your pitch.
+
+Company: {name} - {one_liner}
+Your ask: ${amount:,} for {equity:.0%} of the company (a ${valuation:,} valuation).
+
+What you know (this is the ONLY information you have):
+{summary}
+{highlights}
+
+Rules:
+- Stay in character as an energetic, honest founder at the moment of the pitch.
+- Only use the facts above. If asked something not covered, say you'd have to \
+check or give a vague, plausible founder answer without inventing specific numbers.
+- You do not know the future. If asked what happens to the company later, deflect \
+optimistically ("That's what we're here to build with you!").
+- Never reveal a minimum valuation you'd accept. Defend your ask.
+- Answer in at most 80 words, conversational, no markdown."""
+
+
+def build_system_prompt(pitch: Pitch) -> str:
+    return SYSTEM_TEMPLATE.format(
+        founders=" & ".join(pitch.company.founders),
+        name=pitch.company.name,
+        one_liner=pitch.company.one_liner,
+        amount=pitch.ask.amount,
+        equity=pitch.ask.equity,
+        valuation=pitch.ask.valuation,
+        summary=pitch.facts.summary,
+        highlights="\n".join(f"- {h}" for h in pitch.facts.highlights),
+    )
+
+
+_WORD = re.compile(r"[a-z0-9$%]+")
+_STOP = {
+    "the", "a", "an", "is", "are", "you", "your", "what", "how", "do", "does", "of", "to",
+    "and", "in", "it", "for", "on", "i", "me", "my", "we", "our", "that", "this", "with",
+    "why", "can", "be", "have", "has", "was", "so", "much", "many",
+}
+
+
+def fallback_answer(pitch: Pitch, question: str) -> str:
+    """Offline founder: pick the fact sentence that best overlaps the question."""
+    q = {w for w in _WORD.findall(question.lower()) if w not in _STOP}
+    candidates = pitch.facts.highlights + [pitch.facts.summary]
+    best, best_score = None, 0
+    for c in candidates:
+        score = len(q & set(_WORD.findall(c.lower())))
+        if score > best_score:
+            best, best_score = c, score
+    if any(w in q for w in ("future", "later", "years", "exit", "happen", "happened")):
+        return "Honestly? That's what we're here to build with you. Partner with us and find out!"
+    if any(w in q for w in ("valuation", "worth", "value", "lower", "equity", "percent")):
+        return (
+            f"We believe ${pitch.ask.valuation:,} is fair for what we've built. "
+            f"{pitch.facts.highlights[0] if pitch.facts.highlights else ''}"
+        ).strip()
+    if best:
+        return f"Great question. {best}"
+    return f"Great question. What I can tell you is: {pitch.facts.summary}"
+
+
+class FounderChat:
+    def __init__(self, settings: Settings):
+        self.settings = settings
+        self.client = (
+            anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key, timeout=30.0)
+            if settings.llm_enabled
+            else None
+        )
+
+    async def answer(
+        self, pitch: Pitch, history: list[ChatMessage], question: str
+    ) -> AsyncIterator[str]:
+        if self.client is None:
+            yield fallback_answer(pitch, question)
+            return
+
+        messages = [{"role": m.role, "content": m.content} for m in history]
+        messages.append({"role": "user", "content": question})
+        try:
+            async with self.client.messages.stream(
+                model=self.settings.founder_model,
+                max_tokens=400,
+                system=build_system_prompt(pitch),
+                messages=messages,
+            ) as stream:
+                async for text in stream.text_stream:
+                    yield text
+        except anthropic.APIConnectionError:
+            log.warning("Founder chat: connection error, using fallback")
+            yield fallback_answer(pitch, question)
+        except anthropic.RateLimitError:
+            log.warning("Founder chat: rate limited, using fallback")
+            yield fallback_answer(pitch, question)
+        except anthropic.APIStatusError as e:
+            log.warning("Founder chat: API error %s, using fallback", e.status_code)
+            yield fallback_answer(pitch, question)

@@ -1,0 +1,62 @@
+{
+  "id": "scrub-daddy",
+  "source": {
+    "show": "shark_tank",
+    "season": 4,
+    "episode": 7,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=ae5MssJ8en4"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "ae5MssJ8en4",
+    "start": 0,
+    "end": 300
+  },
+  "company": {
+    "name": "Scrub Daddy",
+    "category": "consumer",
+    "one_liner": "A smiley-face sponge that's firm in cold water and soft in warm water.",
+    "founders": [
+      "Aaron Krause"
+    ]
+  },
+  "ask": {
+    "amount": 100000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "A household sponge made of a proprietary polymer foam that changes texture with water temperature, doesn't scratch, and resists odors.",
+    "highlights": [
+      "The foam is firm in cold water for tough scrubbing and soft in warm water for light cleaning.",
+      "The smiley face is functional: the mouth cleans both sides of a spoon and the eyes let you grip it.",
+      "The founder is an experienced inventor who previously built and sold a car-polishing pad business.",
+      "Sales so far are small and mostly local; the business needs retail distribution to scale."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 500000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Lori Greiner won a bidding war: $200,000 for 20% (a $1M valuation)."
+  },
+  "outcome": {
+    "status": "thriving",
+    "years_later": 12,
+    "exit_value": 500000000,
+    "value_basis": "estimate",
+    "retention_factor": 0.9,
+    "headline": "Scrub Daddy became one of the most successful products in Shark Tank history.",
+    "story": "Lori Greiner put Scrub Daddy on QVC and into major retailers. It grew into a full cleaning brand with an estimated $340M in 2024 revenue. The company is private, so its value here is an estimate (~$500M) based on reported revenue.",
+    "as_of": "2025",
+    "sources": [
+      "https://www.looper.com/1518538/how-much-shark-tank-lori-greiner-made-from-scrub-daddy/",
+      "https://taptwicedigital.com/stats/scrub-daddy"
+    ]
+  },
+  "lessons": [
+    "licensing",
+    "valuation"
+  ]
+}

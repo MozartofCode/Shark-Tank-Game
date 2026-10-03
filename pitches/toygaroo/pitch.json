@@ -1,0 +1,62 @@
+{
+  "id": "toygaroo",
+  "source": {
+    "show": "shark_tank",
+    "season": 2,
+    "episode": 2,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=VhxfNXzHoP4"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "VhxfNXzHoP4",
+    "start": 0,
+    "end": 300
+  },
+  "company": {
+    "name": "Toygaroo",
+    "category": "services",
+    "one_liner": "The 'Netflix of toys': a monthly subscription that ships toys to your door.",
+    "founders": [
+      "Nikki Pope"
+    ]
+  },
+  "ask": {
+    "amount": 100000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "Parents pay a monthly fee to rent toys, which are shipped to their home, played with, then returned and swapped for new ones.",
+    "highlights": [
+      "Kids get bored of toys quickly; renting saves parents money and clutter.",
+      "Toys are cleaned and sanitized between families.",
+      "Customers pay a monthly subscription; shipping is included.",
+      "The model depends on buying toys cheaply and keeping shipping costs low."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 450000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Mark Cuban and Kevin O'Leary invested $200,000 for 40% (a $500K valuation)."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 1,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "Filed for bankruptcy less than a year after the episode.",
+    "story": "Demand surged after the show, but shipping and inventory costs swamped the subscription fees. Toygaroo filed for Chapter 7 bankruptcy in April 2012, and the investment was a total loss.",
+    "as_of": "2012-04",
+    "sources": [
+      "https://www.sharktankblog.com/business/toygaroo/",
+      "https://2paragraphs.com/2016/04/toygaroo-toy-rental-company-bankrupt-after-shark-tank/"
+    ]
+  },
+  "lessons": [
+    "unit_economics",
+    "execution_risk"
+  ]
+}

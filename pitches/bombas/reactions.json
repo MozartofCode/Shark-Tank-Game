@@ -1,0 +1,47 @@
+{
+  "pitch_id": "bombas",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "How many pairs have you sold so far?"
+      ],
+      "comment": "It's a sock... but a good one. I'll take a small flyer.",
+      "decision": "in",
+      "offer": {
+        "amount": 200000,
+        "equity": 0.2
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What stops Nike from doing this?"
+      ],
+      "comment": "It's a commodity. A $4M sock company? I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "How much does it cost you to acquire a customer?"
+      ],
+      "comment": "The giving is lovely but it eats your margin. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "What made you two quit your jobs for socks?"
+      ],
+      "comment": "I believe in you two and this mission. Let's build a brand.",
+      "decision": "in",
+      "offer": {
+        "amount": 200000,
+        "equity": 0.175
+      }
+    }
+  ]
+}

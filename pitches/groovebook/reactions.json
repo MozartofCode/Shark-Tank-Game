@@ -1,0 +1,48 @@
+{
+  "pitch_id": "groovebook",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "How many subscribers do you have?"
+      ],
+      "comment": "It's not a product I can sell on TV. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "What does it cost you to print and ship one book?",
+        "How fast are subscribers growing?"
+      ],
+      "comment": "Recurring revenue on phones? Now we're talking.",
+      "decision": "in",
+      "offer": {
+        "amount": 150000,
+        "equity": 0.25
+      }
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "At $2.99, how do you make any money after postage?"
+      ],
+      "comment": "Thin margins, but I'll take a big slice.",
+      "decision": "in",
+      "offer": {
+        "amount": 150000,
+        "equity": 0.3
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Do customers keep subscribing after the first few months?"
+      ],
+      "comment": "I'm worried about churn. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

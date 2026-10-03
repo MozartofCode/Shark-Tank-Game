@@ -1,0 +1,62 @@
+{
+  "id": "breathometer",
+  "source": {
+    "show": "shark_tank",
+    "season": 5,
+    "episode": 2,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=KKd0ko9RtIw"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "KKd0ko9RtIw",
+    "start": 0,
+    "end": 270
+  },
+  "company": {
+    "name": "Breathometer",
+    "category": "tech",
+    "one_liner": "A breathalyzer that plugs into your smartphone.",
+    "founders": [
+      "Charles Yim"
+    ]
+  },
+  "ask": {
+    "amount": 250000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "A small breathalyzer that plugs into a phone's headphone jack and shows your blood alcohol level in an app, with a button to call a cab.",
+    "highlights": [
+      "It plugs into your phone's headphone jack and reads your blood alcohol in seconds.",
+      "The app can call a taxi if you're over the limit.",
+      "The founder says it's accurate and wants to save lives by stopping drunk driving.",
+      "Pre-orders came from a crowdfunding campaign."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 2000000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Historic: all five Sharks invested together, $1M for 30% (a $3.3M valuation)."
+  },
+  "outcome": {
+    "status": "failed",
+    "years_later": 4,
+    "exit_value": 0,
+    "value_basis": "zero",
+    "retention_factor": 0,
+    "headline": "The FTC found the device was inaccurate; the company had to issue refunds.",
+    "story": "In 2017 the FTC charged that Breathometer knew its devices often under-reported blood alcohol. The settlement required refunds and ended the product line. The investment was effectively a total loss.",
+    "as_of": "2017-01",
+    "sources": [
+      "https://techcrunch.com/2017/01/23/breathometer-ftc-settlement/",
+      "https://en.wikipedia.org/wiki/Breathometer"
+    ]
+  },
+  "lessons": [
+    "product_claims",
+    "survivorship_bias"
+  ]
+}

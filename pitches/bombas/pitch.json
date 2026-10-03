@@ -1,0 +1,62 @@
+{
+  "id": "bombas",
+  "source": {
+    "show": "shark_tank",
+    "season": 6,
+    "episode": 1,
+    "channel": "Sony Pictures Television (official)",
+    "url": "https://www.youtube.com/watch?v=RlALuStBplY"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "RlALuStBplY",
+    "start": 0,
+    "end": 260
+  },
+  "company": {
+    "name": "Bombas",
+    "category": "apparel",
+    "one_liner": "Premium athletic socks: for every pair sold, a pair goes to a homeless shelter.",
+    "founders": [
+      "David Heath",
+      "Randy Goldberg"
+    ]
+  },
+  "ask": {
+    "amount": 200000,
+    "equity": 0.05
+  },
+  "facts": {
+    "summary": "Two founders rebuilt the sock from scratch (cushioned footbed, arch support, seamless toe) and donate a pair for every pair sold, because socks are the most requested item at shelters.",
+    "highlights": [
+      "Socks are the most requested clothing item at homeless shelters; Bombas donates a pair per pair sold.",
+      "Engineered for comfort: honeycomb arch support, cushioned footbed, seamless toe.",
+      "Sold direct-to-consumer online at a premium price.",
+      "The company is young; the Sharks questioned whether a sock company is worth $4M."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 1100000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Daymond John invested $200,000 for 17.5% (about a $1.14M valuation)."
+  },
+  "outcome": {
+    "status": "thriving",
+    "years_later": 10,
+    "exit_value": 1000000000,
+    "value_basis": "estimate",
+    "retention_factor": 0.8,
+    "headline": "Over $1 billion in lifetime sales; often called Shark Tank's most successful company.",
+    "story": "Bombas became a mission-driven apparel brand with over $1B in lifetime revenue and well over 100 million items donated. It's private, so the value here (~$1B) is an estimate based on reported revenue of roughly $300M a year.",
+    "as_of": "2024",
+    "sources": [
+      "https://www.entrepreneur.com/starting-a-business/bombas-is-the-most-successful-shark-tank-brand-heres/464309"
+    ]
+  },
+  "lessons": [
+    "mission_brand",
+    "valuation"
+  ]
+}

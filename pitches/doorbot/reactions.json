@@ -1,0 +1,45 @@
+{
+  "pitch_id": "doorbot",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Who installs it, the customer or a pro?"
+      ],
+      "comment": "I can't demo this on TV in 30 seconds. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How big is your engineering team?",
+        "What's your return rate?"
+      ],
+      "comment": "Hardware is hard. Inventory kills startups. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "How much cash do you burn every month?"
+      ],
+      "comment": "Your valuation is a fantasy. I'll give you the money, but for a real piece of the company.",
+      "decision": "in",
+      "offer": {
+        "amount": 700000,
+        "equity": 0.2
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Why would someone buy this instead of an alarm system?"
+      ],
+      "comment": "It's not my world. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

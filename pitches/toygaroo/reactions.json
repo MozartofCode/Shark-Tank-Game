@@ -1,0 +1,45 @@
+{
+  "pitch_id": "toygaroo",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Who pays for return shipping?"
+      ],
+      "comment": "I like it, but logistics scare me. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How many subscribers, and what's churn?",
+        "What does each shipment cost you?"
+      ],
+      "comment": "Netflix for toys. Subscription plus scale. I want in, big.",
+      "decision": "in",
+      "offer": {
+        "amount": 200000,
+        "equity": 0.4
+      }
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What does it cost to buy each toy?"
+      ],
+      "comment": "Shipping costs will eat you alive. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Have parents told you they love it?"
+      ],
+      "comment": "Lovely idea, but I don't add value here. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

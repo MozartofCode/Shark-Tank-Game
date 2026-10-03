@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+
+# Env / secrets
+.env
+.env.local
+*.local
+
+# Self-hosted media (large; use Supabase Storage or Git LFS)
+pitches/**/*.mp4
+pitches/**/*.webm
+
+.DS_Store

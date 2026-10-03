@@ -1,0 +1,63 @@
+{
+  "id": "cousins-maine-lobster",
+  "source": {
+    "show": "shark_tank",
+    "season": 4,
+    "episode": 6,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=EQUuPQv9EHs"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "EQUuPQv9EHs",
+    "start": 0,
+    "end": 280
+  },
+  "company": {
+    "name": "Cousins Maine Lobster",
+    "category": "food",
+    "one_liner": "A food truck serving authentic Maine lobster rolls in Los Angeles.",
+    "founders": [
+      "Jim Tselikis",
+      "Sabin Lomac"
+    ]
+  },
+  "ask": {
+    "amount": 55000,
+    "equity": 0.05
+  },
+  "facts": {
+    "summary": "Two cousins from Maine run a lobster food truck in LA, sourcing lobster directly from Maine. They want to grow into more trucks and more cities.",
+    "highlights": [
+      "One truck did about $150,000 in sales in its first two months.",
+      "Lobster comes straight from Maine, which is their brand story.",
+      "Food trucks are cheaper to open than restaurants.",
+      "They plan to expand with more trucks and possibly franchising."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 330000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Barbara Corcoran invested $55,000 for 15% (about a $367K valuation)."
+  },
+  "outcome": {
+    "status": "thriving",
+    "years_later": 10,
+    "exit_value": 50000000,
+    "value_basis": "estimate",
+    "retention_factor": 1.0,
+    "headline": "Grew into a national franchise with dozens of trucks and restaurants.",
+    "story": "Cousins Maine Lobster franchised its trucks across the US, with dozens of units and reported annual revenue near $39M by 2023. It's private, so the value here (~$50M) is an estimate.",
+    "as_of": "2023",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Cousins_Maine_Lobster",
+      "https://www.tastingtable.com/1411692/cousins-maine-lobster-after-shark-tank-interview/"
+    ]
+  },
+  "lessons": [
+    "franchising",
+    "valuation"
+  ]
+}

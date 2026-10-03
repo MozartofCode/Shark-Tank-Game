@@ -1,0 +1,48 @@
+{
+  "pitch_id": "breathometer",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "How accurate is it compared to what police use?"
+      ],
+      "comment": "This could save lives. I'm in.",
+      "decision": "in",
+      "offer": {
+        "amount": 250000,
+        "equity": 0.12
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How do you validate the accuracy?",
+        "What's the data business here?"
+      ],
+      "comment": "Phone plus sensor plus data: I love it. Big check.",
+      "decision": "in",
+      "offer": {
+        "amount": 500000,
+        "equity": 0.15
+      }
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What's the margin on each unit?"
+      ],
+      "comment": "Gadgets come and go. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Who buys this, the drinker or their worried parent?"
+      ],
+      "comment": "It's not my space. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

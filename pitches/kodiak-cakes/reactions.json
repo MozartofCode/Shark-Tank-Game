@@ -1,0 +1,44 @@
+{
+  "pitch_id": "kodiak-cakes",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Why hasn't it grown faster after all these years?"
+      ],
+      "comment": "Grocery is brutal and slow. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "Where's the growth engine?"
+      ],
+      "comment": "It's pancake mix. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What are your annual sales and profit?"
+      ],
+      "comment": "Steady but slow. I'll invest at a valuation that reflects that.",
+      "decision": "in",
+      "offer": {
+        "amount": 500000,
+        "equity": 0.25
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "How committed are you to doing this for another ten years?"
+      ],
+      "comment": "I love the family story, but the valuation is too high for me. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "groovebook",
+  "source": {
+    "show": "shark_tank",
+    "season": 5,
+    "episode": 13,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=wO8LZ1bONh4"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "wO8LZ1bONh4",
+    "start": 0,
+    "end": 320
+  },
+  "company": {
+    "name": "GrooveBook",
+    "category": "tech",
+    "one_liner": "An app that mails you a printed book of 100 phone photos every month for $2.99.",
+    "founders": [
+      "Julie Whiteman",
+      "Brian Whiteman"
+    ]
+  },
+  "ask": {
+    "amount": 150000,
+    "equity": 0.2
+  },
+  "facts": {
+    "summary": "A subscription app: pick up to 100 photos from your phone each month and get them printed in a perforated photo book, shipped for $2.99.",
+    "highlights": [
+      "$2.99 a month for a printed book of up to 100 photos.",
+      "The founders already own a print shop, so they control printing costs.",
+      "Subscription revenue is recurring and predictable.",
+      "Most people never print the photos on their phones; that's the opportunity."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 600000
+  },
+  "real_deal": {
+    "result": "deal",
+    "summary": "Mark Cuban and Kevin O'Leary teamed up on a $150,000 deal tied to licensing the service."
+  },
+  "outcome": {
+    "status": "acquired",
+    "years_later": 1,
+    "exit_value": 14500000,
+    "value_basis": "acquisition",
+    "retention_factor": 1.0,
+    "headline": "Acquired by Shutterfly for $14.5M within a year.",
+    "story": "After the episode GrooveBook signed up a huge number of subscribers, and in November 2014 Shutterfly bought the company for $14.5M. A fast exit at a modest price, but a great multiple for early investors.",
+    "as_of": "2014-11",
+    "sources": [
+      "https://www.sec.gov/Archives/edgar/data/0001125920/000112592016000129/sfly-12312015x10k.htm",
+      "https://www.looper.com/1268989/whatever-happened-groovebook-after-shark-tank/"
+    ]
+  },
+  "lessons": [
+    "exit",
+    "unit_economics"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "id": "doorbot",
+  "source": {
+    "show": "shark_tank",
+    "season": 5,
+    "episode": 9,
+    "channel": "Shark Tank Global (official)",
+    "url": "https://www.youtube.com/watch?v=um-iVXiXedc"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "um-iVXiXedc",
+    "start": 0,
+    "end": 240
+  },
+  "company": {
+    "name": "Doorbot",
+    "category": "tech",
+    "one_liner": "A Wi-Fi video doorbell that lets you answer your front door from your phone.",
+    "founders": [
+      "Jamie Siminoff"
+    ]
+  },
+  "ask": {
+    "amount": 700000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "A battery-powered doorbell with a camera that connects to home Wi-Fi so you can see and talk to visitors from a smartphone app anywhere.",
+    "highlights": [
+      "When someone rings, your phone rings and you can see and speak to them in real time.",
+      "It installs in minutes with no wiring and works with your existing doorbell chime.",
+      "It is already on sale direct-to-consumer and the company has early revenue.",
+      "It's a hardware business: inventory, manufacturing and returns all need capital."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 5000000
+  },
+  "real_deal": {
+    "result": "no_deal",
+    "summary": "No deal. Kevin O'Leary offered a loan plus royalty and equity; the founder declined. Every other Shark was out."
+  },
+  "outcome": {
+    "status": "acquired",
+    "years_later": 5,
+    "exit_value": 1000000000,
+    "value_basis": "acquisition",
+    "retention_factor": 0.3,
+    "headline": "Rebranded as Ring and acquired by Amazon for over $1 billion.",
+    "story": "Doorbot became Ring, raised large venture rounds and was bought by Amazon in 2018 for a reported ~$1B+. Heavy fundraising means an early 10% stake would have been diluted a lot, so we assume you keep about 30% of your original stake.",
+    "as_of": "2018-02",
+    "sources": [
+      "https://www.geekwire.com/2018/amazons-1b-deal-acquire-ring-probably-biggest-miss-shark-tank-history/",
+      "https://www.cnbc.com/2018/02/27/amazon-buys-ring-a-former-shark-tank-reject.html"
+    ]
+  },
+  "lessons": [
+    "rejected_winner",
+    "dilution"
+  ]
+}

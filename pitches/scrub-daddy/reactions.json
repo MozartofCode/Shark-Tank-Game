@@ -1,0 +1,48 @@
+{
+  "pitch_id": "scrub-daddy",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "What does it cost to make, and what does it sell for?",
+        "Have you ever sold on TV shopping before?"
+      ],
+      "comment": "This is a hero! I can sell a million of these on TV.",
+      "decision": "in",
+      "offer": {
+        "amount": 200000,
+        "equity": 0.2
+      }
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "Is there any technology here someone can't copy?"
+      ],
+      "comment": "It's a sponge. I don't invest in sponges. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What are your margins after retail takes its cut?"
+      ],
+      "comment": "Sponges are a commodity, but I like margins. Here's my number.",
+      "decision": "in",
+      "offer": {
+        "amount": 100000,
+        "equity": 0.25
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "Why are you the person to build this brand?"
+      ],
+      "comment": "I love you, but I don't see myself adding value here. I'm out.",
+      "decision": "out",
+      "offer": null
+    }
+  ]
+}

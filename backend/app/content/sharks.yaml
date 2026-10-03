@@ -1,0 +1,42 @@
+# Original, fictional investor characters. They are NOT the real Shark Tank
+# cast: no real names, likenesses or catchphrases, so the game can ship publicly.
+sharks:
+  - id: vance
+    name: Victoria Vance
+    title: The Retail Queen
+    avatar: "👑"
+    color: "#e0457b"
+    bio: Built a home-goods empire on TV shopping networks. Can put a product in 10,000 stores.
+    thesis: [consumer, health]
+    style: Equity deals for products she can sell on TV and in big-box retail.
+    catchphrase: "Is it a hero or a zero?"
+
+  - id: steele
+    name: Marcus Steele
+    title: The Tech Titan
+    avatar: "🚀"
+    color: "#3b82f6"
+    bio: Sold two software companies. Writes big checks for things that can scale to millions of users.
+    thesis: [tech, services]
+    style: Big checks for big equity. Hates inventory, loves software and network effects.
+    catchphrase: "Show me the scale."
+
+  - id: hale
+    name: Desmond Hale
+    title: The Cash Flow Hawk
+    avatar: "🦅"
+    color: "#22c55e"
+    bio: Ex-banker turned private-equity investor. Only cares how fast he gets his money back.
+    thesis: [food, consumer]
+    style: Lowball valuations, loves royalties and profitable businesses.
+    catchphrase: "Money is my only friend."
+
+  - id: bloom
+    name: Gloria Bloom
+    title: The Brand Builder
+    avatar: "🌸"
+    color: "#f59e0b"
+    bio: Grew a fashion label and a restaurant franchise from scratch. Bets on founders first.
+    thesis: [apparel, food, services]
+    style: Smaller checks, hands-on mentoring, bets on people and brands.
+    catchphrase: "I invest in people, not products."

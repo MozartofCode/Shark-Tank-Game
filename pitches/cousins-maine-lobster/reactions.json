@@ -1,0 +1,47 @@
+{
+  "pitch_id": "cousins-maine-lobster",
+  "reactions": [
+    {
+      "shark_id": "vance",
+      "questions": [
+        "Can this work outside of LA?"
+      ],
+      "comment": "Food trucks aren't my thing. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "steele",
+      "questions": [
+        "How do you scale beyond one truck?"
+      ],
+      "comment": "Restaurants are a tough business. I'm out.",
+      "decision": "out",
+      "offer": null
+    },
+    {
+      "shark_id": "hale",
+      "questions": [
+        "What's your profit per lobster roll?"
+      ],
+      "comment": "Lobster prices swing all over the place. I'll do it only for a big stake.",
+      "decision": "in",
+      "offer": {
+        "amount": 55000,
+        "equity": 0.25
+      }
+    },
+    {
+      "shark_id": "bloom",
+      "questions": [
+        "How do you two work together when things get hard?"
+      ],
+      "comment": "You two are a fantastic team and I see a franchise. I'm in.",
+      "decision": "in",
+      "offer": {
+        "amount": 55000,
+        "equity": 0.17
+      }
+    }
+  ]
+}

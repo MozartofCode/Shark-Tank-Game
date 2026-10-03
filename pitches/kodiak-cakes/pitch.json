@@ -1,0 +1,63 @@
+{
+  "id": "kodiak-cakes",
+  "source": {
+    "show": "shark_tank",
+    "season": 5,
+    "episode": null,
+    "channel": "CNBC (official licensee)",
+    "url": "https://www.youtube.com/watch?v=TMQWTyLMNJM"
+  },
+  "video": {
+    "type": "youtube",
+    "id": "TMQWTyLMNJM",
+    "start": 0,
+    "end": 120
+  },
+  "company": {
+    "name": "Kodiak Cakes",
+    "category": "food",
+    "one_liner": "Whole-grain, high-protein pancake and waffle mix from a Utah family business.",
+    "founders": [
+      "Joel Clark",
+      "Cameron Smith"
+    ]
+  },
+  "ask": {
+    "amount": 500000,
+    "equity": 0.1
+  },
+  "facts": {
+    "summary": "A pancake and waffle mix made with whole grains. Joel Clark started selling it door-to-door as a teenager in the 1980s, and the brand has grown slowly in grocery stores since.",
+    "highlights": [
+      "The recipe is a family recipe based on whole wheat and oat flour.",
+      "The business has been around for decades and is already in grocery stores.",
+      "Growth has been slow and steady; the founders want capital to expand distribution.",
+      "Pancake mix is a crowded, low-margin grocery category with big incumbents."
+    ]
+  },
+  "founder_prefs": {
+    "walkaway_valuation": 4000000
+  },
+  "real_deal": {
+    "result": "no_deal",
+    "summary": "No deal. The Sharks didn't come to terms with the founders."
+  },
+  "outcome": {
+    "status": "acquired",
+    "years_later": 7,
+    "exit_value": 500000000,
+    "value_basis": "estimate",
+    "retention_factor": 0.6,
+    "headline": "Became a protein-pancake powerhouse; private-equity firm L Catterton bought a majority stake in 2021.",
+    "story": "Kodiak rode the protein trend into nearly every US grocery store and reportedly reached about $200M in annual sales. L Catterton acquired a majority stake in 2021 (terms undisclosed). The value here (~$500M) is an estimate, and earlier investors would have been diluted.",
+    "as_of": "2021-07",
+    "sources": [
+      "https://www.foodbusinessnews.net/articles/19007-l-catterton-wraps-deal-for-kodiak-cakes",
+      "https://www.foodrepublic.com/1405423/kodiak-cakes-shark-tank-now/"
+    ]
+  },
+  "lessons": [
+    "rejected_winner",
+    "patience"
+  ]
+}
